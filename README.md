@@ -49,10 +49,17 @@ Vercel busca el archivo en disco **antes** de aplicar el rewrite, así que
 `/img`, `/src`, `/sitemap.xml` y `/robots.txt` se sirven como estáticos y no
 hace falta excluirlos.
 
-> Ojo con `vercel.json`: se valida contra un esquema estricto y cualquier
+Dos trampas de `vercel.json`, las dos ya pisadas:
+
+> **No lleva comentarios.** Se valida contra un esquema estricto y cualquier
 > clave de primer nivel que no reconozca hace **fallar el deploy entero**.
-> JSON no tiene comentarios y agregar una clave `"comment"` para explicar algo
-> rompe el build. Las explicaciones van acá.
+> Agregar un `"comment"` para explicar algo rompe el build. Las explicaciones
+> van acá.
+
+> **`cleanUrls` es incompatible con este rewrite.** Con `cleanUrls: true`,
+> Vercel redirige `/index.html` a `/` con un 308, y entonces el destino del
+> rewrite deja de ser servible: todas las rutas dan 404. Acá no aporta nada
+> — hay un solo archivo HTML y el ruteo lo hace el JS — así que está apagado.
 
 ## Fotografía
 
