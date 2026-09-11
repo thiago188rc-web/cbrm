@@ -44,9 +44,15 @@ El router usa la History API, no fragmentos. Cada vista tiene su URL, su
 Los enlaces viejos con `#/` (por ejemplo `#/rubro/detailing`) siguen
 funcionando: se traducen a la dirección nueva y se reemplazan en el historial.
 
-`vercel.json` manda cualquier ruta a `index.html`. Vercel busca el archivo en
-disco antes de aplicar el rewrite, así que `/img`, `/src`, `/sitemap.xml` y
-`/robots.txt` se sirven como estáticos.
+`vercel.json` manda cualquier ruta a `index.html` con un rewrite `/(.*)`.
+Vercel busca el archivo en disco **antes** de aplicar el rewrite, así que
+`/img`, `/src`, `/sitemap.xml` y `/robots.txt` se sirven como estáticos y no
+hace falta excluirlos.
+
+> Ojo con `vercel.json`: se valida contra un esquema estricto y cualquier
+> clave de primer nivel que no reconozca hace **fallar el deploy entero**.
+> JSON no tiene comentarios y agregar una clave `"comment"` para explicar algo
+> rompe el build. Las explicaciones van acá.
 
 ## Fotografía
 
