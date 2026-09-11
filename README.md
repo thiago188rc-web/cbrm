@@ -1,67 +1,118 @@
 # Cabinas Desarmables RM — sitio web
 
-Demo funcional del sitio de Cabinas Desarmables RM (Puerto General San Martín, Santa Fe).
-Sitio estático, sin build ni dependencias. Se sirve tal cual.
+Sitio de Cabinas Desarmables RM (Puerto General San Martín, Santa Fe).
+HTML, CSS y JavaScript planos: no hay build, no hay dependencias, se sirve tal cual.
 
 ## Estructura
 
 ```
-index.html          la página entera (HTML + CSS inline)
-src/app.js          toda la lógica: router, configurador, medidor, panel
-src/assets.js       el mapa de imágenes (apunta a /img)
-img/         las fotos reales de RM + el logo
-vercel.json         cache de imágenes y URLs limpias
-robots.txt          / sitemap.xml   SEO
+index.html              la página entera (HTML + CSS inline)
+src/app.js              router, contenido, cotizador, medidor y panel
+src/assets.js           inventario de fotos: qué se ve en cada una
+img/                    derivados publicados (AVIF + JPG, varios anchos)
+img/src/                las fotos originales de RM — de acá sale todo lo demás
+tools/build-images.py   genera img/ a partir de img/src/
+tools/dev-server.py     servidor local que imita los rewrites de Vercel
+vercel.json             rewrites, cache y cabeceras
+robots.txt / sitemap.xml
 ```
 
-No hay `package.json` a propósito: es HTML/CSS/JS plano. Vercel lo detecta como
-"Other" y lo publica sin compilar nada.
+## Trabajar en local
 
-## Subirlo — paso a paso
-
-### 1. GitHub
-
-Opción con la web de GitHub (sin usar la terminal):
-1. Entrá a https://github.com/new y creá un repo, por ejemplo `cabinas-rm`.
-   Dejalo público o privado, da igual. No agregues README (ya hay uno).
-2. En la página del repo vacío, tocá **uploading an existing file**.
-3. Arrastrá **todo el contenido de esta carpeta** (index.html, src/, /,
-   vercel.json, robots.txt, sitemap.xml, README.md). Mantené las carpetas.
-4. Abajo, **Commit changes**.
-
-Opción con terminal (si la tenés):
 ```bash
-git init
-git add .
-git commit -m "Sitio Cabinas RM"
-git branch -M main
-git remote add origin https://github.com/TU-USUARIO/cabinas-rm.git
-git push -u origin main
+python tools/dev-server.py      # http://localhost:4321
 ```
 
-### 2. Vercel
+Hace falta porque el sitio usa direcciones reales (`/presupuesto`,
+`/cabinas-para-detailing`): abrir el `index.html` con doble clic, o un
+`http.server` pelado, da 404 en todo lo que no sea la raíz.
 
-1. Entrá a https://vercel.com y logueate **con tu cuenta de GitHub**.
-2. **Add New… → Project**.
-3. Elegí el repo `cabinas-rm` y tocá **Import**.
-4. No cambies nada: Framework Preset queda en **Other**, el resto vacío.
-5. **Deploy**. En unos segundos te da una URL tipo `cabinas-rm.vercel.app`.
+## Direcciones
 
-Listo. Cada vez que subas un cambio a GitHub, Vercel lo publica solo.
+El router usa la History API, no fragmentos. Cada vista tiene su URL, su
+`<title>`, su descripción y su `canonical`:
 
-### 3. Dominio propio (cuando lo tengas)
+| URL | Vista |
+|---|---|
+| `/` | Home |
+| `/cabinas-para-detailing` · `-lavaderos` · `-lubricentros` · `-concesionarias` | Rubro |
+| `/modelos` · `/modelos/<slug>` | Catálogo y ficha |
+| `/trabajos` | Cabinas entregadas |
+| `/presupuesto` | Cotizador |
+| `/panel` | Panel interno (noindex) |
 
-En el proyecto de Vercel → **Settings → Domains** → agregás el dominio
-(ej. `cabinasrm.com.ar`) y seguís las instrucciones de DNS que te da.
-Cuando esté, ya quedan bien las URLs de Open Graph y del sitemap, que
-apuntan a `https://cabinasrm.com.ar/`.
+Los enlaces viejos con `#/` (por ejemplo `#/rubro/detailing`) siguen
+funcionando: se traducen a la dirección nueva y se reemplazan en el historial.
 
-## Antes de mostrarlo como sitio real (no demo)
+`vercel.json` manda cualquier ruta a `index.html`. Vercel busca el archivo en
+disco antes de aplicar el rewrite, así que `/img`, `/src`, `/sitemap.xml` y
+`/robots.txt` se sirven como estáticos.
 
-Todo lo marcado `A CONFIRMAR` en el sitio son datos que faltan del taller
-(medidas, materiales, pago, envío, plazos, garantía). Están en la lista de
-la sección 16 del blueprint. Editás los textos en `src/app.js`, dentro del
-objeto `DATA`, y listo — no hace falta tocar el diseño.
+## Fotografía
 
-El WhatsApp está cableado como `5493476569154`. Confirmá que el número lleve
-el 9 antes de publicarlo (está anotado en el código, buscá `const WA`).
+Las originales viven en `img/src/`. El pipeline genera AVIF + JPEG progresivo
+en varios anchos, más los recortes apaisados y la imagen de Open Graph:
+
+```bash
+python tools/build-images.py
+```
+
+Reglas, escritas en el propio script:
+
+- No se altera el producto. Sólo reescalado, enfoque de lo que la reducción se
+  lleva, y compresión. Sin retoque de color ni elementos agregados.
+- Los recortes están declarados uno por uno, con el motivo. Nada se recorta
+  «automático a 4/3».
+- Nunca se agranda por encima de la resolución nativa (la única excepción es
+  `og.jpg`, porque las redes exigen 1200×630 exactos).
+
+`src/assets.js` declara, para cada foto, **qué se ve en ella**. De eso depende
+dónde puede usarse: una foto ilustra un argumento sólo si el argumento se ve en
+la foto. Donde no hay foto que lo pruebe queda un espacio reservado explícito.
+
+> **Pendiente que mejora todo lo demás:** las fotos actuales son exportes de
+> Instagram (1080 px de ancho como máximo). Los originales del celular de RM
+> son de ~4000 px. Pidiéndolos y poniéndolos en `img/src/`, el mismo pipeline
+> genera variantes nítidas para pantallas retina sin tocar una línea de código.
+
+## Dominio
+
+El origen canónico está en **un solo lugar por archivo**:
+
+- `SITE` en `src/app.js`
+- las etiquetas `canonical` / `og:` en `index.html`
+- `sitemap.xml` y `robots.txt`
+
+Hoy apuntan a `https://cbrm.vercel.app`. Cuando entre el dominio propio se
+cambian esos cuatro y listo.
+
+## Datos que faltan del taller
+
+Lo que no está confirmado aparece marcado como «a confirmar» en el sitio, y no
+se inventa. Hoy son: medidas por modelo, espesor de la chapa, carta completa de
+colores de la franja, plazos de fabricación, condiciones de pago, zonas y costo
+de flete, quién arma y si el armado va incluido, y el alcance de la garantía.
+
+Se editan en el objeto `DATA` de `src/app.js`. No hay que tocar el diseño: las
+fichas ya están armadas para recibir esos datos.
+
+## Confirmado
+
+- WhatsApp **+54 9 3476 56-9154**, verificado contra el enlace oficial de RM en
+  Instagram (`wa.me/message/7DHRXLFXX5XEI1` resuelve a `phone=5493476569154`).
+- Taller en Pres. Juan Domingo Perón 1119, Puerto General San Martín, Santa Fe.
+- Horarios: lunes a viernes de 9 a 17, sábados de 9 a 12.
+- Instagram [@cabinasdesarmablesrm](https://www.instagram.com/cabinasdesarmablesrm/).
+
+## Panel de consultas
+
+`/panel` guarda las consultas en el `localStorage` del navegador que lo usa: lo
+que se mueva de columna sigue ahí al día siguiente, y lo que entra por el
+cotizador queda registrado. Para que el equipo vea el mismo tablero desde
+varios teléfonos hace falta conectarlo a una base (Supabase, por ejemplo); esa
+pantalla no cambia, cambia de dónde sale `LEADS`.
+
+## Publicar
+
+Cada push a `main` lo publica Vercel solo. El proyecto está configurado como
+«Other»: no compila nada.

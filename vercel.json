@@ -2,6 +2,12 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "cleanUrls": true,
   "trailingSlash": false,
+
+  "comment": "El sitio tiene direcciones reales (/cabinas-para-detailing, /modelos/trabajo, /presupuesto...) que resuelve el router de src/app.js. Vercel manda cualquier ruta a index.html y el router decide qué mostrar. No hace falta excluir /img, /src, /sitemap.xml ni /robots.txt: Vercel busca el archivo en disco ANTES de aplicar rewrites, así que los estáticos se sirven tal cual.",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+
   "headers": [
     {
       "source": "/img/(.*)",
@@ -12,7 +18,15 @@
     {
       "source": "/src/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=3600" }
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" }
       ]
     }
   ]

@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Direcciones reales. Antes el sitemap listaba https://cabinasrm.com.ar/#/rubro/…
+     — un dominio que no resuelve, y con fragmentos que los buscadores descartan:
+     ninguna de esas líneas podía indexarse. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://cabinasrm.com.ar/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://cabinasrm.com.ar/#/rubro/detailing</loc><priority>0.9</priority></url>
-  <url><loc>https://cabinasrm.com.ar/#/rubro/lavaderos</loc><priority>0.9</priority></url>
-  <url><loc>https://cabinasrm.com.ar/#/rubro/lubricentros</loc><priority>0.8</priority></url>
-  <url><loc>https://cabinasrm.com.ar/#/rubro/concesionarias</loc><priority>0.8</priority></url>
-  <url><loc>https://cabinasrm.com.ar/#/modelos</loc><priority>0.7</priority></url>
-  <url><loc>https://cabinasrm.com.ar/#/trabajos</loc><priority>0.6</priority></url>
+  <url><loc>https://cbrm.vercel.app/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://cbrm.vercel.app/cabinas-para-detailing</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://cbrm.vercel.app/cabinas-para-lavaderos</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://cbrm.vercel.app/cabinas-para-lubricentros</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://cbrm.vercel.app/cabinas-para-concesionarias</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://cbrm.vercel.app/modelos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://cbrm.vercel.app/modelos/moto</loc><priority>0.6</priority></url>
+  <url><loc>https://cbrm.vercel.app/modelos/compacta</loc><priority>0.6</priority></url>
+  <url><loc>https://cbrm.vercel.app/modelos/trabajo</loc><priority>0.6</priority></url>
+  <url><loc>https://cbrm.vercel.app/modelos/doble</loc><priority>0.6</priority></url>
+  <url><loc>https://cbrm.vercel.app/modelos/medida</loc><priority>0.6</priority></url>
+  <url><loc>https://cbrm.vercel.app/trabajos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://cbrm.vercel.app/presupuesto</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>

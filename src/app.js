@@ -9,12 +9,50 @@ const IMG = window.RM_IMG;
 const $ = (s, c) => (c || document).querySelector(s);
 const $$ = (s, c) => [...(c || document).querySelectorAll(s)];
 
-/* Teléfono: el cliente informó +54 3476 56-9154. Para wa.me un celular
-   argentino lleva el 9 → 549. PENDIENTE DE CONFIRMAR con el cliente. */
-const TEL_HUMAN = '+54 3476 56-9154';
+/* Origen canónico. Vive en un solo lugar a propósito: el día que entre el
+   dominio propio se cambia acá y quedan bien canonical, Open Graph, sitemap
+   y los enlaces que se comparten. Antes apuntaba a cabinasrm.com.ar, que no
+   resuelve — eso le decía a Google que la versión buena de este sitio estaba
+   en un dominio muerto, y rompía la vista previa al compartir por WhatsApp. */
+const SITE = 'https://cbrm.vercel.app';
+
+/* Teléfono: verificado contra el enlace oficial de RM en Instagram
+   (wa.me/message/7DHRXLFXX5XEI1 resuelve a phone=5493476569154). */
+const TEL_HUMAN = '+54 9 3476 56-9154';
 const WA = '5493476569154';
+const IG = 'https://www.instagram.com/cabinasdesarmablesrm/';
 const wa = t => `https://wa.me/${WA}?text=${encodeURIComponent(t)}`;
-const TBD = (t = 'A confirmar') => `<span class="tbd">${t}</span>`;
+const TBD = (t = 'a confirmar') => `<span class="tbd">${t}</span>`;
+
+/* ── FOTOGRAFÍA ──────────────────────────────────────────────────
+   Un solo helper arma el <picture>. Sirve AVIF con JPEG de respaldo,
+   declara width/height (el navegador reserva el hueco y la página no
+   salta) y elige el ancho por `sizes`. Nada de object-fit por defecto:
+   el encuadre se decide en cada llamada. */
+function pic(name, o = {}) {
+  const p = IMG[name];
+  if (!p) return '';
+  const {
+    sizes = '100vw', cls = '', eager = false, alt = p.alt,
+    ratio = '', fit = 'cover', pos = '50% 50%', style = ''
+  } = o;
+  const set = ext => p.ws.map(w => `/img/${name}-${w}.${ext} ${w}w`).join(', ');
+  const box = ratio ? `aspect-ratio:${ratio};` : '';
+  return `<picture class="ph ${cls}" style="${box}${style}">
+    <source type="image/avif" srcset="${set('avif')}" sizes="${sizes}">
+    <img src="/img/${name}-${p.ws[p.ws.length - 1]}.jpg" srcset="${set('jpg')}" sizes="${sizes}"
+      width="${p.w}" height="${p.h}" alt="${alt}"
+      style="object-fit:${fit};object-position:${pos}"
+      ${eager ? 'fetchpriority="high" decoding="async"' : 'loading="lazy" decoding="async"'}>
+  </picture>`;
+}
+
+/* Figura de galería: foto + epígrafe + lightbox. */
+const figura = (name, o = {}) => `
+  <figure class="${o.cls || ''}" data-img="${name}" data-cur="Ampliar" ${o.ratio ? `style="aspect-ratio:${o.ratio}"` : ''}>
+    ${pic(name, { ...o, cls: 'fill' })}
+    <figcaption>${o.cap || IMG[name].cap}</figcaption>
+  </figure>`;
 
 /* ── DATOS ──────────────────────────────────────────────────── */
 const EMPRESA = {
@@ -31,63 +69,86 @@ const DATA = {
   sistema: [
     { k: 'paredes', t: 'Paredes', d: 'Chapa nervada vertical de piso a techo, en las cuatro caras. Terminación negra o blanca.', dot: [172, 246] },
     { k: 'techo', t: 'Techo', d: 'Cerrado, no abierto al galpón. Tres sistemas distintos según el modelo: chapa con spots, cielorraso luminoso o cielorraso con paneles LED.', dot: [352, 112] },
-    { k: 'luz', t: 'Iluminación', d: 'En capas: cenital para trabajar, rasante sobre las paredes para leer la pintura, y barras retroiluminadas para presentar el vehículo.', dot: [292, 136] },
+    { k: 'luz', t: 'Iluminación', d: 'En capas: cenital para trabajar, rasante sobre las paredes para leer la pintura, y barras retroiluminadas para presentar el vehículo.', dot: [266, 150], lead: 56 },
     { k: 'piso', t: 'Piso', d: 'Baldosa modular encastrable, con franja perimetral en el color que elijas.', dot: [352, 358] },
-    { k: 'electricidad', t: 'Instalación eléctrica', d: 'Tomacorrientes y cajas integrados en los paneles. La cabina llega con la electricidad resuelta.', dot: [176, 322] },
-    { k: 'accesorios', t: 'Accesorios', d: 'Enrollador de manguera, organizadores de producto y porta-herramientas montados sobre la pared.', dot: [512, 224] }
+    { k: 'electricidad', t: 'Instalación eléctrica', d: 'Tomacorrientes y cajas integrados en los paneles. La cabina llega con la electricidad resuelta.', dot: [172, 330], lead: 40 },
+    { k: 'accesorios', t: 'Accesorios', d: 'Enrollador de manguera, organizadores de producto y porta-herramientas montados sobre la pared.', dot: [524, 224] }
   ],
 
+  /* `foto` es la cabina entregada que ilustra el rubro. La regla: sólo se
+     usa una foto si lo que el texto afirma SE VE en la foto. Ninguna se
+     presenta como "una cabina en un lavadero" — eso no consta. El epígrafe
+     dice lo que la foto prueba de verdad, ni más ni menos. */
   rubros: [
     {
-      slug: 'detailing', n: 'Detailing',
+      slug: 'detailing', n: 'Detailing', qRubro: 'Detailing',
       h1: 'Cabinas para detailing',
       claim: 'Ves la pintura. Y después la mostrás.',
       prob: 'Trabajás en un galpón con luz de tubo. Los swirls aparecen recién cuando el auto sale al sol. Y las fotos que subís no le hacen justicia a lo que hiciste.',
       sol: 'Un box cerrado con iluminación en capas: cenital para trabajar, rasante para leer la pintura, retroiluminada para presentar. El mismo espacio te sirve para corregir y para fotografiar.',
       pts: ['Luz rasante sobre las paredes para detectar defectos', 'Ambiente cerrado: sin polvo, sin viento, sin sol directo', 'Organizadores de producto y enrollador sobre la pared', 'Terminación negra: el reflejo se lee limpio'],
-      foto: 'negraBajo', rec: 'trabajo', term: 'Negra',
-      faq: ['luz', 'techo', 'entra', 'arma']
+      /* Los cuatro puntos de arriba se ven en esta foto: rasante, retroiluminada,
+         organizadores sobre la pared y terminación negra. */
+      foto: 'negra-wide', fotoCap: 'Cabina entregada · terminación negra, barras retroiluminadas y organizadores de pared',
+      rec: 'trabajo', term: 'Negra',
+      faq: ['luz', 'techo', 'entra', 'arma'],
+      seoD: 'Cabinas cerradas para detailing con iluminación en capas: cenital, rasante para leer la pintura y barras retroiluminadas para presentar el vehículo. Terminación negra o blanca. Se arman sin obra adentro de tu local.'
     },
     {
-      slug: 'lavaderos', n: 'Lavaderos',
+      slug: 'lavaderos', n: 'Lavaderos', qRubro: 'Lavadero',
       h1: 'Cabinas para lavaderos',
       claim: 'Que la lluvia deje de manejarte la agenda.',
       prob: 'Trabajás a la intemperie o semicubierto. El viento, la lluvia y el sol te definen el día. Y el local no acompaña al precio que querés cobrar.',
       sol: 'Un box cerrado que te deja trabajar todo el año y te habilita a ofrecer un servicio premium separado del lavado común.',
       pts: ['Ambiente cerrado, todo el año', 'Piso modular con franja perimetral', 'Terminación blanca: más luz con menos consumo', 'Un sector diferenciado dentro del mismo local'],
-      foto: 'blanca', rec: 'compacta', term: 'Blanca',
-      faq: ['agua', 'material', 'entra', 'envio']
+      foto: 'blanca-wide', fotoCap: 'Cabina entregada · terminación blanca, piso modular y franja perimetral',
+      rec: 'compacta', term: 'Blanca',
+      faq: ['agua', 'material', 'entra', 'envio'],
+      seoD: 'Cabinas desarmables para lavaderos de autos: box cerrado para trabajar todo el año, terminación blanca, piso modular con franja perimetral. Se montan adentro del local que ya tenés.'
     },
     {
-      slug: 'lubricentros', n: 'Lubricentros',
+      slug: 'lubricentros', n: 'Lubricentros', qRubro: 'Lubricentro',
       h1: 'Cabinas para lubricentros',
       claim: 'Separá el sector limpio sin cerrar por obra.',
       prob: 'Tenés el sector sucio y el sector limpio mezclados en el mismo espacio, y la imagen del local no acompaña al servicio que das.',
       sol: 'Armás un box limpio y presentable adentro del taller que ya tenés, sin albañiles, sin escombros y sin cortar la operación.',
       pts: ['Se arma adentro del local existente', 'Delimita un sector propio dentro del galpón', 'Sin obra húmeda ni escombros', 'Se desarma si mudás el negocio'],
-      foto: null, rec: 'compacta', term: 'Blanca',
-      faq: ['arma', 'entra', 'obra', 'envio']
+      foto: 'negraBajo-wide', fotoCap: 'Cabina entregada · techo cerrado de chapa nervada con luminarias embutidas',
+      rec: 'compacta', term: 'Blanca',
+      faq: ['arma', 'entra', 'obra', 'envio'],
+      seoD: 'Cabinas desarmables para lubricentros: delimitá un sector limpio adentro del taller, sin obra húmeda ni escombros. Techo cerrado, iluminación e instalación eléctrica incluidas.'
     },
     {
-      slug: 'concesionarias', n: 'Concesionarias',
+      slug: 'concesionarias', n: 'Concesionarias', qRubro: 'Concesionaria',
       h1: 'Cabinas para concesionarias',
       claim: 'Todas las unidades, con la misma foto.',
       prob: 'Cada unidad que ingresa hay que fotografiarla, y cada foto sale distinta según dónde estaba parada y a qué hora se tomó. El resultado es una publicación despareja.',
       sol: 'Un set fijo dentro de tu propio local: mismo fondo, misma luz, mismo encuadre para toda la flota. Y un espacio de entrega que se siente distinto.',
       pts: ['Fondo y luz constantes en todas las publicaciones', 'Sirve para autos y para motos', 'Espacio de entrega de unidad', 'Se puede aplicar la marca de la agencia adentro'],
-      foto: 'moto', rec: 'trabajo', term: 'Blanca',
-      faq: ['techo', 'marca', 'entra', 'envio']
+      /* Esta foto ES una foto de producto tomada adentro de la cabina:
+         es la prueba literal del argumento del rubro. */
+      foto: 'hero-wide', fotoCap: 'Unidad fotografiada adentro de una cabina RM: mismo fondo y misma luz en cada toma',
+      rec: 'trabajo', term: 'Blanca',
+      faq: ['techo', 'marca', 'entra', 'envio'],
+      seoD: 'Cabinas para concesionarias: un set fijo adentro de tu local para fotografiar toda la flota con el mismo fondo y la misma luz, y para entregar la unidad. Sirve para autos y motos.'
     }
   ],
 
   /* Modelos nombrados por capacidad, no por fantasía: la taxonomía
-     sobrevive a cualquier nombre que después confirme el cliente. */
+     sobrevive a cualquier nombre que después confirme el cliente.
+
+     Sin fotografía por modelo, y a propósito: ninguna de las fotos de RM
+     permite saber qué medida es. En vez del hueco negro que había antes,
+     cada modelo muestra un esquema a escala de lo que entra adentro —
+     `veh` es la lista de vehículos y `holgura` el margen de trabajo
+     alrededor, en proporción, no en metros. Informa sin inventar cotas.
+     Las fotos de cabinas entregadas están donde corresponde: en Trabajos. */
   modelos: [
-    { slug: 'moto', n: 'Cabina moto', qe: 'Una moto con espacio para trabajar alrededor.', foto: 'moto', veh: 'Moto' },
-    { slug: 'compacta', n: 'Cabina compacta', qe: 'Un auto. Pensada para espacios ajustados.', foto: 'blanca', veh: 'Auto' },
-    { slug: 'trabajo', n: 'Cabina de trabajo', qe: 'Un auto con lugar para trabajar en los cuatro lados.', foto: 'negraFrente', veh: 'Auto' },
-    { slug: 'doble', n: 'Cabina doble', qe: 'Dos autos, o un auto más puesto de trabajo fijo.', foto: 'negraBajo', veh: 'Dos autos' },
-    { slug: 'medida', n: 'A medida', qe: 'Se fabrica según el espacio que tengas.', foto: null, veh: 'A medida' }
+    { slug: 'moto', n: 'Cabina moto', qe: 'Una moto con espacio para trabajar alrededor.', veh: 'Moto', plan: ['moto'], holgura: 1.0 },
+    { slug: 'compacta', n: 'Cabina compacta', qe: 'Un auto. Pensada para espacios ajustados.', veh: 'Auto', plan: ['auto'], holgura: 0.42 },
+    { slug: 'trabajo', n: 'Cabina de trabajo', qe: 'Un auto con lugar para trabajar en los cuatro lados.', veh: 'Auto', plan: ['auto'], holgura: 0.95 },
+    { slug: 'doble', n: 'Cabina doble', qe: 'Dos autos, o un auto más puesto de trabajo fijo.', veh: 'Dos autos', plan: ['auto', 'auto'], holgura: 0.6 },
+    { slug: 'medida', n: 'A medida', qe: 'Se fabrica según el espacio que tengas.', veh: 'A medida', plan: null, holgura: 0 }
   ],
 
   /* El epígrafe visible es corto. La descripción completa vive en el alt,
@@ -122,11 +183,13 @@ const DATA = {
 const PRE = { rubro: '', vehiculo: '', ancho: '', largo: '', alto: '', modelo: '' };
 
 /* ── UI base ────────────────────────────────────────────────── */
-$('#logoImg').src = IMG.logo;
-$('#logoImg2').src = IMG.logo;
+const HOLA = 'Hola RM, quiero hacerles una consulta sobre una cabina.';
+$('#logoImg').src = window.RM_LOGO;
+$('#logoImg2').src = window.RM_LOGO;
 $('#mobTel').textContent = TEL_HUMAN;
-$('#fabWa').href = wa('Hola RM, quiero hacerles una consulta sobre una cabina.');
-const ftWa = $('#ftWa'); ftWa.href = $('#fabWa').href; ftWa.textContent = TEL_HUMAN;
+$('#mobWa').href = wa(HOLA);
+$('#fabWa').href = wa(HOLA);
+const ftWa = $('#ftWa'); ftWa.href = wa(HOLA); ftWa.textContent = TEL_HUMAN;
 
 const burger = $('#burger'), mob = $('#mob');
 burger.onclick = () => {
@@ -142,13 +205,35 @@ $$('#mob a').forEach(a => a.onclick = closeMob);
 addEventListener('scroll', () => {
   const y = scrollY;
   $('#hd').classList.toggle('on', y > 40);
-  $('#fab').classList.toggle('on', y > innerHeight * 0.35 && !location.hash.startsWith('#/panel'));
+  const verFab = y > innerHeight * 0.35 && !location.pathname.startsWith('/panel');
+  $('#fab').classList.toggle('on', verFab);
+  /* La barra fija mide ~72px: sin este espacio tapa el final de la página. */
+  document.body.classList.toggle('has-fab', verFab);
 }, { passive: true });
 
 /* Lightbox */
 const lbx = $('#lbx');
-const openLbx = src => { $('#lbxImg').src = src; lbx.classList.add('on'); document.body.style.overflow = 'hidden'; };
-const closeLbx = () => { lbx.classList.remove('on'); document.body.style.overflow = ''; };
+let lbxVolver = null;
+const openLbx = (src, alt, respaldo) => {
+  /* Nace con `hidden` y sin src: un <img src=""> dispara un pedido al
+     documento actual en varios navegadores. Se puebla al abrirlo. */
+  const im = $('#lbxImg');
+  im.hidden = false;
+  im.onerror = respaldo ? () => { im.onerror = null; im.src = respaldo; } : null;
+  im.src = src;
+  im.alt = alt || '';
+  lbx.classList.add('on');
+  document.body.style.overflow = 'hidden';
+  lbxVolver = document.activeElement;      /* para devolver el foco al cerrar */
+  $('#lbxClose').focus();
+};
+const closeLbx = () => {
+  if (!lbx.classList.contains('on')) return;
+  lbx.classList.remove('on');
+  document.body.style.overflow = '';
+  if (lbxVolver && lbxVolver.focus) lbxVolver.focus();
+  lbxVolver = null;
+};
 $('#lbxClose').onclick = closeLbx;
 lbx.onclick = e => { if (e.target === lbx) closeLbx(); };
 addEventListener('keydown', e => { if (e.key === 'Escape') { closeLbx(); closeMob(); } });
@@ -187,6 +272,93 @@ const ico = k => `<svg class="ic" width="22" height="22" viewBox="0 0 24 24" fil
 /* Delegado al espacio reservado premium (definido más abajo en el bundle) */
 const ph = (label, ratio = '4/3', tone = 'dark') => resv(label, ratio, tone);
 
+/* ── ESQUEMA DE MODELO ────────────────────────────────────────────
+   Planta a escala de lo que entra: el vehículo (o los dos) con el
+   margen de trabajo alrededor. Deliberadamente SIN cotas en metros:
+   las medidas de cada modelo todavía no están confirmadas por el
+   taller y no se inventan. Lo que sí es cierto y se ve acá es la
+   proporción entre modelos, que es como se elige de verdad. */
+/* Siluetas en planta, dibujadas en centímetros (1 unidad = 1 cm) para que la
+   escala sea uniforme en los dos ejes. Antes se escalaba x e y por separado
+   desde una caja cuadrada y el auto salía estirado: parecía una tecla. */
+const SILUETA = {
+  /* Auto de 1,80 × 4,40 m visto desde arriba. Capó y baúl más angostos que
+     el habitáculo, techo insinuado adentro: sin eso la planta es una pastilla
+     redondeada y no se entiende que sea un vehículo. */
+  auto: {
+    l: 4.4, a: 1.8, n: 'Auto',
+    cuerpo: 'M90 6c30 0 52 14 60 42l10 42c6 26 8 58 8 130s-2 104-8 130l-10 42c-8 28-30 42-60 42s-52-14-60-42l-10-42c-6-26-8-58-8-130s2-104 8-130l10-42C38 20 60 6 90 6Z',
+    detalle: 'M90 112c30 0 44 6 47 18l5 28c2 14 2 44 0 58l-5 28c-3 12-17 18-47 18s-44-6-47-18l-5-28c-2-14-2-44 0-58l5-28c3-12 17-18 47-18Z'
+      + ' M43 150h94 M43 262h94',
+    espejos: 'M22 150l-14-7 M158 150l14-7'
+  },
+  /* Moto de 0,90 × 2,20 m: rueda, cuerpo y manubrio. */
+  moto: {
+    l: 2.2, a: 0.9, n: 'Moto',
+    cuerpo: 'M45 8c9 0 14 9 14 20l-3 44c8 13 12 34 12 60 0 33-9 56-23 64-14-8-23-31-23-64 0-26 4-47 12-60l-3-44C31 17 36 8 45 8Z',
+    detalle: 'M45 20v176',
+    espejos: 'M8 54h74 M8 54l-2-6 M82 54l2-6'
+  }
+};
+
+/* Escala única para todos los modelos: 66 px por metro. Así las plantas son
+   comparables entre sí — la doble se ve efectivamente más grande que la
+   compacta — en vez de que cada una se estire para llenar su caja. */
+const PX_M = 66;
+
+function modeloPlan(m, tone = 'dark') {
+  if (!m.plan) {
+    const W = 330, H = 420;
+    return `<svg viewBox="0 0 ${W} ${H}" class="mplan ${tone}" role="img"
+      aria-label="Cabina a medida: la planta se define con las medidas de tu local">
+      <rect x="1" y="1" width="${W - 2}" height="${H - 2}" class="mp-box" stroke-dasharray="7 7"/>
+      <text x="${W / 2}" y="${H / 2 - 4}" text-anchor="middle" class="mp-t">SEGÚN TU ESPACIO</text>
+      <text x="${W / 2}" y="${H / 2 + 22}" text-anchor="middle" class="mp-s">LA PLANTA SALE DE TUS MEDIDAS</text>
+    </svg>`;
+  }
+  const v = m.plan.map(k => SILUETA[k]);
+  /* Medidas de la caja: los vehículos más el margen entre ellos y las paredes. */
+  const anchoTot = v.reduce((a, x) => a + x.a, 0) + m.holgura * (v.length + 1);
+  const largoTot = Math.max(...v.map(x => x.l)) + m.holgura * 2;
+  const sc = PX_M;
+  const bw = anchoTot * sc, bl = largoTot * sc;
+  const padX = 54, padT = 44, padB = 40;
+  const W = Math.round(bw + padX * 2), H = Math.round(bl + padT + padB);
+  const x0 = padX, y0 = padT;
+
+  let x = x0 + m.holgura * sc;
+  /* Escala única para los dos ejes: sc px por metro ÷ 100 cm por metro. */
+  const k = sc / 100;
+  const shapes = v.map(s => {
+    const w = s.a * sc, l = s.l * sc;
+    const cy = y0 + (bl - l) / 2;
+    const g = `<g transform="translate(${x.toFixed(1)} ${cy.toFixed(1)}) scale(${k.toFixed(4)})">
+        <path d="${s.cuerpo}" class="mp-veh"/>
+        <path d="${s.detalle}" class="mp-det"/>
+        <path d="${s.espejos}" class="mp-det"/></g>`;
+    x += w + m.holgura * sc;
+    return g;
+  }).join('');
+
+  /* El margen de trabajo va como línea de puntos ámbar: es el argumento del
+     modelo (cuánto lugar queda alrededor) y en el lenguaje de plano del sitio
+     una cota punteada se lee mejor que una franja rellena. */
+  const g = m.holgura * sc;
+  const margen = g > 5 ? `<rect x="${x0 + g}" y="${y0 + g}" width="${bw - g * 2}" height="${bl - g * 2}"
+      class="mp-gap"/>
+    <text x="${x0 + g / 2}" y="${y0 + bl / 2}" text-anchor="middle" class="mp-g"
+      transform="rotate(-90 ${x0 + g / 2} ${y0 + bl / 2})">MARGEN DE TRABAJO</text>` : '';
+
+  return `<svg viewBox="0 0 ${W} ${H}" class="mplan ${tone}" role="img"
+    aria-label="Planta a escala de la ${m.n.toLowerCase()}: ${m.veh.toLowerCase()} con el margen de trabajo alrededor">
+    <rect x="${x0}" y="${y0}" width="${bw}" height="${bl}" class="mp-box"/>
+    ${margen}
+    ${shapes}
+    <text x="${x0 + bw / 2}" y="${y0 - 16}" text-anchor="middle" class="mp-s">${m.veh.toUpperCase()}</text>
+    <text x="${W / 2}" y="${H - 14}" text-anchor="middle" class="mp-s">PLANTA A ESCALA · MEDIDAS SEGÚN TU LOCAL</text>
+  </svg>`;
+}
+
 const dec = n => n.toFixed(2).replace('.', ',');
 function faqBlock(keys) {
   return `<div class="faq rv">${keys.map(k => {
@@ -222,14 +394,31 @@ function isoSVG() {
     `M${p(300, 148)} L${p(300, 312)}`, `M${p(330, 148)} L${p(330, 312)}`,
     `M${p(372, 148)} L${p(372, 312)}`, `M${p(404, 148)} L${p(404, 312)}`
   ];
-  const dots = DATA.sistema.map((s, i) => `
+  const dots = DATA.sistema.map((s, i) => {
+    const L = s.lead || 26;                 // guía más larga donde los rótulos se pisarían
+    return `
     <g class="hot" data-i="${i}" tabindex="0" role="button" aria-label="${s.t}">
-      <line x1="${s.dot[0]}" y1="${s.dot[1]}" x2="${s.dot[0]}" y2="${s.dot[1] - 26}"></line>
+      <line x1="${s.dot[0]}" y1="${s.dot[1]}" x2="${s.dot[0]}" y2="${s.dot[1] - L}"></line>
+      <circle class="hit" cx="${s.dot[0]}" cy="${s.dot[1]}" r="22"></circle>
       <circle class="dot" cx="${s.dot[0]}" cy="${s.dot[1]}" r="5.5"></circle>
-      <text x="${s.dot[0]}" y="${s.dot[1] - 33}" text-anchor="middle">${s.t}</text>
-    </g>`).join('');
+      <text x="${s.dot[0]}" y="${s.dot[1] - L - 7}" text-anchor="middle">${s.t}</text>
+    </g>`;
+  }).join('');
+
+  /* Planos con relleno: sin esto el dibujo son cuatro líneas sueltas y se
+     lee como un marco vacío, no como el interior de una cabina. Los tonos
+     imitan cómo cae la luz en las fotos — techo y fondo más claros que las
+     paredes laterales, piso apenas insinuado. */
+  const planos = `
+    <polygon class="pl pl-techo" points="${F[0]},${F[1]} ${B[0]},${B[1]} ${B[2]},${B[1]} ${F[2]},${F[1]}"/>
+    <polygon class="pl pl-izq"   points="${F[0]},${F[1]} ${B[0]},${B[1]} ${B[0]},${B[3]} ${F[0]},${F[3]}"/>
+    <polygon class="pl pl-der"   points="${F[2]},${F[1]} ${B[2]},${B[1]} ${B[2]},${B[3]} ${F[2]},${F[3]}"/>
+    <polygon class="pl pl-piso"  points="${F[0]},${F[3]} ${B[0]},${B[3]} ${B[2]},${B[3]} ${F[2]},${F[3]}"/>
+    <rect class="pl pl-fondo" x="${B[0]}" y="${B[1]}" width="${B[2] - B[0]}" height="${B[3] - B[1]}"/>`;
+
   return `<svg class="iso" id="iso" viewBox="0 0 700 440" role="img"
       aria-label="Esquema del interior de una cabina RM: paredes, techo, iluminación, piso, instalación eléctrica y accesorios.">
+    ${planos}
     <g>${paths.map(d => `<path class="stroke" d="${d}"/>`).join('')}</g>${dots}</svg>`;
 }
 
@@ -349,8 +538,8 @@ function bindFit(root) {
   const val = f => num($(`[data-f="${f}"]`, root).value);
   const upd = () => {
     const W = val('ancho'), L = val('largo'), A = val('alto'), v = VEH[veh];
-    const vd = $('#verdict', root), go = $('#fitGo', root);
-    if (!W || !L) { wrap.innerHTML = planSVG(null); vd.style.display = 'none'; go.style.display = 'none'; return; }
+    const vd = $('#verdict', root), btnGo = $('#fitGo', root);
+    if (!W || !L) { wrap.innerHTML = planSVG(null); vd.style.display = 'none'; btnGo.style.display = 'none'; return; }
     wrap.innerHTML = planSVG({ W, L, v });
     const fits = v.a < W && v.l < L;
     const mL = ((W - v.a) / 2), mF = ((L - v.l) / 2);
@@ -361,11 +550,11 @@ function bindFit(root) {
          ${A ? `Alto libre declarado: <b class="num">${dec(A)} m</b>.` : 'Falta el alto libre.'}</p>
          <p class="mono" style="margin-top:9px;line-height:1.7">Referencia: ${v.n}, ${v.l} × ${v.a} m.<br>El modelo que corresponde lo confirma RM.</p>`
       : `<p style="color:var(--txt);max-width:46ch"><b>Con esas medidas no entra ${v.n}.</b> Puede que sí entre otro vehículo, o que convenga una cabina a medida. Mandanos las medidas igual y lo vemos.</p>`;
-    go.style.display = 'inline-flex';
-    go.onclick = () => {
+    btnGo.style.display = 'inline-flex';
+    btnGo.onclick = () => {
       PRE.vehiculo = veh === 'Moto' ? 'Una moto' : veh === 'Camioneta' ? 'Una camioneta' : 'Un auto';
       PRE.ancho = dec(W); PRE.largo = dec(L); PRE.alto = A ? dec(A) : '';
-      location.hash = '#/cotizar';
+      go('/presupuesto');
     };
   };
   $$('[data-veh]', root).forEach(b => b.onclick = () => {
@@ -380,25 +569,31 @@ function bindFit(root) {
 function viewRubro(slug) {
   const r = DATA.rubros.find(x => x.slug === slug); if (!r) return view404();
   const m = DATA.modelos.find(x => x.slug === r.rec);
-  const rel = DATA.trabajos.slice(0, 3);
-  document.title = `${r.h1} | Cabinas Desarmables RM`;
+  meta({
+    u: urlRubro(r),
+    t: `${r.h1} | Cabinas Desarmables RM`,
+    ogt: `${r.h1} — ${r.claim}`,
+    d: r.seoD,
+    img: r.foto ? `/img/${r.foto}-${IMG[r.foto].ws[IMG[r.foto].ws.length - 1]}.jpg` : '/img/og.jpg'
+  });
   return `
-  <section style="padding-top:calc(var(--head) + clamp(40px,8vh,90px))">
+  <section style="padding-top:calc(var(--head) + clamp(30px,6vh,70px))">
     <div class="wrap">
-      <span class="mono am rv">${r.n}</span>
+      <nav class="crumb rv" aria-label="Migas"><a href="/">Inicio</a><span>/</span><b>${r.n}</b></nav>
+      <span class="mono am rv">${r.h1}</span>
       <h1 class="d1 rv" data-d="1" style="margin-top:14px;max-width:14ch">${r.claim}</h1>
       <p class="lede rv" data-d="2" style="margin-top:20px">${r.sol}</p>
       <div class="hero-cta rv" data-d="3">
         <button class="btn btn-p" data-goquote="${r.n}"><span>Consultar para mi ${r.n.toLowerCase().replace(/s$/, '')}</span></button>
-        <a class="btn btn-g" href="#/modelo/${m.slug}">Ver el modelo recomendado</a>
+        <a class="btn btn-g" href="${urlModelo(m)}">Ver el modelo recomendado</a>
       </div>
     </div>
   </section>
 
-  <section class="sec">
+  <section class="sec sec-tight">
     <div class="wrap">
       <div class="sys">
-        <div class="rv-i">${resv('cabina instalada en un ' + r.n.toLowerCase().replace(/s$/, ''))}</div>
+        <div class="rv-i">${fotoRubro(r, true)}</div>
         <div class="rv">
           <span class="mono am">El problema</span>
           <p style="margin:12px 0 26px;color:#CFD1C9;font-size:17px">${r.prob}</p>
@@ -420,18 +615,19 @@ function viewRubro(slug) {
         <p class="lede" style="color:#4A4D46">Es un punto de partida, no una regla. La medida final sale de tu espacio.</p>
       </div>
       <div class="sel-body rv">
-        <div>${resv('fotografía del modelo ' + m.n.toLowerCase(), '3/4', 'light')}</div>
+        <div>${modeloPlan(m, 'light')}</div>
         <div class="sel-copy">
           <h3 class="d2">${m.n}</h3>
           <p class="lede" style="color:#4A4D46;margin-top:10px">${m.qe}</p>
           <dl class="spec">
+            <dt>Entra</dt><dd>${m.veh}</dd>
             <dt>Terminación</dt><dd>${r.term}</dd>
-            <dt>Techo</dt><dd>${TBD()}</dd>
+            <dt>Techo</dt><dd>Cerrado, con iluminación</dd>
             <dt>Piso</dt><dd>Modular, franja a elección</dd>
-            <dt>Medidas</dt><dd>${TBD()}</dd>
+            <dt>Medidas</dt><dd>Se define con las de tu local</dd>
           </dl>
           <div class="sel-actions">
-            <a class="btn btn-g" href="#/modelo/${m.slug}">Ver ficha completa</a>
+            <a class="btn btn-g" href="${urlModelo(m)}">Ver ficha completa</a>
           </div>
         </div>
       </div>
@@ -440,13 +636,13 @@ function viewRubro(slug) {
 
   <section class="sec">
     <div class="wrap">
-      ${secHead('Trabajos', 'Cabinas entregadas', 'Todavía no tenemos fotos de una cabina instalada en un ' + r.n.toLowerCase().replace(/s$/, '') + '. Cuando las tengamos, van acá.')}
+      ${secHead('Trabajos', 'Cabinas entregadas',
+      'Son cabinas de RM funcionando. No decimos en qué tipo de negocio está cada una porque no nos consta: lo que sí se ve es cómo están terminadas.')}
       <div class="edit rv">
-        <figure class="e-a">${resv('cabina en un ' + r.n.toLowerCase().replace(/s$/, ''))}</figure>
-        <figure class="e-b">${resv('detalle de la instalación')}</figure>
-        <figure class="e-c">${resv('el local terminado')}</figure>
+        ${['negraFrente', 'blanca', 'moto'].map((k, i) =>
+        figura(k, { cls: ['e-a', 'e-b', 'e-c'][i], sizes: '(min-width:760px) 32vw, 92vw' })).join('')}
       </div>
-      <p style="margin-top:20px"><a class="btn-t" href="#/trabajos">Ver las cabinas que sí tenemos fotografiadas</a></p>
+      <p style="margin-top:22px"><a class="btn-t" href="/trabajos">Ver todas las cabinas entregadas</a></p>
     </div>
   </section>
 
@@ -469,23 +665,28 @@ function viewRubro(slug) {
 
 function viewModelo(slug) {
   const m = DATA.modelos.find(x => x.slug === slug); if (!m) return view404();
-  document.title = `${m.n} | Cabinas Desarmables RM`;
+  meta({
+    u: urlModelo(m),
+    t: `${m.n} | Cabinas Desarmables RM`,
+    d: `${m.n}: ${m.qe} Cabina desarmable con paredes de chapa nervada, techo cerrado, iluminación e instalación eléctrica. Se arma adentro de tu local, sin obra.`
+  });
   const inc = [['Paredes de chapa nervada', 1], ['Techo cerrado', 1], ['Iluminación', 1], ['Instalación eléctrica', 1], ['Piso modular', 0], ['Accesorios de pared', 0]];
   const rubrosDe = DATA.rubros.filter(r => r.rec === m.slug);
   return `
   <section style="padding-top:calc(var(--head) + clamp(30px,6vh,64px))">
     <div class="wrap">
-      <a class="mono rv" href="#/modelos" style="display:inline-block;margin-bottom:18px">← Volver a modelos</a>
+      <nav class="crumb rv" aria-label="Migas"><a href="/">Inicio</a><span>/</span><a href="/modelos">Modelos</a><span>/</span><b>${m.n}</b></nav>
       <div class="sys" style="align-items:start">
-        <div class="rv-i">${resv('fotografía del modelo ' + m.n.toLowerCase())}</div>
+        <div class="rv-i">${modeloPlan(m)}</div>
         <div class="rv">
           <h1 class="d2">${m.n}</h1>
           <p class="lede" style="margin-top:14px">${m.qe}</p>
 
           <h2 class="mono am" style="margin:30px 0 10px">Ficha</h2>
           <dl style="display:grid;grid-template-columns:auto 1fr;gap:11px 20px;border-top:1px solid var(--line-2);padding-top:14px">
-            ${[['Entra', m.veh], ['Ancho', null], ['Largo', null], ['Alto', null], ['Alto libre necesario', null]]
-      .map(f => `<dt class="mono" style="padding-top:2px">${f[0]}</dt><dd>${f[1] || TBD()}</dd>`).join('')}
+            ${[['Entra', m.veh], ['Terminación', 'Negra o blanca'], ['Techo', 'Cerrado, con iluminación'],
+      ['Piso', 'Modular, franja a elección'], ['Medidas', 'Se define con las de tu local ' + TBD('Tabla por publicar')]]
+      .map(f => `<dt class="mono" style="padding-top:2px">${f[0]}</dt><dd>${f[1]}</dd>`).join('')}
           </dl>
 
           <h2 class="mono am" style="margin:30px 0 10px">Qué incluye</h2>
@@ -503,11 +704,11 @@ function viewModelo(slug) {
           </div>
 
           ${rubrosDe.length ? `<h2 class="mono am" style="margin:30px 0 10px">Recomendada para</h2>
-            <div style="display:flex;gap:14px;flex-wrap:wrap">${rubrosDe.map(r => `<a class="btn-t" href="#/rubro/${r.slug}">${r.n}</a>`).join('')}</div>` : ''}
+            <div style="display:flex;gap:14px;flex-wrap:wrap">${rubrosDe.map(r => `<a class="btn-t" href="${urlRubro(r)}">${r.n}</a>`).join('')}</div>` : ''}
 
           <div class="hero-cta" style="margin-top:32px">
             <button class="btn btn-p" data-goquotemodel="${m.slug}"><span>Consultar por este modelo</span></button>
-            <a class="btn btn-g" href="#/#medir">¿Me entra en el espacio?</a>
+            <a class="btn btn-g" href="/#medir">¿Me entra en el espacio?</a>
           </div>
         </div>
       </div>
@@ -520,26 +721,31 @@ function viewModelo(slug) {
 }
 
 function viewTrabajos() {
-  document.title = 'Trabajos entregados | Cabinas Desarmables RM';
+  meta({
+    u: '/trabajos',
+    t: 'Cabinas entregadas | Cabinas Desarmables RM',
+    d: 'Fotos de cabinas desarmables RM instaladas y funcionando: terminación negra y blanca, cielorraso luminoso, paneles LED, piso modular y organizadores de pared. Ninguna es un render.'
+  });
   const cls = ['e-a', 'e-b', 'e-c', 'e-d', 'e-e'];
-  return `<section class="sec" style="padding-top:calc(var(--head) + clamp(40px,7vh,80px))">
+  return `<section class="sec" style="padding-top:calc(var(--head) + clamp(34px,6vh,76px))">
     <div class="wrap">
       <div class="sec-head rv">
+        <nav class="crumb" aria-label="Migas"><a href="/">Inicio</a><span>/</span><b>Trabajos</b></nav>
         <span class="mono am">Trabajos</span>
-        <h1 class="d1" style="font-size:clamp(34px,6vw,72px)">Cabinas instaladas</h1>
-        <p class="lede">Cabinas de RM instaladas y funcionando. No atribuimos rubro ni modelo donde no consta.</p>
+        <h1 class="d1" style="font-size:clamp(34px,6vw,72px)">Cabinas entregadas</h1>
+        <p class="lede">Cabinas de RM instaladas y funcionando. Ninguna es un render. No atribuimos rubro ni modelo donde no consta.</p>
       </div>
       <div class="edit rv">
-        ${DATA.trabajos.map((t, i) => `
-          <figure class="${cls[i]}" data-img="${t.img}" data-cur="Ampliar">
-            <img src="${IMG[t.img]}" alt="${t.alt}" loading="lazy" decoding="async">
-            <figcaption>${t.cap}</figcaption></figure>`).join('')}
-        <figure class="e-f">${resv('cabina en un lavadero')}</figure>
+        ${DATA.trabajos.map((t, i) => figura(t.img, {
+      cls: cls[i], cap: t.cap, alt: t.alt,
+      sizes: '(min-width:760px) 34vw, 92vw'
+    })).join('')}
+        <figure class="e-f">${resv('cabina instalada en un lavadero o un lubricentro', '3/4')}</figure>
       </div>
-      <p class="quiet rv" style="margin-top:18px;line-height:1.9">Faltan fotos de cabinas en lavaderos y lubricentros, y del armado.<br>Los espacios quedan marcados hasta que lleguen.</p>
-      <div class="hero-cta" style="margin-top:36px">
+      <p class="quiet rv" style="margin-top:18px;line-height:1.9">Las cabinas entregadas son muchas más que estas cinco: el resto está en Instagram, donde publicamos cada una a medida que sale del taller.</p>
+      <div class="hero-cta" style="margin-top:30px">
         <button class="btn btn-p" data-goquote=""><span>Quiero una así</span></button>
-        <a class="btn btn-g" href="https://instagram.com/cabinasdesarmablesrm" target="_blank" rel="noopener">Ver más en Instagram</a>
+        <a class="btn btn-g" href="${IG}" target="_blank" rel="noopener">Ver más en Instagram</a>
       </div>
     </div>
   </section>`;
@@ -548,7 +754,7 @@ function viewTrabajos() {
 const view404 = () => `<section class="sec" style="padding-top:calc(var(--head) + 100px);min-height:70vh">
   <div class="wrap"><h1 class="d2">Esa página no existe</h1>
   <p style="margin-top:14px">Probá desde el inicio o escribinos y te decimos qué necesitás.</p>
-  <div class="hero-cta"><a class="btn btn-p" href="#/"><span>Volver al inicio</span></a></div></div></section>`;
+  <div class="hero-cta"><a class="btn btn-p" href="/"><span>Volver al inicio</span></a></div></div></section>`;
 
 /* ══════════════════════════════════════════════════════════════
    COTIZADOR — 5 pasos. Sin teclado hasta el paso 3.
@@ -591,8 +797,12 @@ function quoteMsg() {
   if (d.techo) L.push('▸ TECHO: ' + d.techo);
   L.push('▸ LOCALIDAD: ' + d.loc);
   L.push('▸ NOMBRE: ' + d.nombre);
+  /* El teléfono va escrito aunque WhatsApp ya identifique a quien manda:
+     si la persona copia el mensaje y lo envía desde otro número, RM
+     igual se queda con el de contacto. */
+  if (d.tel) L.push('▸ TELÉFONO: ' + d.tel);
   if (d.msg.trim()) L.push('', 'Comentario: ' + d.msg.trim());
-  L.push('', '—', 'Consulta enviada desde cabinasrm.com.ar');
+  L.push('', '—', 'Consulta enviada desde ' + SITE.replace(/^https?:\/\//, ''));
   L.push('Ref: ' + refCode());
   return L.join('\n');
 }
@@ -631,7 +841,7 @@ function quoteDone() {
     <h3 class="d3">Consulta enviada</h3>
     <p style="margin:12px auto 0">Se abrió WhatsApp con el mensaje escrito. Si no se abrió, copiá el texto y mandalo a ${TEL_HUMAN}.</p>
     <div class="hero-cta" style="justify-content:center;margin-top:24px">
-      <a class="btn btn-g" href="#/panel">Ver cómo le llega a RM</a>
+      <a class="btn btn-g" href="/panel">Ver cómo le llega a RM</a>
       <button class="btn btn-t" id="qReset" style="margin-left:8px">Hacer otra consulta</button>
     </div></div>`;
 }
@@ -703,24 +913,51 @@ const STATES = [
   { k: 'vendida', n: 'Vendida', c: '#7BD88F' },
   { k: 'perdida', n: 'Perdida', c: '#6B6F75' }
 ];
-const LEADS = [
-  { id: 1, nombre: 'Consulta de demo · Mariano', rubro: 'Detailing', loc: 'Funes, Santa Fe', med: '4,20 × 7,00 × 3,10', veh: 'Un auto con lugar para trabajar alrededor', st: 'negociacion', dias: 6, ref: 'DE-0309-1112' },
-  { id: 2, nombre: 'Consulta de demo · Lucía', rubro: 'Concesionaria', loc: 'Rosario, Santa Fe', med: '6,00 × 9,00 × 3,60', veh: 'Dos autos', st: 'presupuestada', dias: 4, ref: 'CO-0509-0940' },
-  { id: 3, nombre: 'Consulta de demo · Damián', rubro: 'Lavadero', loc: 'San Nicolás, Buenos Aires', med: 'Sin medir', veh: 'Un auto', st: 'contactada', dias: 2, ref: 'LA-0709-1830' },
-  { id: 4, nombre: 'Consulta de demo · Emiliano', rubro: 'Detailing', loc: 'Córdoba Capital', med: '3,80 × 6,50 × 2,90', veh: 'Un auto', st: 'nueva', dias: 1, ref: 'DE-0809-2105' },
-  { id: 5, nombre: 'Consulta de demo · Sofía', rubro: 'Voy a abrir un negocio', loc: 'Paraná, Entre Ríos', med: 'Sin medir', veh: 'Todavía no sé', st: 'nueva', dias: 0, ref: 'VO-0909-0812' },
-  { id: 6, nombre: 'Consulta de demo · Taller Pérez', rubro: 'Lubricentro', loc: 'Casilda, Santa Fe', med: '5,00 × 8,00 × 3,20', veh: 'Una camioneta', st: 'vendida', dias: 21, ref: 'LU-1908-1540' }
-];
-let LEAD_ID = 100, JUST_NEW = null;
+/* Las consultas viven en el navegador de quien usa el panel. No es una base
+   compartida — para eso hace falta backend — pero sí es memoria real: lo que
+   RM mueva de columna sigue ahí mañana, y las consultas que entran por el
+   cotizador quedan guardadas en vez de perderse al recargar. Es la diferencia
+   entre una maqueta y una herramienta que ya se puede usar. */
+const LS = 'rm.leads.v1';
 
+/* Ejemplos de arranque: se distinguen a simple vista y se pueden borrar
+   de a uno desde el panel. Sólo aparecen la primera vez. */
+const LEADS_DEMO = [
+  { id: 1, nombre: 'Ejemplo · Mariano', rubro: 'Detailing', loc: 'Funes, Santa Fe', med: '4,20 × 7,00 × 3,10', veh: 'Un auto con lugar para trabajar alrededor', st: 'negociacion', ts: 6, ref: 'DE-0309-1112', demo: 1 },
+  { id: 2, nombre: 'Ejemplo · Lucía', rubro: 'Concesionaria', loc: 'Rosario, Santa Fe', med: '6,00 × 9,00 × 3,60', veh: 'Dos autos', st: 'presupuestada', ts: 4, ref: 'CO-0509-0940', demo: 1 },
+  { id: 3, nombre: 'Ejemplo · Damián', rubro: 'Lavadero', loc: 'San Nicolás, Buenos Aires', med: 'Sin medir', veh: 'Un auto', st: 'contactada', ts: 2, ref: 'LA-0709-1830', demo: 1 },
+  { id: 4, nombre: 'Ejemplo · Emiliano', rubro: 'Detailing', loc: 'Córdoba Capital', med: '3,80 × 6,50 × 2,90', veh: 'Un auto', st: 'nueva', ts: 1, ref: 'DE-0809-2105', demo: 1 },
+  { id: 5, nombre: 'Ejemplo · Sofía', rubro: 'Voy a abrir un negocio', loc: 'Paraná, Entre Ríos', med: 'Sin medir', veh: 'Todavía no sé', st: 'nueva', ts: 0, ref: 'VO-0909-0812', demo: 1 },
+  { id: 6, nombre: 'Ejemplo · Taller Pérez', rubro: 'Lubricentro', loc: 'Casilda, Santa Fe', med: '5,00 × 8,00 × 3,20', veh: 'Una camioneta', st: 'vendida', ts: 21, ref: 'LU-1908-1540', demo: 1 }
+];
+
+/* `ts` en los ejemplos son días de antigüedad; en las consultas reales es la
+   fecha de alta. Se normaliza a milisegundos al cargar. */
+const DIA = 86400000;
+function leerLeads() {
+  try {
+    const raw = localStorage.getItem(LS);
+    if (raw) return JSON.parse(raw);
+  } catch (e) { /* modo privado o storage bloqueado: seguimos en memoria */ }
+  return LEADS_DEMO.map(l => ({ ...l, ts: Date.now() - l.ts * DIA }));
+}
+let LEADS = leerLeads();
+function guardarLeads() {
+  try { localStorage.setItem(LS, JSON.stringify(LEADS)); } catch (e) { }
+}
+const diasDe = l => Math.max(0, Math.floor((Date.now() - l.ts) / DIA));
+
+let JUST_NEW = null;
 function pushLead(d, txt) {
-  JUST_NEW = ++LEAD_ID;
+  JUST_NEW = Date.now();
   LEADS.unshift({
     id: JUST_NEW, nombre: d.nombre || 'Sin nombre', rubro: d.rubro || '—',
     loc: d.loc || '—', veh: d.vehiculo || '—',
     med: d.ancho && d.largo ? `${d.ancho} × ${d.largo}${d.alto ? ` × ${d.alto}` : ''}` : 'Sin medir',
-    st: 'nueva', dias: 0, ref: refCode(), tel: d.tel, msg: txt
+    st: 'nueva', ts: Date.now(), ref: refCode(), tel: d.tel, msg: txt,
+    modelo: d.modelo || modeloPorVehiculo(d.vehiculo)
   });
+  guardarLeads();
 }
 
 
@@ -733,17 +970,24 @@ function bindPanel(root) {
       $(`[data-c="${s.k}"]`, board).textContent = items.length;
       body.innerHTML = items.map(l => {
         const i = STATES.findIndex(x => x.k === l.st);
-        return `<div class="lead${l.id === JUST_NEW ? ' new' : ''}" draggable="true" data-id="${l.id}" style="margin-bottom:9px">
+        const d = diasDe(l);
+        const viejo = l.st === 'nueva' && d >= 1;
+        return `<div class="lead${l.id === JUST_NEW ? ' new' : ''}${l.demo ? ' demo' : ''}${viejo ? ' late' : ''}"
+            draggable="true" data-id="${l.id}" style="margin-bottom:9px">
           <b>${l.nombre}</b>
-          <div class="meta">${l.rubro} · ${l.loc}<br>${l.veh}<br>Espacio: ${l.med}<br>Ref ${l.ref} · hace ${l.dias} d</div>
+          <div class="meta">${l.rubro} · ${l.loc}<br>${l.veh}${l.modelo ? ' → ' + l.modelo : ''}<br>Espacio: ${l.med}<br>Ref ${l.ref} · ${d === 0 ? 'hoy' : 'hace ' + d + ' d'}</div>
           <span class="tag">${l.med === 'Sin medir' ? 'Falta medir' : 'Cotizable'}</span>
+          ${l.demo ? '<span class="tag">Ejemplo</span>' : ''}
           <div class="lead-acts">
-            ${i > 0 ? `<button data-mv="${l.id}|-1">←</button>` : ''}
+            ${i > 0 ? `<button data-mv="${l.id}|-1" aria-label="Retroceder de estado">←</button>` : ''}
             ${i < STATES.length - 1 ? `<button data-mv="${l.id}|1">Avanzar</button>` : ''}
             ${l.tel ? `<button data-wa="${l.id}">WhatsApp</button>` : ''}
+            <button data-del="${l.id}" aria-label="Borrar consulta">Borrar</button>
           </div></div>`;
       }).join('') || `<p class="mono" style="opacity:.45;padding:8px 2px">Vacío</p>`;
     });
+    const viejo = $('#panelKpis', root);
+    if (viejo) viejo.replaceWith(panelResumen());
     bindCards();
     JUST_NEW = null;
   };
@@ -758,12 +1002,17 @@ function bindPanel(root) {
       const l = LEADS.find(x => x.id == id);
       const i = STATES.findIndex(x => x.k === l.st);
       l.st = STATES[Math.max(0, Math.min(STATES.length - 1, i + +d))].k;
-      render();
+      guardarLeads(); render();
     });
     $$('[data-wa]', board).forEach(b => b.onclick = e => {
       e.stopPropagation();
       const l = LEADS.find(x => x.id == b.dataset.wa);
       window.open(wa(`Hola ${l.nombre.split(' ')[0]}, soy de Cabinas RM. Vi tu consulta (ref ${l.ref}) y te paso el presupuesto.`), '_blank', 'noopener');
+    });
+    $$('[data-del]', board).forEach(b => b.onclick = e => {
+      e.stopPropagation();
+      LEADS = LEADS.filter(x => x.id != b.dataset.del);
+      guardarLeads(); render();
     });
   };
   $$('.col', board).forEach(col => {
@@ -772,36 +1021,124 @@ function bindPanel(root) {
     col.ondrop = e => {
       e.preventDefault(); col.classList.remove('over');
       const l = LEADS.find(x => x.id == e.dataTransfer.getData('text/plain'));
-      if (l) { l.st = col.dataset.st; render(); }
+      if (l) { l.st = col.dataset.st; guardarLeads(); render(); }
     };
   });
   render();
 }
 
 /* ══════════════════════════════════════════════════════════════
-   ROUTER
+   ROUTER — direcciones reales, no fragmentos.
+
+   Antes todo el sitio vivía en #/rubro/detailing y compañía. Google
+   descarta el fragmento: para un buscador existía UNA sola página, y
+   además servida vacía (el <main> se llena recién cuando corre el JS).
+   Las cuatro páginas de rubro, que son justo las que alguien busca
+   ("cabinas para lavaderos"), no podían posicionar.
+
+   Ahora cada vista tiene su URL, su <title>, su descripción y su
+   canonical. Vercel reescribe cualquier ruta a index.html (rewrite en
+   vercel.json) y acá adentro se decide qué mostrar. Los #/… viejos
+   siguen andando: se traducen y se reemplazan en el historial.
    ══════════════════════════════════════════════════════════════ */
+
+const urlRubro = r => `/cabinas-para-${r.slug}`;
+const urlModelo = m => `/modelos/${m.slug}`;
+
+/* Traducción de las direcciones viejas con # a las nuevas. */
+function desdeHash(h) {
+  const raw = h.replace(/^#\/?/, '');
+  const [p, anchor] = raw.split('#');
+  const parts = p.split('/').filter(Boolean);
+  const a = anchor ? '#' + anchor : '';
+  if (!parts.length) return '/' + a;
+  if (parts[0] === 'rubro') return `/cabinas-para-${parts[1] || ''}` + a;
+  if (parts[0] === 'modelo') return `/modelos/${parts[1] || ''}` + a;
+  if (parts[0] === 'cotizar') return '/presupuesto' + a;
+  return '/' + parts.join('/') + a;
+}
+
+/* Metadatos por vista. El title y la description son de esta página,
+   no del sitio: es lo que se lee en el resultado de búsqueda. */
+function meta(o) {
+  document.title = o.t;
+  const set = (sel, attr, val) => { const el = $(sel); if (el) el.setAttribute(attr, val); };
+  set('meta[name="description"]', 'content', o.d);
+  set('meta[name="robots"]', 'content', o.noindex ? 'noindex,nofollow' : 'index,follow');
+  set('link[rel="canonical"]', 'href', SITE + (o.u || location.pathname));
+  set('meta[property="og:title"]', 'content', o.ogt || o.t);
+  set('meta[property="og:description"]', 'content', o.d);
+  set('meta[property="og:url"]', 'content', SITE + (o.u || location.pathname));
+  set('meta[property="og:image"]', 'content', SITE + (o.img || '/img/og.jpg'));
+  set('meta[name="twitter:image"]', 'content', SITE + (o.img || '/img/og.jpg'));
+}
+
+/* Navegación interna sin recargar. */
+function go(path, replace) {
+  const cur = location.pathname + location.hash;
+  if (path === cur) return;
+  history[replace ? 'replaceState' : 'pushState']({}, '', path);
+  render();
+}
+
+/* Un solo listener para todos los enlaces internos, presentes y futuros. */
+addEventListener('click', e => {
+  const a = e.target.closest && e.target.closest('a[href^="/"]');
+  if (!a || a.target === '_blank' || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+  e.preventDefault();
+  closeMob();
+  go(a.getAttribute('href'));
+});
+
 let CURPATH = null;
 function render() {
-  const raw = location.hash.replace(/^#\//, '');
-  const [path, anchor] = raw.split('#');
+  if (location.hash.startsWith('#/')) return go(desdeHash(location.hash), true);
+
+  const path = location.pathname.replace(/\/+$/, '') || '/';
+  const anchor = location.hash.slice(1);
   const parts = path.split('/').filter(Boolean);
   const main = $('#main');
   if (CURPATH === path && anchor) {            // sólo cambió el ancla: scrolleamos
     const t0 = document.getElementById(anchor);
     if (t0) { t0.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
   }
+  const primera = CURPATH === null;
   CURPATH = path;
   let html, prefill = null;
 
-  if (!parts.length) { html = viewHome(); document.title = 'Cabinas Desarmables RM | Cabinas para detailing, lavaderos y lubricentros'; }
-  else if (parts[0] === 'rubro') { html = viewRubro(parts[1]); const r = DATA.rubros.find(x => x.slug === parts[1]); if (r) prefill = { rubro: r.n === 'Lavaderos' ? 'Lavadero' : r.n === 'Lubricentros' ? 'Lubricentro' : r.n === 'Concesionarias' ? 'Concesionaria' : 'Detailing' }; }
+  const rubroSlug = parts[0] && parts[0].startsWith('cabinas-para-')
+    ? parts[0].replace('cabinas-para-', '') : null;
+
+  if (!parts.length) {
+    html = viewHome();
+    meta({
+      u: '/',
+      t: 'Cabinas Desarmables RM | Cabinas para detailing, lavaderos y lubricentros',
+      ogt: 'Cabinas Desarmables RM | El auto entra a un galpón, sale de un estudio',
+      d: 'Fabricamos cabinas desarmables para detailing, lavaderos, lubricentros y concesionarias. Paredes, techo cerrado, iluminación en capas, piso modular e instalación eléctrica. Se arman adentro de tu local, sin obra. Puerto General San Martín, Santa Fe.'
+    });
+  }
+  else if (rubroSlug) {
+    html = viewRubro(rubroSlug);
+    const r = DATA.rubros.find(x => x.slug === rubroSlug);
+    if (r) prefill = { rubro: r.qRubro };
+  }
+  else if (parts[0] === 'modelos' && parts[1]) html = viewModelo(parts[1]);
   else if (parts[0] === 'modelos') html = viewModelos();
-  else if (parts[0] === 'modelo') html = viewModelo(parts[1]);
   else if (parts[0] === 'trabajos') html = viewTrabajos();
-  else if (parts[0] === 'cotizar') { html = viewCotizar(); document.title = 'Configurá tu cabina | Cabinas Desarmables RM'; }
+  else if (parts[0] === 'presupuesto') {
+    html = viewCotizar();
+    meta({
+      u: '/presupuesto',
+      t: 'Pedir presupuesto de cabina | Cabinas Desarmables RM',
+      d: 'Contanos tu rubro, qué vehículo tiene que entrar y cuánto medís. Con eso te cotizamos la cabina que corresponde a tu espacio, en la primera respuesta.'
+    });
+  }
   else if (parts[0] === 'panel') html = viewPanel();
-  else html = view404();
+  else {
+    html = view404();
+    meta({ t: 'Página no encontrada | Cabinas Desarmables RM', d: 'La página que buscabas no existe.' });
+  }
 
   main.innerHTML = html;
 
@@ -818,20 +1155,24 @@ function render() {
   
   $$('[data-goquote]', main).forEach(b => b.onclick = () => {
     if (b.dataset.goquote) { Q.d.rubro = b.dataset.goquote === 'Lavaderos' ? 'Lavadero' : b.dataset.goquote === 'Lubricentros' ? 'Lubricentro' : b.dataset.goquote === 'Concesionarias' ? 'Concesionaria' : b.dataset.goquote; Q.i = 1; }
-    location.hash = '#/cotizar';
+    go('/presupuesto');
   });
   $$('[data-goquotemodel]', main).forEach(b => b.onclick = () => {
     const m = DATA.modelos.find(x => x.slug === b.dataset.goquotemodel);
-    Q.d.modelo = m ? m.n : ''; location.hash = '#/cotizar';
+    Q.d.modelo = m ? m.n : ''; go('/presupuesto');
   });
 
   reveals();
-  $$('#nav a').forEach(a => a.toggleAttribute('aria-current', a.getAttribute('href') === '#/' + path));
+  $$('#nav a, #mob a').forEach(a => {
+    const h = a.getAttribute('href') || '';
+    a.toggleAttribute('aria-current', h === path || (h.startsWith(path) && path !== '/'));
+  });
   $('#fab').classList.toggle('on', false);
+  document.body.classList.remove('has-fab');
 
   if (anchor) {
     const t = document.getElementById(anchor);
-    if (t) { setTimeout(() => t.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60); return; }
+    if (t) { setTimeout(() => t.scrollIntoView({ behavior: primera ? 'instant' : 'smooth', block: 'start' }), 60); return; }
   }
   scrollTo({ top: 0, behavior: 'instant' });
 }
@@ -847,7 +1188,7 @@ function viewCotizar() {
       </div>
       <div id="quoteMount"></div>
       <div class="rv" style="margin-top:30px;display:flex;gap:20px;flex-wrap:wrap">
-        <a class="btn-t" href="#/#medir">No sé mis medidas, quiero medir primero</a>
+        <a class="btn-t" href="/#medir">No sé mis medidas, quiero medir primero</a>
         <a class="btn-t" href="${wa('Hola RM, quiero hacerles una consulta sobre una cabina.')}" target="_blank" rel="noopener">Prefiero escribir directo</a>
       </div>
     </div>
@@ -874,10 +1215,24 @@ const resv = (label, ratio = '3/4', tone = 'dark') => `
   <div class="resv ${tone}" style="aspect-ratio:${ratio}" role="img" aria-label="Espacio reservado: ${label}">
     <span class="resv-cx"></span>
     <span class="resv-tag">Imagen pendiente</span>
-    <img class="resv-mark" src="${IMG.logo}" alt="">
+    <img class="resv-mark" src="${window.RM_LOGO}" alt="" width="88" height="88">
     <div class="cota"><b>A relevar</b></div>
     <span class="resv-lb">${label}</span>
   </div>`;
+
+/* Foto del rubro: la cabina entregada que prueba lo que dice el texto.
+   El epígrafe aclara siempre qué es y qué no: son cabinas reales de RM,
+   pero no consta en qué tipo de negocio está instalada cada una. */
+function fotoRubro(r, eager) {
+  if (!r.foto) return resv('cabina instalada en un ' + r.n.toLowerCase().replace(/s$/, ''), '3/2');
+  return `<figure class="rfig" data-img="${r.foto}" data-cur="Ampliar">
+    ${pic(r.foto, {
+    cls: 'fill', ratio: '3/2', eager,
+    sizes: '(min-width:900px) 44vw, 94vw'
+  })}
+    <figcaption>${r.fotoCap}</figcaption>
+  </figure>`;
+}
 
 /* ── RUBROS: selector sin fotografía forzada ────────────────── */
 function rubroSelector() {
@@ -891,7 +1246,7 @@ function rubroSelector() {
 function rubroPane(i) {
   const r = DATA.rubros[i], m = DATA.modelos.find(x => x.slug === r.rec);
   return `
-    <div>${resv('cabina instalada en un ' + r.n.toLowerCase().replace(/s$/, ''))}</div>
+    <div>${fotoRubro(r, false)}</div>
     <div class="sel-copy">
       <span class="mono am">${r.n}</span>
       <h3 class="d2" style="margin:12px 0 16px">${r.claim}</h3>
@@ -901,7 +1256,7 @@ function rubroPane(i) {
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FFC800" stroke-width="2.4" style="margin-top:5px"><path d="M4 12.5 9.5 18 20 6.5"/></svg>
         <span>${p}</span></div>`).join('')}</div>
       <div class="sel-actions">
-        <a class="btn btn-p" href="#/rubro/${r.slug}"><span>Ver esta solución</span></a>
+        <a class="btn btn-p" href="${urlRubro(r)}"><span>Ver esta solución</span></a>
         <button class="btn btn-g" data-goquote="${r.n}">Consultar por mi ${r.n.toLowerCase().replace(/s$/, '')}</button>
       </div>
       <p class="quiet" style="margin-top:16px">Modelo que solemos recomendar: <b style="color:var(--txt)">${m.n}</b></p>
@@ -916,7 +1271,7 @@ function modeloSelector() {
       <button class="tab cat-row${i === 2 ? ' on' : ''}" role="tab" data-i="${i}" aria-selected="${i === 2}">
         <span class="cat-t">${m.n}</span>
         <span class="cat-d">${m.qe}</span>
-        <span class="cat-m">${m.slug === 'medida' ? 'Según tu espacio' : 'Medidas a confirmar'}</span>
+        <span class="cat-m">Entra: ${m.veh.toLowerCase()}</span>
       </button>`).join('')}
   </div>
   <div class="sel-body mod-detail" data-selbody="mod" role="tabpanel">${modeloPane(2)}</div>`;
@@ -925,55 +1280,67 @@ function modeloPane(i) {
   const m = DATA.modelos[i];
   const rub = DATA.rubros.filter(r => r.rec === m.slug);
   return `
-    <div>${resv('fotografía del modelo ' + m.n.toLowerCase(), '3/4', 'light')}</div>
+    <div>${modeloPlan(m, 'light')}</div>
     <div class="sel-copy">
       <h3 class="d2">${m.n}</h3>
       <p class="lede" style="color:#4A4D46;margin-top:10px">${m.qe}</p>
       <dl class="spec">
         <dt>Entra</dt><dd>${m.veh}</dd>
-        <dt>Ancho</dt><dd>${TBD()}</dd>
-        <dt>Largo</dt><dd>${TBD()}</dd>
-        <dt>Alto</dt><dd>${TBD()}</dd>
-        <dt>Alto libre necesario</dt><dd>${TBD()}</dd>
         <dt>Terminación</dt><dd>Negra o blanca</dd>
-        <dt>Franja del piso</dt><dd>A elección</dd>
+        <dt>Techo</dt><dd>Cerrado, con iluminación</dd>
+        <dt>Piso</dt><dd>Modular, franja a elección</dd>
+        <dt>Eléctrica</dt><dd>Tomacorrientes integrados</dd>
+        <dt>Medidas</dt><dd>Se define con las de tu local ${TBD('Tabla por publicar')}</dd>
       </dl>
       ${rub.length ? `<p class="quiet" style="margin-top:16px">Recomendada para ${rub.map(r => r.n.toLowerCase()).join(' y ')}.</p>` : ''}
       <div class="sel-actions">
         <button class="btn btn-p" data-goquotemodel="${m.slug}"><span>Consultar por este modelo</span></button>
-        <a class="btn btn-g" href="#/modelo/${m.slug}">Ver ficha</a>
+        <a class="btn btn-g" href="${urlModelo(m)}">Ver ficha</a>
       </div>
     </div>`;
 }
 
-/* ── Muestras de material: color y textura, no fotografía ───── */
+/* ── Muestras de material ─────────────────────────────────────────
+   Antes esto eran rayas dibujadas con CSS. RM tiene fotografiadas las
+   dos terminaciones y los tres techos: mostrar la chapa real en vez de
+   una textura inventada es más honesto y además se ve el producto. */
+const swatch = (name, lb, sub) => `
+  <figure class="sw" data-img="${name}" data-cur="Ampliar">
+    ${pic(name, { cls: 'fill', ratio: '3/2', sizes: '(min-width:820px) 30vw, 46vw' })}
+    <figcaption><b>${lb}</b>${sub ? `<span>${sub}</span>` : ''}</figcaption>
+  </figure>`;
+
+/* Tres bandas apiladas en vez de tres columnas: cada opción tiene distinta
+   cantidad de muestras (2 terminaciones, 3 techos, 2 colores) y en columnas
+   quedaban alturas muy dispares, con dos columnas casi vacías. */
+const cfgFila = (kicker, texto, cols, muestras) => `
+  <div class="cfg-row">
+    <div class="cfg-lb">
+      <span class="mono am">${kicker}</span>
+      <p class="quiet">${texto}</p>
+    </div>
+    <div class="cfg-sw" style="--cols:${cols}">${muestras}</div>
+  </div>`;
+
 const configBlock = () => `
-  <div class="cfg-grid">
-    <div>
-      <span class="mono am">Terminación</span>
-      <div class="sw-pair">
-        <div class="sw-tile dark"><span class="sw-lb">Negra</span></div>
-        <div class="sw-tile light"><span class="sw-lb">Blanca</span></div>
-      </div>
-      <p class="quiet" style="margin-top:12px">La negra separa el vehículo del fondo. La blanca devuelve luz y rinde mejor en locales de techo bajo.</p>
-    </div>
-    <div>
-      <span class="mono am">Techo</span>
-      <div class="cfg-list">
-        ${['Chapa con luces embutidas', 'Cielorraso luminoso', 'Cielorraso con paneles LED']
-    .map(t => `<div>${t}</div>`).join('')}
-      </div>
-      <p class="quiet" style="margin-top:12px">Los tres sistemas existen en cabinas entregadas. Si son intercambiables en todos los modelos: ${TBD()}</p>
-    </div>
-    <div>
-      <span class="mono am">Franja del piso</span>
-      <div class="sw-row">
-        <span class="sw-dot" style="--c:#FFC800"></span>
-        <span class="sw-dot" style="--c:#E0397E"></span>
-        <span class="sw-dot sw-more">+</span>
-      </div>
-      <p class="quiet" style="margin-top:12px">Amarillo y magenta están vistos en cabinas entregadas. La carta completa de colores: ${TBD()}</p>
-    </div>
+  <div class="cfg-stack">
+    ${cfgFila('Terminación',
+  'La negra separa el vehículo del fondo. La blanca devuelve luz y rinde mejor en locales de techo bajo.', 2,
+  swatch('negra-wide', 'Negra') + swatch('blanca-wide', 'Blanca'))}
+
+    ${cfgFila('Techo',
+  `Los tres sistemas están en cabinas entregadas: cada foto es uno de ellos. Si son intercambiables en todos los modelos, ${TBD()}.`, 3,
+  swatch('negraBajo-wide', 'Chapa con luces embutidas')
+  + swatch('hero-wide', 'Cielorraso luminoso')
+  + swatch('moto', 'Cielorraso con paneles LED'))}
+
+    ${cfgFila('Franja del piso',
+  `Amarillo y magenta están vistos en cabinas entregadas. La carta completa de colores, ${TBD()}.`, 1,
+  `<div class="sw-row">
+        <span class="sw-dot" style="--c:#FFC800"><b>Amarillo</b></span>
+        <span class="sw-dot" style="--c:#E0397E"><b>Magenta</b></span>
+        <span class="sw-dot sw-more"><i>+</i><b>Otros a pedido</b></span>
+      </div>`)}
   </div>`;
 
 
@@ -996,10 +1363,10 @@ function trustBlock() {
         <span class="tval">${EMPRESA.calle}<small>${EMPRESA.ciudad}, ${EMPRESA.prov} · Cómo llegar</small></span></a>
       <a class="trow" id="trustWa" target="_blank" rel="noopener">
         <span class="tlb">WhatsApp</span><span class="tval">${TEL_HUMAN}<small>Es donde respondemos las consultas</small></span></a>
-      <a class="trow" href="https://instagram.com/cabinasdesarmablesrm" target="_blank" rel="noopener">
-        <span class="tlb">Instagram</span><span class="tval">@cabinasdesarmablesrm<small>Las cabinas que vamos entregando</small></span></a>
+      <a class="trow" href="${IG}" target="_blank" rel="noopener">
+        <span class="tlb">Instagram</span><span class="tval">@cabinasdesarmablesrm<small>Más de 6.900 seguidores. Ahí publicamos cada cabina que sale del taller</small></span></a>
       <div class="trow">
-        <span class="tlb">Envíos</span><span class="tval">${TBD('Zonas y flete a confirmar')}<small>Fabricamos en Puerto General San Martín y coordinamos el envío según tu localidad</small></span></div>
+        <span class="tlb">Envíos</span><span class="tval">Coordinados según tu localidad<small>Fabricamos en Puerto General San Martín, en el cordón industrial del Gran Rosario. Zona y costo del flete: ${TBD('según localidad')}</small></span></div>
     </div>
     <div class="hours rv" data-d="1">
       <span class="now ${abierto ? '' : 'off'}"><i></i>${abierto ? 'Abierto ahora' : 'Cerrado ahora'}</span>
@@ -1015,15 +1382,19 @@ function trustBlock() {
 function viewHome() {
   return `
   <section class="hero2">
-    <div class="hero2-media"><div class="hero2-pan"><img src="${IMG.hero}" alt="Auto dentro de una cabina RM de terminación blanca con cielorraso luminoso" fetchpriority="high" decoding="async"></div></div>
+    <div class="hero2-media"><div class="hero2-pan">${pic('hero', {
+      cls: 'fill', eager: true,
+      sizes: '(min-width:1000px) 54vw, 100vw',
+      pos: '50% 42%'
+    })}</div></div>
     <div class="hero2-copy wrap">
-      <div class="hero2-eyebrow"><span class="mono">Cabinas desarmables · Fabricamos en Puerto Gral. San Martín, Santa Fe</span></div>
+      <div class="hero2-eyebrow"><span class="mono">Fabricamos en Puerto Gral. San Martín, Santa Fe</span></div>
       <h1 class="d1"><span class="ln"><i>El auto entra</i></span><span class="ln"><i>a un galpón.</i></span><span class="ln"><i>Sale de un estudio.</i></span></h1>
-      <p class="lede" style="margin-top:22px">Para detailing, lavaderos, lubricentros y concesionarias.
-        Se arma adentro del local que ya tenés, sin obra. Y si te mudás, se va con vos.</p>
+      <p class="lede" style="margin-top:22px">Cabinas desarmables para detailing, lavaderos, lubricentros y concesionarias.
+        Se arman adentro del local que ya tenés, sin obra. Y si te mudás, se van con vos.</p>
       <div class="hero-cta">
-        <a class="btn btn-p" href="#/#configurar"><span>Pedir presupuesto</span></a>
-        <a class="btn btn-g" href="#/#sistema">Ver cómo funciona</a>
+        <a class="btn btn-p" href="/presupuesto"><span>Pedir presupuesto</span></a>
+        <a class="btn btn-g" href="/#sistema">Ver cómo funciona</a>
       </div>
       <div class="hero-meta">
         <div><span class="mono">Se entrega</span><b>Desarmada y embalada</b></div>
@@ -1083,7 +1454,7 @@ function viewHome() {
       <div class="rv">${configBlock()}</div>
 
       ${ctaBand('Siguiente paso', 'Si ya entendés cómo está hecha, lo que falta es tu espacio.',
-        btnP('Ver si entra en mi local', '#/#medir'))}
+        btnP('Ver si entra en mi local', '/#medir'))}
     </div>
   </section>
 
@@ -1104,7 +1475,7 @@ function viewHome() {
       </div>
       <div class="rv">${modeloSelector()}</div>
       ${ctaBand('Ya sabés cuál te sirve', 'Pasanos las medidas de tu local y te decimos si ese modelo entra.',
-        btnP('Configurar mi cabina', '#/#configurar'))}
+        btnP('Configurar mi cabina', '/#configurar'))}
     </div>
   </section>
 
@@ -1119,11 +1490,18 @@ function viewHome() {
     <div class="wrap">
       ${secHead('Trabajos reales', 'Cabinas instaladas', 'Fotos de cabinas de RM funcionando. Ninguna es un render.', '07')}
       <div class="edit rv">
-        ${DATA.trabajos.slice(0, 5).map((t, i) => `
-          <figure class="${['e-a', 'e-b', 'e-c', 'e-d', 'e-e'][i]}" data-img="${t.img}" data-cur="Ampliar">
-            <img src="${IMG[t.img]}" alt="${t.alt}" loading="lazy" decoding="async">
-            <figcaption>${t.cap}</figcaption></figure>`).join('')}
-        <figure class="e-f">${resv('cabina en un lavadero')}</figure>
+        ${DATA.trabajos.slice(0, 5).map((t, i) => figura(t.img, {
+        cls: ['e-a', 'e-b', 'e-c', 'e-d', 'e-e'][i], cap: t.cap, alt: t.alt,
+        sizes: '(min-width:760px) 34vw, 92vw'
+      })).join('')}
+        <figure class="e-f ig-card">
+          <a href="${IG}" target="_blank" rel="noopener">
+            <span class="mono am">Instagram</span>
+            <b class="d4">Publicamos cada cabina que sale del taller</b>
+            <span class="ig-n"><b class="num">6.900+</b> seguidores</span>
+            <span class="btn-t">@cabinasdesarmablesrm →</span>
+          </a>
+        </figure>
       </div>
       ${ctaBand('¿Te sirve algo así?', 'Contanos qué local tenés y te decimos qué cabina entra.',
         btnQ('Quiero una para mi local'))}
@@ -1151,7 +1529,7 @@ function viewHome() {
       </div>
       <p class="rv" style="margin-top:20px;font-size:14.5px;max-width:58ch">Dejamos los huecos a la vista antes que publicar un plazo o una garantía que después no se cumpla. Todo lo marcado se responde por WhatsApp en el momento.</p>
       ${ctaBand('Empezá por acá', 'El presupuesto no compromete a nada y sale en la primera respuesta.',
-        btnP('Pedir presupuesto', '#/#configurar'))}
+        btnP('Pedir presupuesto', '/#configurar'))}
     </div>
   </section>
 
@@ -1189,10 +1567,15 @@ function viewHome() {
 }
 
 function viewModelos() {
-  document.title = 'Modelos de cabinas | Cabinas Desarmables RM';
+  meta({
+    u: '/modelos',
+    t: 'Modelos de cabinas desarmables | Cabinas Desarmables RM',
+    d: 'Los modelos de cabina RM ordenados por lo que tiene que entrar adentro: una moto, un auto, un auto con lugar para trabajar alrededor, dos autos, o a medida según tu local.'
+  });
   return `<section class="sec paper" style="padding-top:calc(var(--head) + clamp(36px,7vh,76px))">
     <div class="wrap">
       <div class="sec-head rv">
+        <nav class="crumb" aria-label="Migas"><a href="/">Inicio</a><span>/</span><b>Modelos</b></nav>
         <span class="mono">Catálogo</span>
         <h1 class="d1" style="font-size:clamp(34px,6vw,72px)">Modelos</h1>
         <p class="lede" style="color:#4A4D46">Ordenados por lo que tenés que meter adentro, que es como se elige de verdad.</p>
@@ -1283,28 +1666,24 @@ function quoteHTML() {
 }
 
 /* ── PANEL V2: lo que un dueño necesita ver en 10 segundos ──── */
-function viewPanel() {
-  document.title = 'Panel de consultas | RM';
-  const n = LEADS.length;
+/* Resumen: se recalcula solo cada vez que cambia el tablero. */
+function panelResumen() {
+  const n = LEADS.length || 1;
   const conMed = LEADS.filter(l => l.med !== 'Sin medir').length;
   const nuevas = LEADS.filter(l => l.st === 'nueva');
   const vendidas = LEADS.filter(l => l.st === 'vendida').length;
   const count = k => LEADS.reduce((a, l) => (a[l[k]] = (a[l[k]] || 0) + 1, a), {});
   const rank = o => Object.entries(o).sort((a, b) => b[1] - a[1]);
   const rubros = rank(count('rubro')), locs = rank(count('loc')).slice(0, 4);
-  const max = rubros[0][1];
-  const stale = nuevas.filter(l => l.dias >= 1).length;
+  const max = rubros.length ? rubros[0][1] : 1;
+  const stale = nuevas.filter(l => diasDe(l) >= 1).length;
 
-  const kpis = [['Consultas', n], ['Con medidas cargadas', Math.round(conMed / n * 100) + '%'],
+  const kpis = [['Consultas', LEADS.length], ['Con medidas cargadas', Math.round(conMed / n * 100) + '%'],
   ['Sin contactar', nuevas.length], ['Vendidas', vendidas]];
 
-  return `<div class="panel-wrap"><div class="wrap">
-    <div class="sec-head" style="margin-bottom:22px">
-      <span class="mono am">Sistema interno · demo</span>
-      <h1 class="d2">Panel de consultas</h1>
-      <p class="lede">Cada consulta que sale del cotizador entra acá con su contexto completo. Probá el cotizador y volvé: la tuya va a aparecer arriba de todo, en Nueva.</p>
-    </div>
-
+  const el = document.createElement('div');
+  el.id = 'panelKpis';
+  el.innerHTML = `
     ${stale ? `<div class="card" style="margin-bottom:14px;border-left:2px solid var(--warm)">
       <p class="alert" style="border:0;padding:0"><b>${stale} consulta${stale > 1 ? 's' : ''} sin contactar hace más de un día.</b>
       En este rubro la primera respuesta rápida es la que se queda con la venta.</p></div>` : ''}
@@ -1314,10 +1693,10 @@ function viewPanel() {
     <div class="pan-grid">
       <div class="card"><h3>Consultas por rubro</h3>
         ${rubros.map(r => `<div class="bar-row"><span>${r[0]}</span><span>${r[1]}</span>
-          <span class="bar"><i style="width:${r[1] / max * 100}%"></i></span></div>`).join('')}
+          <span class="bar"><i style="width:${r[1] / max * 100}%"></i></span></div>`).join('') || '<p class="quiet">Sin datos todavía.</p>'}
       </div>
       <div class="card"><h3>De dónde escriben</h3>
-        ${locs.map(l => `<div class="bar-row" style="grid-template-columns:1fr auto"><span>${l[0]}</span><span>${l[1]}</span></div>`).join('')}
+        ${locs.map(l => `<div class="bar-row" style="grid-template-columns:1fr auto"><span>${l[0]}</span><span>${l[1]}</span></div>`).join('') || '<p class="quiet">Sin datos todavía.</p>'}
         <p class="quiet" style="margin-top:12px">Sirve para decidir dónde conviene tener flete armado.</p>
       </div>
       <div class="card"><h3>Embudo</h3>
@@ -1326,16 +1705,35 @@ function viewPanel() {
     return `<div class="fn"><i style="--fc:${s.c};width:${Math.max(3, c / n * 130)}px"></i>
       <span>${s.n}</span><b>${c}</b></div>`;
   }).join('')}</div>
-        <p class="quiet" style="margin-top:12px">${vendidas} de ${n} consultas cerradas.</p>
+        <p class="quiet" style="margin-top:12px">${vendidas} de ${LEADS.length} consultas cerradas.</p>
       </div>
+    </div>`;
+  return el;
+}
+
+function viewPanel() {
+  meta({
+    u: '/panel',
+    t: 'Panel de consultas | Cabinas Desarmables RM',
+    d: 'Herramienta interna de seguimiento de consultas de Cabinas Desarmables RM.',
+    noindex: true   /* es interno: no tiene por qué aparecer en Google */
+  });
+
+  return `<div class="panel-wrap"><div class="wrap">
+    <div class="sec-head" style="margin-bottom:22px">
+      <span class="mono am">Sistema interno</span>
+      <h1 class="d2">Panel de consultas</h1>
+      <p class="lede">Cada consulta que sale del cotizador entra acá con su contexto completo: rubro, vehículo, medidas, localidad y referencia. Probá el cotizador y volvé — la tuya aparece arriba de todo, en Nueva.</p>
     </div>
+
+    <div id="panelKpis"></div>
 
     <div class="board" id="board">${STATES.map(s => `
       <div class="col" data-st="${s.k}" style="--st:${s.c}">
         <div class="col-h"><span class="mono">${s.n}</span><span class="c" data-c="${s.k}"></span></div>
         <div class="col-body" data-body="${s.k}"></div>
       </div>`).join('')}</div>
-    <p class="mono" style="margin:24px 0 50px;line-height:1.9">Demo con estado en memoria. En producción se conecta a una base<br>y suma aviso automático por WhatsApp cuando entra una consulta nueva.</p>
+    <p class="quiet" style="margin:24px 0 50px;line-height:1.9;max-width:62ch">Las consultas se guardan en este navegador: lo que muevas de columna sigue acá mañana. Para que el equipo vea el mismo tablero desde varios teléfonos hace falta conectarlo a una base — es el paso siguiente, y no cambia esta pantalla.</p>
   </div></div>`;
 }
 
@@ -1407,13 +1805,21 @@ function bindCTAs(scope) {
   $$('[data-goquote]', scope).forEach(b => b.onclick = () => {
     const v = b.dataset.goquote;
     if (v) { Q.d.rubro = v === 'Lavaderos' ? 'Lavadero' : v === 'Lubricentros' ? 'Lubricentro' : v === 'Concesionarias' ? 'Concesionaria' : v; Q.i = 1; }
-    location.hash = '#/cotizar';
+    go('/presupuesto');
   });
   $$('[data-goquotemodel]', scope).forEach(b => b.onclick = () => {
     const m = DATA.modelos.find(x => x.slug === b.dataset.goquotemodel);
-    Q.d.modelo = m ? m.n : ''; location.hash = '#/cotizar';
+    Q.d.modelo = m ? m.n : ''; go('/presupuesto');
   });
-  $$('[data-img]', scope).forEach(f => f.onclick = () => f.dataset.img && openLbx(IMG[f.dataset.img]));
+  /* El lightbox abre la variante más grande que exista de esa foto, en AVIF
+     (pesa ~45% menos). Un <img> suelto no negocia formato, así que si el
+     navegador no lo soporta cae al JPEG por onerror. */
+  $$('[data-img]', scope).forEach(f => f.onclick = () => {
+    const k = f.dataset.img, p = IMG[k];
+    if (!p) return;
+    const base = `/img/${k}-${p.ws[p.ws.length - 1]}`;
+    openLbx(base + '.avif', p.alt, base + '.jpg');
+  });
 }
 
 /* Cursor de producto: sólo sobre fotografía, sólo en desktop con mouse */
@@ -1468,7 +1874,9 @@ function bindV2(root) {
 new MutationObserver(() => bindV2($('#main'))).observe($('#main'), { childList: true });
 
 /* ── ARRANQUE ───────────────────────────────────────────────── */
-addEventListener('hashchange', render);
-if (!location.hash) location.hash = '#/';
+addEventListener('popstate', render);
+addEventListener('hashchange', () => {         // sólo llegan los #/… viejos
+  if (location.hash.startsWith('#/')) render();
+});
 render();
 bindV2($('#main'));
