@@ -17,7 +17,7 @@ Reglas:
     legítimo y muestra mejor la cabina que el vertical completo.
 
 Uso:  python tools/build-images.py              regenera todo
-      python tools/build-images.py hero-detailing envios-camion
+      python tools/build-images.py hero-detailing camion-rm
                                                 sólo esas fuentes (por nombre,
                                                 sin extensión): suma una imagen
                                                 sin reescribir las variantes que
@@ -67,7 +67,12 @@ PORTRAITS = ["hero.jpg", "blanca.jpg", "negraFrente.jpg", "negraBajo.jpg", "moto
 
 # Gráficas con texto (no fotos): enteras, con su proporción, y con más calidad
 # que las fotos porque la compresión de foto ensucia los bordes de las letras.
-GRAPHICS = ["envios-camion.png"]
+# (archivo, anchos, fondo). Si la fuente trae transparencia se recorta a su
+# contorno y se aplana sobre el fondo donde se muestra: el JPEG no tiene canal
+# alfa, y así el AVIF y el JPEG se ven iguales sobre la página.
+#   camion-rm.png — el camión con la marca de RM, para «Envíos a todo el país».
+#   Va sobre --ink, el fondo de la sección #comprar.
+GRAPHICS = [("camion-rm.png", W_WIDE + [1600], "#08090A")]
 Q_GRAPHIC = {"avif": 72, "jpg": 90}
 
 # Filtro opcional por nombre (ver Uso). Vacío = todo.
@@ -129,7 +134,7 @@ def main():
         made = export(im, stem, W_PORTRAIT)
         print(f"{stem:16s} vertical {im.size} -> {[w for w, _ in made]}")
 
-    for f in GRAPHICS:
+    for f, widths, fondo in GRAPHICS:
         p = os.path.join(SRC, f)
         stem = os.path.splitext(f)[0]
         if not wanted(stem):
@@ -137,8 +142,16 @@ def main():
         if not os.path.exists(p):
             print(f"  ! falta {f}, se saltea")
             continue
-        im = Image.open(p).convert("RGB")
-        made = export(im, stem, W_PORTRAIT, Q_GRAPHIC["avif"], Q_GRAPHIC["jpg"])
+        im = Image.open(p)
+        if "A" in im.getbands() or "transparency" in im.info:
+            im = im.convert("RGBA")
+            # Contorno: ignora el polvo casi invisible (alfa <= 8) del borde.
+            caja = im.getchannel("A").point(lambda v: 255 if v > 8 else 0).getbbox()
+            plano = Image.new("RGBA", im.size, fondo)
+            plano.alpha_composite(im)
+            im = plano.crop(caja)
+        im = im.convert("RGB")
+        made = export(im, stem, widths, Q_GRAPHIC["avif"], Q_GRAPHIC["jpg"])
         print(f"{stem:16s} grafica  {im.size} -> {[w for w, _ in made]}")
 
     for name, f, box, _why in CROPS:

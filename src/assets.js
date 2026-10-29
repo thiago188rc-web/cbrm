@@ -90,11 +90,12 @@ window.RM_IMG = {
   },
 
   /* ── Gráfica de envíos ────────────────────────────────────────
-     Pieza gráfica de RM, no fotografía. Se publica entera, con su
-     proporción: el texto de la imagen también está en la página. */
-  'envios-camion': {
-    ws: [420, 640, 860, 1058], w: 1058, h: 1407,
-    alt: 'Ilustración de un camión negro con la leyenda Cabinas Desarmables sobre fondo amarillo y el texto «Envíos a todo el país» con la bandera argentina',
+     Ilustración de RM, no fotografía: el camión con la marca. Se
+     publica entera, aplanada sobre --ink (el fondo de #comprar); el
+     «Envíos a todo el país» lo dice el título de la página. */
+  'camion-rm': {
+    ws: [480, 640, 960, 1280, 1600, 2115], w: 2115, h: 571,
+    alt: 'Ilustración de un camión con semirremolque negro que lleva el logo de Cabinas Desarmables RM',
     cap: '',
     prueba: []
   }

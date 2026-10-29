@@ -68,13 +68,18 @@ en varios anchos, más los recortes apaisados y la imagen de Open Graph:
 
 ```bash
 python tools/build-images.py                                # todo
-python tools/build-images.py hero-detailing envios-camion   # sólo esas fuentes
+python tools/build-images.py hero-detailing camion-rm   # sólo esas fuentes
 ```
 
 Con nombres (sin extensión) procesa sólo esas fuentes y no reescribe las
 variantes ya publicadas. `hero-detailing.jpg` es la portada de la home: una
-escena de referencia del rubro, no una cabina entregada. `envios-camion.png` es
-la gráfica de envíos y se publica entera, con su proporción.
+escena de referencia del rubro, no una cabina entregada. `camion-rm.png` es la
+gráfica de envíos: se publica entera, recortada a su contorno y aplanada sobre
+el fondo de la sección (el PNG trae transparencia y el JPEG no la soporta).
+
+> **Cambiar una imagen = cambiarle el nombre.** `/img` se sirve con caché
+> `immutable` de un año: si se pisa un archivo con el mismo nombre, quien ya
+> visitó el sitio sigue viendo el viejo.
 
 Reglas, escritas en el propio script:
 
@@ -103,15 +108,36 @@ El origen canónico está en **un solo lugar por archivo**:
 - `sitemap.xml` y `robots.txt`
 
 Hoy apuntan a `https://cbrm.vercel.app`. Cuando entre el dominio propio se
-cambian esos cuatro y listo.
+cambian esos cuatro y listo. El dominio tiene que incluir «RM»: las opciones
+conversadas son `cabinasdesarmablesrm.com` y `cabinasdesarmablesrm.com.ar`, y la
+elección sigue pendiente.
+
+## La consulta por WhatsApp
+
+En la home el visitante elige rubro, pack, medida y modelo, y suma su
+localidad. Todo es opcional. Lo elegido vive en `CTX` (`src/app.js`) y
+`waMsg()` lo escribe en el mensaje de **todos** los botones de WhatsApp de la
+home. La «orden de consulta» del cierre y la barra fija del celular muestran lo
+que va a viajar. El sitio solo abre WhatsApp con el texto armado: el mensaje lo
+manda la persona.
 
 ## Datos que faltan del taller
 
-Lo que no está confirmado aparece marcado como «a confirmar» en el sitio, y no
-se inventa. Hoy son: medidas por modelo, espesor de la chapa, carta completa de
-colores de la franja, plazos de fabricación, condiciones de pago, costo del
-flete (se suma en la cotización), quién arma y si el armado va incluido, y el
-alcance de la garantía.
+Lo que no está confirmado no se publica como hecho. Hoy faltan:
+
+- **Materiales**: material de la estructura, espesor de la chapa, aislación,
+  tornillería y cableado. La ficha «Materiales y componentes» (`DATA.packSpec`)
+  publica solo lo confirmado: cuando llegue un dato, se suma una fila en su
+  grupo y aparece sola.
+- **Medidas**: qué combinaciones de las medidas frecuentes (4,50 y 5 m de
+  ancho; 4, 6, 8 y 10 m de largo) se fabrican, el alto, la medida interior y la
+  medida de cada modelo.
+- **Imágenes**: qué fotos de la maqueta reemplazar, y fotos o renders propios
+  para los otros usos (`DATA.usos[].img`).
+- **Comerciales**: plazos de fabricación, condiciones de pago, costo del flete
+  (se suma en la cotización), quién arma y si el armado va incluido, y el
+  alcance de la garantía.
+- **Dominio**: la elección final entre `.com` y `.com.ar`.
 
 Se editan en el objeto `DATA` de `src/app.js`. No hay que tocar el diseño: las
 fichas ya están armadas para recibir esos datos.
@@ -130,6 +156,13 @@ fichas ya están armadas para recibir esos datos.
   iluminación Full Pro). Son otra dimensión que los modelos: el pack dice qué
   trae la cabina, el modelo qué entra adentro. Ningún dato dice qué pack va con
   qué modelo, así que el sitio no los cruza.
+- Las cabinas son modulares y pueden aplicarse a distintos rubros. Además de
+  los cuatro con página, RM mencionó barberías, heladerías, quioscos, manicura,
+  locales de pesca y oficinas (`DATA.usos`, presentados como usos posibles).
+- Medidas frecuentes para iniciar la consulta: 4,50 y 5 m de ancho; 4, 6, 8 y
+  10 m de largo, y medidas personalizadas (`DATA.medidas`). No es una tabla de
+  modelos estándar.
+- No hay precios fijos: cada cabina se cotiza según medida y necesidad.
 
 ## Panel de consultas
 

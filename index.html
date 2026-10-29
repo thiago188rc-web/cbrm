@@ -1321,6 +1321,9 @@ header.hd{isolation:isolate}
 .pack-tab td small{display:block;font-size:12.5px;line-height:1.35}
 .pack-tab .ok{display:inline-block;vertical-align:middle}
 .pack-tab.solo-dif tr[data-igual]{display:none}
+/* Grupo: la parte de la cabina (estructura, piso, iluminación). */
+.pack-tab tr.pg th{padding:22px 0 8px;font-family:var(--m);font-size:10.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:#4F534B;border-bottom-color:#A9ADA3}
 @media(min-width:760px){.pack-tab .c-l{width:46%}.pack-tab{font-size:15px}.pack-tab td small{font-size:13.5px}}
 .pack-nota{margin-top:18px;font-size:14.5px}
 .pack-ley{margin-top:12px;font-size:13px;color:#44473F}
@@ -1429,41 +1432,176 @@ header.hd{isolation:isolate}
   .pasos li:last-child::after{display:block;right:0}
 }
 .pend{margin-top:clamp(26px,4vh,38px);font-size:14.5px;color:var(--mut);max-width:72ch;line-height:1.75}
-/* Envíos: la gráfica de RM entera, con su proporción (3:4). En el celular
-   va después del texto y a un ancho que mantiene legible la leyenda; en
-   escritorio, a la izquierda. */
+/* Envíos: el camión de RM entero, con su proporción (3,7:1), parado sobre
+   una línea de piso. En el celular va después del texto, a todo el ancho;
+   en escritorio, a la izquierda y mirando al texto. Al aparecer entra
+   rodando unos píxeles desde la izquierda. */
 .envio{display:grid;gap:clamp(26px,3.4vw,64px);align-items:center;margin-top:clamp(48px,8vh,96px);
   padding-top:clamp(32px,5vh,56px);border-top:1px solid var(--line)}
 .envio h3{max-width:14ch}
 .envio p{margin-top:16px;color:#C6C8C0;max-width:46ch}
-.envio-g{order:2;margin:0;width:100%;max-width:340px;justify-self:center}
+.envio-g{order:2;margin:0;width:100%;border-bottom:1px solid var(--line-2)}
 .envio-g .ph,.envio-g img{width:100%;height:auto}
+.envio-g .ph{display:block;transform:translateX(-40px);transition:transform 1.2s var(--ease)}
+.envio.in .envio-g .ph{transform:none}
 @media(min-width:900px){
-  .envio.con-g{grid-template-columns:minmax(0,380px) minmax(0,1fr)}
-  .envio-g{order:0;max-width:none}
+  .envio.con-g{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}
+  .envio-g{order:0}
 }
 .emp{margin-top:clamp(48px,8vh,96px);padding-top:clamp(32px,5vh,56px);border-top:1px solid var(--line)}
 .emp>h3{margin-bottom:clamp(20px,3vh,32px)}
 
-/* ── CIERRE: el amarillo enmarca, no rellena ──────────────── */
-.cierre{display:grid;gap:26px;margin-top:clamp(52px,9vh,104px);border:1px solid var(--amber);
-  background:rgba(255,200,0,.045);padding:clamp(18px,4.4vw,56px)}
-.cierre h2{max-width:17ch}
-.cierre .lede{margin-top:16px}
-.cierre-a{display:flex;flex-direction:column;align-items:flex-start;gap:16px}
-/* Dentro del marco el botón tiene ~20 px menos que en la portada: con el
-   relleno de siempre, "Escribir por WhatsApp" cortaba línea a 390 px. */
-.cierre-a .btn{width:100%;min-height:56px;padding-inline:18px}
+/* ── ORDEN DE CONSULTA: el gesto de la home ───────────────────
+   Una ficha de taller que se llena con lo que el visitante elige. El
+   borde de arriba es el perfil de la chapa trapezoidal, el material de
+   la cabina, apoyado sobre la línea de la ficha. */
+.cierre{display:grid;gap:clamp(30px,4vw,64px);margin-top:clamp(52px,9vh,104px)}
+.cierre h2{max-width:14ch}
+.cierre-c .lede{margin-top:16px}
+.cierre-c .txt-l{display:inline-block;margin-top:22px}
+.orden{position:relative;margin-top:14px;background:var(--ink);border:1px solid var(--line);
+  border-top-color:var(--amber);padding:clamp(18px,3vw,30px)}
+.orden::before{content:"";position:absolute;left:-1px;right:-1px;top:-14px;height:14px;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='14'%3E%3Cpath d='M0 13.25H10L17 1.5H39L46 13.25H56' fill='none' stroke='%23FFC800' stroke-width='1.5'/%3E%3C/svg%3E") repeat-x left bottom/56px 14px}
+.orden-h{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 14px;padding-bottom:14px;
+  border-bottom:1px solid var(--line);font-family:var(--m);font-size:10.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--mut-2)}
+.orden-h span:first-child{color:var(--amber)}
+.orden-f{margin:0}
+.orden-f>div{display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:center;
+  min-height:56px;padding:6px 0;border-bottom:1px dashed var(--line)}
+.orden-f dt{font-family:var(--m);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut-2)}
+.orden-f dd{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}
+.of-v{color:var(--mut);font-size:15.5px;line-height:1.35;overflow-wrap:anywhere}
+.orden-f .lleno dt{color:var(--amber)}
+.orden-f .lleno .of-v{color:var(--txt);font-variation-settings:"wdth" 104,"wght" 640}
+.orden-f a{flex:none;padding:12px 0 12px 8px;font-family:var(--m);font-size:11px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--amber);text-decoration:underline;text-underline-offset:4px;
+  text-decoration-thickness:1px}
+.orden-f a:hover{text-decoration-thickness:2px}
+/* La fila "encastra" cuando cambia lo elegido: corta y en una dirección. */
+.orden-f .nuevo .of-v{animation:encastre .38s var(--ease)}
+@keyframes encastre{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+.orden-loc{margin-top:18px}
+.orden-loc input{font-family:var(--f);font-size:17px}
+.orden .btn{width:100%;min-height:56px;margin-top:22px;padding-inline:18px}
+.orden-n{margin-top:12px;font-size:13.5px;color:var(--mut)}
 @media(min-width:900px){
-  .cierre{grid-template-columns:minmax(0,1.4fr) auto;align-items:end;gap:56px}
-  .cierre-a .btn{width:auto;padding-inline:30px}
+  .cierre{grid-template-columns:minmax(0,1fr) minmax(0,480px);align-items:center}
 }
+
+/* ── ELEGIR RUBRO Y PACK ──────────────────────────────────────
+   Se elige tocando la fila o la tarjeta entera. El radio real queda fuera
+   de la vista (pero enfocable) y un cuadrado lo dibuja, como la casilla
+   de una planilla de taller. */
+.pk-in{position:absolute;width:1px;height:1px;margin:0;opacity:0;pointer-events:none}
+.pk{display:inline-block;width:.6em;height:.6em;margin-right:.42em;border:2px solid currentColor;
+  vertical-align:.02em;transition:background .2s var(--micro),border-color .2s var(--micro)}
+.pack label,.rbl label{cursor:pointer}
+.pack label::before,.rbl label::before{content:"";position:absolute;inset:0}
+.pack .btn,.rbl-a{position:relative;z-index:1}
+.rbl>li{position:relative}
+/* En los rubros la casilla cuelga a la izquierda del nombre: con ella en
+   línea, "CONCESIONARIAS" no entraba en su columna y la palabra bajaba
+   sola, dejando la casilla arriba. */
+.rbl h3 label{position:relative;display:block;padding-left:1.02em}
+.rbl h3 .pk{position:absolute;left:0;top:.2em;margin:0}
+@media(min-width:900px){.rbl h3{font-size:clamp(21px,1.9vw,28px)}}
+.pack.elegido .pk{background:var(--amber)}
+.rbl>li.elegido .pk{background:var(--amber);border-color:var(--amber)}
+.pack:has(.pk-in:focus-visible){outline:2px solid var(--on-paper);outline-offset:-2px}
+.rbl>li:has(.pk-in:focus-visible){outline:2px solid var(--amber);outline-offset:-2px}
+
+/* Otros usos: un muro de palabras que se eligen. Sin fotos hasta que RM
+   apruebe las suyas: la tipografía grande hace de imagen. */
+.usos{display:grid;gap:22px;margin-top:clamp(40px,7vh,72px)}
+.usos-t p{margin-top:10px;color:#C6C8C0;max-width:44ch;font-size:15.5px}
+.usos-l{border:0;margin:0;padding:0;min-width:0;display:flex;flex-wrap:wrap;gap:8px}
+.uso{position:relative;cursor:pointer}
+.uso input{position:absolute;opacity:0;width:1px;height:1px;margin:0}
+.uso span{display:inline-flex;align-items:center;min-height:52px;padding:8px 16px;border:1px solid #3A3D41;
+  font-size:clamp(17px,2.3vw,27px);line-height:1.05;text-transform:uppercase;letter-spacing:.005em;
+  font-variation-settings:"wdth" 112,"wght" 720;
+  transition:background .2s var(--micro),color .2s var(--micro),border-color .2s var(--micro),transform .16s var(--micro)}
+.uso:hover span{border-color:var(--amber)}
+.uso:active span{transform:scale(.97)}
+.uso input:checked~span{background:var(--amber);border-color:var(--amber);color:#000}
+.uso input:focus-visible~span{outline:2px solid var(--amber);outline-offset:3px}
+.uso.con-img{display:grid;width:min(100%,220px)}
+.uso.con-img span{border-top:0}
+@media(min-width:900px){
+  .usos{grid-template-columns:minmax(0,.8fr) minmax(0,2.2fr);gap:22px 32px;align-items:start}
+  .usos-t{grid-row:span 2}
+  .usos-a{grid-column:2}
+}
+
+/* ── MEDIDAS ──────────────────────────────────────────────────
+   Fichas con la cifra en tabular, como en una tabla de cortes. «Otra»
+   abre su campo al lado. */
+.med-gs{display:grid;gap:16px}
+.chips{border:0;margin:0;padding:0;min-width:0}
+.chips legend{padding:0;margin-bottom:8px;font-family:var(--m);font-size:10.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--mut-2)}
+.chips-l{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.chip{position:relative;cursor:pointer}
+.chip input{position:absolute;opacity:0;width:1px;height:1px;margin:0}
+.chip span{display:inline-flex;align-items:center;justify-content:center;min-width:62px;min-height:46px;
+  padding:0 14px;border:1px solid #3A3D41;font-family:var(--m);font-size:14px;font-variant-numeric:tabular-nums;
+  transition:background .2s var(--micro),color .2s var(--micro),border-color .2s var(--micro),transform .16s var(--micro)}
+.chip:hover span{border-color:var(--amber)}
+.chip:active span{transform:scale(.97)}
+.chip input:checked+span{background:var(--amber);border-color:var(--amber);color:#000}
+.chip input:focus-visible+span{outline:2px solid var(--amber);outline-offset:3px}
+.chip-otra{display:inline-flex;align-items:center;gap:8px;font-family:var(--m);color:var(--mut)}
+.chip-otra[hidden]{display:none}
+.chip-otra input{width:96px;min-height:46px;padding:0 4px;background:transparent;border:0;
+  border-bottom:1px solid var(--amber);font-family:var(--m);font-size:16px;color:var(--txt);
+  font-variant-numeric:tabular-nums}
+.chip-otra input:focus{outline:0;border-bottom-width:2px}
+.med .plan{margin-top:22px}
+.med .plan .mplan{border:0;background:transparent}
+.mplan .mp-cab{fill:rgba(255,200,0,.035);stroke:var(--amber);stroke-width:1.6}
+.mplan .mp-in{fill:none;stroke:rgba(255,200,0,.3);stroke-width:1}
+.mplan .mp-cota{fill:none;stroke:#5C6167;stroke-width:1}
+.mplan .mp-c{fill:#B4B8BD;font-family:var(--m);font-size:13px;letter-spacing:1.2px}
+.mplan .mp-no{fill:#FF8A6E;font-family:var(--m);font-size:13px;letter-spacing:1.4px}
+.med-v{margin-top:14px;min-height:1.5em;font-size:15px;color:var(--txt);max-width:52ch}
+.med-v.warn{color:#FF8A6E}
+.med-local{margin-top:22px;border-top:1px solid var(--line-2)}
+.med-local>summary{list-style:none;cursor:pointer;position:relative;padding:16px 32px 4px 0;font-size:15px}
+.med-local>summary::-webkit-details-marker{display:none}
+.med-local>summary span{margin-left:8px;font-family:var(--m);font-size:10px;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--mut-2)}
+.med-local>summary::before,.med-local>summary::after{content:"";position:absolute;right:6px;top:calc(50% + 6px);
+  width:12px;height:1.5px;background:var(--amber);transition:transform .25s var(--ease)}
+.med-local>summary::after{transform:rotate(90deg)}
+.med-local[open]>summary::after{transform:rotate(0)}
+.med-local>summary:hover{color:var(--amber)}
+.med-local .fit-in{margin-top:14px}
+@media(max-width:599px){
+  .med .mplan .mp-c,.med .mplan .mp-no{font-size:15px}
+  .med .mplan .mp-t{font-size:17px}
+  .med .mplan .mp-s{font-size:13px}
+}
+@media(min-width:1000px){.mm{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr)}}
+.envio-a{margin-top:20px}
+
+/* Superficies del navegador: también llevan la paleta. */
+input{caret-color:var(--amber)}
+input::placeholder{color:#8A8E93;opacity:1}
+
+/* ── Barra fija: el resumen de lo elegido, debajo del texto ── */
+.fab-l{display:flex;flex-direction:column;align-items:flex-start;min-width:0;line-height:1.15}
+.fab-l small{max-width:100%;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  font-family:var(--m);font-size:10px;letter-spacing:.04em;text-transform:none;font-weight:400;opacity:.8}
+.fab-l small[hidden]{display:none}
 
 /* Movimiento reducido: la regla global acorta las animaciones pero no sus
    demoras, y con fill "both" el botón quedaba transparente ~0,3 s. Acá la
    entrada directamente no corre: todo está en su lugar desde el inicio. */
 @media(prefers-reduced-motion:reduce){
   .portada-foto img,.portada h1 .ln i,.portada-lede,.portada-cta,.portada-meta,.pack-tw{animation:none}
+  .envio-g .ph{transform:none}
 }
 
 /* ── Barra fija: un botón, con texto ──────────────────────── */
@@ -1560,7 +1698,7 @@ header.hd{isolation:isolate}
   <a class="btn btn-p" id="fabWa" data-wa target="_blank" rel="noopener">
     <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.5 7.3L3 20.5l1.8-5.3A8.4 8.4 0 1 1 21 11.5z"/><path d="M8.5 9.2c.2 2.4 2.4 4.9 5 5.6.7.2 1.4-.1 1.7-.7l.2-.5-1.9-1-.7.8c-1-.4-2-1.4-2.5-2.5l.8-.7-1-1.9-.5.2c-.6.3-1 .9-1.1 1.6z"/></svg>
-    <span>Escribir por WhatsApp</span>
+    <span class="fab-l"><span>Escribir por WhatsApp</span><small id="fabCtx" hidden></small></span>
   </a>
 </div>
 

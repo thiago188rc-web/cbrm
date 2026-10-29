@@ -65,16 +65,6 @@ const EMPRESA = {
 };
 
 const DATA = {
-  /* Componentes verificados en las fotografías del cliente. */
-  sistema: [
-    { k: 'paredes', t: 'Paredes', d: 'Chapa nervada vertical de piso a techo, en las cuatro caras. Terminación negra o blanca.', dot: [172, 246] },
-    { k: 'techo', t: 'Techo', d: 'Cerrado, no abierto al galpón. Tres sistemas distintos según el modelo: chapa con spots, cielorraso luminoso o cielorraso con paneles LED.', dot: [352, 112] },
-    { k: 'luz', t: 'Iluminación', d: 'En capas: cenital para trabajar, rasante sobre las paredes para leer la pintura, y barras retroiluminadas para presentar el vehículo.', dot: [266, 150], lead: 56 },
-    { k: 'piso', t: 'Piso', d: 'Baldosa modular encastrable, con franja perimetral en el color que elijas.', dot: [352, 358] },
-    { k: 'electricidad', t: 'Instalación eléctrica', d: 'Tomacorrientes y cajas integrados en los paneles. La cabina llega con la electricidad resuelta.', dot: [172, 330], lead: 40 },
-    { k: 'accesorios', t: 'Accesorios', d: 'Enrollador de manguera, organizadores de producto y porta-herramientas montados sobre la pared.', dot: [524, 224] }
-  ],
-
   /* `foto` es la cabina entregada que ilustra el rubro. La regla: sólo se
      usa una foto si lo que el texto afirma SE VE en la foto. Ninguna se
      presenta como "una cabina en un lavadero" — eso no consta. El epígrafe
@@ -161,17 +151,47 @@ const DATA = {
     { n: 'Pack Studio', corto: 'Studio', resumen: 'Suma piso encastrable e iluminación básica.', piso: true, luz: 'Básica' },
     { n: 'Pack Studio Pro', corto: 'Studio Pro', resumen: 'Suma piso encastrable e iluminación Full Pro, con plafones LED.', piso: true, luz: 'Full Pro' }
   ],
-  /* Detalle técnico tal como lo pasó RM. Un valor por pack, en el orden
-     de `packs`: true incluido, false no incluido, o el texto exacto. */
+  /* Materiales y componentes, tal como los pasó RM, agrupados por parte de
+     la cabina. Un valor por pack, en el orden de `packs`: true figura,
+     false no figura, o el texto exacto. Lo que RM todavía no confirmó
+     (material de la estructura, espesor de la chapa, aislación,
+     tornillería, cableado) NO se publica, ni siquiera como «a confirmar»:
+     cuando llegue el dato se suma acá una fila en su grupo y aparece sola. */
   packSpec: [
-    ['Estructura 100% desarmable', true, true, true],
-    ['Revestimiento en chapa trapezoidal, color a elección', true, true, true],
-    ['Piso encastrable', false, true, true],
-    ['Tablero eléctrico con disyuntor y térmicas', false, true, true],
-    ['Spots dicroicos de 7 W', false, 'Parte baja y laterales', 'Parte media y laterales bajos'],
-    ['Plafones LED laterales y de techo', false, false, true],
-    ['Reflectores', false, true, true],
-    ['Cajas tomacorrientes dobles', false, true, true]
+    ['Estructura y revestimiento', [
+      ['Estructura 100% desarmable', true, true, true],
+      ['Revestimiento en chapa trapezoidal, color a elección', true, true, true]
+    ]],
+    ['Piso', [
+      ['Piso encastrable', false, true, true]
+    ]],
+    /* Así lo agrupa RM: el tablero y los tomacorrientes son parte de la
+       iluminación básica (Studio) y de la Full Pro (Studio Pro). */
+    ['Iluminación e instalación eléctrica', [
+      ['Tablero eléctrico con disyuntor y térmicas', false, true, true],
+      ['Spots dicroicos de 7 W', false, 'Parte baja y laterales', 'Parte media y laterales bajos'],
+      ['Plafones LED laterales y de techo', false, false, true],
+      ['Reflectores', false, true, true],
+      ['Cajas tomacorrientes dobles', false, true, true]
+    ]]
+  ],
+
+  /* Medidas frecuentes que mencionó RM, en metros, para arrancar la
+     consulta. NO es una tabla de modelos: qué combinación se fabrica, el
+     alto y la medida interior se confirman por WhatsApp. */
+  medidas: { ancho: ['4,50', '5'], largo: ['4', '6', '8', '10'] },
+
+  /* Otros usos posibles que mencionó RM, además de los cuatro rubros con
+     página. Son usos, no trabajos entregados: el bloque es tipográfico.
+     Cuando RM entregue y apruebe una foto o un render propio de alguno,
+     se carga en assets.js y se nombra en `img`: la home lo muestra. */
+  usos: [
+    { n: 'Barberías', q: 'Barbería', img: '' },
+    { n: 'Heladerías', q: 'Heladería', img: '' },
+    { n: 'Quioscos', q: 'Quiosco', img: '' },
+    { n: 'Manicura', q: 'Manicura', img: '' },
+    { n: 'Locales de pesca', q: 'Local de pesca', img: '' },
+    { n: 'Oficinas', q: 'Oficina', img: '' }
   ],
 
   /* El epígrafe visible es corto. La descripción completa vive en el alt,
@@ -185,7 +205,7 @@ const DATA = {
   ],
 
   faq: {
-    entra: ['¿Cómo sé si me entra en el espacio que tengo?', 'Medí tres cosas: ancho, largo y <b>alto libre</b> (hasta lo más bajo que haya: una viga, un caño o una luminaria). Con esas tres te decimos qué modelo entra. Podés usar el medidor de la home y te llega el resultado ya cargado en la consulta.'],
+    entra: ['¿Cómo sé si me entra en el espacio que tengo?', 'Medí tres cosas: ancho, largo y <b>alto libre</b> (hasta lo más bajo que haya: una viga, un caño o una luminaria). Con esas tres te decimos qué medida te sirve. Podés cargarlas en la sección de medidas de la home y viajan en el mensaje de WhatsApp.'],
     /* Iluminación y techo: sólo lo que dicen las especificaciones de los
        packs. Lo que no figura ahí no se afirma ni se descarta. */
     luz: ['¿Qué iluminación trae?', 'Depende del pack. El Studio trae iluminación básica: tablero eléctrico con disyuntor y térmicas, spots dicroicos de 7&nbsp;W en la parte baja y los laterales, reflectores y cajas tomacorrientes dobles. El Studio Pro trae iluminación Full Pro: tablero eléctrico con disyuntor y térmicas, spots dicroicos de 7&nbsp;W en la parte media y los laterales bajos, plafones LED laterales y de techo, reflectores y cajas tomacorrientes dobles. El Pack Box es la estructura con su revestimiento.'],
@@ -218,15 +238,22 @@ const HOLA = 'Hola RM, quiero hacerles una consulta sobre una cabina.';
    medidas, localidad) se suma al mensaje de TODOS los botones de
    WhatsApp de la página. Nada es obligatorio: sin datos sale el saludo.
    Fuera de la home los botones globales mandan HOLA, como siempre. */
-const CTX = { pack: '', rubro: '', modelo: '', veh: '', ancho: '', largo: '', alto: '', loc: '' };
+/* mA / mL: la medida de cabina elegida (frecuente u «Otra»).
+   ancho / largo / alto: las medidas del local del visitante, opcionales. */
+const CTX = { pack: '', rubro: '', modelo: '', mA: '', mL: '', mOtra: false, ancho: '', largo: '', alto: '', loc: '' };
 const IC_WA = `<svg class="ic-wa" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"
   stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.5 7.3L3 20.5l1.8-5.3A8.4 8.4 0 1 1 21 11.5z"/><path d="M8.5 9.2c.2 2.4 2.4 4.9 5 5.6.7.2 1.4-.1 1.7-.7l.2-.5-1.9-1-.7.8c-1-.4-2-1.4-2.5-2.5l.8-.7-1-1.9-.5.2c-.6.3-1 .9-1.1 1.6z"/></svg>`;
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
+const medTxt = d => d.mA && d.mL ? `${d.mA} × ${d.mL} m` : d.mA ? `${d.mA} m de ancho` : d.mL ? `${d.mL} m de largo` : '';
+
 function waMsg(o = {}) {
   const d = { ...CTX, ...o };
-  const filas = [['PACK', d.pack], ['RUBRO', d.rubro], ['MODELO', d.modelo], ['VEHÍCULO', d.veh],
-    ['MI ESPACIO', d.ancho && d.largo ? `${d.ancho} ancho × ${d.largo} largo${d.alto ? ` × ${d.alto} alto libre` : ''} (m)` : ''],
+  const med = medTxt(d);
+  const filas = [['RUBRO', d.rubro], ['PACK', d.pack],
+    ['MEDIDA', med && `${med}${d.mA && d.mL ? ' (ancho × largo)' : ''}${d.mOtra ? ', a medida' : ''}`],
+    ['MODELO', d.modelo],
+    ['MI LOCAL', d.ancho && d.largo ? `${d.ancho} ancho × ${d.largo} largo${d.alto ? ` × ${d.alto} alto libre` : ''} (m)` : ''],
     ['LOCALIDAD', d.loc]].filter(f => f[1]);
   const L = ['Hola RM, quiero consultar por una cabina.'];
   if (filas.length) L.push('', ...filas.map(f => `▸ ${f[0]}: ${f[1]}`));
@@ -250,6 +277,42 @@ function refreshWA() {
   /* Lo elegido queda a la vista: así el mensaje no sorprende a nadie. */
   $$('[data-pack-card]').forEach(c => c.classList.toggle('elegido', c.dataset.packCard === CTX.pack));
   $$('[data-rubro-row]').forEach(c => c.classList.toggle('elegido', c.dataset.rubroRow === CTX.rubro));
+  $$('input[name="pack"]').forEach(i => { i.checked = i.value === CTX.pack; });
+  $$('input[name="rubro"]').forEach(i => { i.checked = i.value === CTX.rubro; });
+  pintarOrden();
+}
+
+/* ── ORDEN DE CONSULTA ──────────────────────────────────────────
+   El gesto de la home: la consulta se arma como la cabina, por módulos.
+   Cada fila muestra lo elegido y lleva a donde se elige; la misma
+   selección viaja en todos los botones de WhatsApp. La barra fija del
+   celular muestra el resumen. */
+const ORDEN = [['rubro', 'Rubro', '/#rubros'], ['pack', 'Pack', '/#sistema'],
+  ['med', 'Medida', '/#medir'], ['modelo', 'Modelo', '/#modelos']];
+const ordenVals = () => ({ rubro: CTX.rubro, pack: CTX.pack, med: medTxt(CTX), modelo: CTX.modelo });
+
+function pintarOrden() {
+  const V = ordenVals();
+  $$('[data-of]').forEach(f => {
+    const v = V[f.dataset.of] || '', out = $('.of-v', f);
+    if (!out || out.dataset.v === v) return;
+    out.dataset.v = v;
+    out.textContent = v || 'Sin elegir';
+    f.classList.toggle('lleno', !!v);
+    const a = $('a', f), accion = v ? 'Cambiar' : 'Elegir';
+    a.textContent = accion;
+    a.setAttribute('aria-label', `${accion} ${$('dt', f).textContent.toLowerCase()}`);
+    /* La fila "encastra": reiniciar la animación en cada cambio. */
+    f.classList.remove('nuevo');
+    if (v) { void f.offsetWidth; f.classList.add('nuevo'); }
+  });
+  const res = [CTX.pack.replace(/^Pack /, ''), CTX.rubro, medTxt(CTX)].filter(Boolean).join(' · ');
+  const s = $('#fabCtx');
+  if (s) {
+    const home = location.pathname === '/';
+    s.textContent = home ? res : '';
+    s.hidden = !home || !res;
+  }
 }
 
 /* Lo elegido en la home también viaja al cotizador, si el visitante
@@ -259,7 +322,6 @@ function ctxAlCotizador() {
   if (CTX.modelo) Q.d.modelo = CTX.modelo;
   if (CTX.pack) Q.d.pack = CTX.pack;
   if (CTX.loc) Q.d.loc = CTX.loc;
-  if (CTX.veh) PRE.vehiculo = VEH_COT[CTX.veh];
   if (CTX.ancho && CTX.largo) { PRE.ancho = CTX.ancho; PRE.largo = CTX.largo; PRE.alto = CTX.alto; }
   if (!PRE.vehiculo && !PRE.ancho && Q.d.rubro && Q.i === 0) Q.i = 1;
 }
@@ -285,8 +347,33 @@ document.addEventListener('click', e => {
   }
 });
 document.addEventListener('change', e => {
-  if (e.target.name === 'modelo') { CTX.modelo = e.target.value; refreshWA(); }
+  const t = e.target, k = t.name;
+  if (k === 'modelo' || k === 'pack' || k === 'rubro') { CTX[k] = t.value; refreshWA(); }
+  if (k === 'modelo') dibujarPlan();
+  /* Medida de cabina: una frecuente, u «Otra» con su campo. */
+  if (k === 'mA' || k === 'mL') {
+    const otra = t.value === 'otra', campo = $(`[data-m="${k}"]`);
+    if (campo) {
+      campo.closest('.chip-otra').hidden = !otra;
+      if (otra) campo.focus();
+    }
+    CTX[k] = otra ? (campo ? numM(campo.value) : '') : t.value;
+    CTX.mOtra = !!$('input[name="mA"][value="otra"]:checked, input[name="mL"][value="otra"]:checked');
+    dibujarPlan(); refreshWA();
+  }
 });
+document.addEventListener('input', e => {
+  const t = e.target;
+  if (t.dataset.f === 'loc') { CTX.loc = t.value.trim(); refreshWA(); }
+  if (t.dataset.m) { CTX[t.dataset.m] = numM(t.value); dibujarPlan(); refreshWA(); }
+});
+
+/* "5,2" → "5,20"; "6" → "6". Vacío o inválido → ''. */
+function numM(s) {
+  const n = parseFloat(String(s).replace(',', '.'));
+  if (!isFinite(n) || n <= 0 || n > 60) return '';
+  return Number.isInteger(n) ? String(n) : n.toFixed(2).replace('.', ',');
+}
 
 $('#logoImg').src = window.RM_LOGO;
 $('#logoImg2').src = window.RM_LOGO;
@@ -306,13 +393,32 @@ burger.onclick = () => {
 const closeMob = () => { mob.classList.remove('on'); burger.classList.remove('x'); document.body.style.overflow = ''; };
 $$('#mob a').forEach(a => a.onclick = closeMob);
 
-/* Barra fija. En la home y en el celular se ve desde el primer momento:
-   es el camino a WhatsApp con el pulgar. En el resto de las páginas
+/* Barra fija. En la home aparece cuando el botón de la portada sale de la
+   pantalla y se corre mientras la orden de consulta está a la vista: nunca
+   dos botones de WhatsApp iguales juntos. En el resto de las páginas
    aparece al bajar, como antes. Nunca en el panel interno. */
-const MOVIL = matchMedia('(max-width:999px)');
+const FAB_HOME = { portada: true, orden: false };
+let fabIO = null;
+function fabHome(root) {
+  if (fabIO) fabIO.disconnect();
+  /* Se arranca como si la portada estuviera a la vista: si no, al volver a
+     la home la barra quedaba con el estado de la página anterior hasta el
+     primer aviso del observador. */
+  FAB_HOME.portada = true; FAB_HOME.orden = false;
+  const cta = $('.portada-cta', root), orden = $('#configurar', root);
+  if (!cta || !('IntersectionObserver' in window)) { FAB_HOME.portada = false; return; }
+  fabIO = new IntersectionObserver(es => {
+    es.forEach(e => { FAB_HOME[e.target === cta ? 'portada' : 'orden'] = e.isIntersecting; });
+    fab();
+  });
+  fabIO.observe(cta);
+  if (orden) fabIO.observe(orden);
+}
 function fab() {
   const p = location.pathname;
-  const ver = !p.startsWith('/panel') && ((p === '/' && MOVIL.matches) || scrollY > innerHeight * 0.35);
+  const ver = !p.startsWith('/panel') && (p === '/'
+    ? !FAB_HOME.portada && !FAB_HOME.orden
+    : scrollY > innerHeight * 0.35);
   $('#fab').classList.toggle('on', ver);
   /* La barra fija mide ~72px: sin este espacio tapa el final de la página. */
   document.body.classList.toggle('has-fab', ver);
@@ -489,51 +595,6 @@ function bindFaq(root) {
 
 /* ── VISTA: HOME ────────────────────────────────────────────── */
 
-/* ── ESQUEMA ISOMÉTRICO (construido a partir del pictograma del logo) ── */
-function isoSVG() {
-  const F = [120, 60, 580, 400], B = [262, 148, 442, 312];
-  const p = (x, y) => `${x} ${y}`;
-  const paths = [
-    `M${p(F[0], F[1])} L${p(F[2], F[1])} L${p(F[2], F[3])} L${p(F[0], F[3])} Z`,
-    `M${p(B[0], B[1])} L${p(B[2], B[1])} L${p(B[2], B[3])} L${p(B[0], B[3])} Z`,
-    `M${p(F[0], F[1])} L${p(B[0], B[1])}`, `M${p(F[2], F[1])} L${p(B[2], B[1])}`,
-    `M${p(F[0], F[3])} L${p(B[0], B[3])}`, `M${p(F[2], F[3])} L${p(B[2], B[3])}`,
-    /* luminarias del techo */
-    `M${p(200, 96)} L${p(295, 160)}`, `M${p(350, 78)} L${p(350, 148)}`, `M${p(500, 96)} L${p(408, 160)}`,
-    /* despiece del piso */
-    `M${p(180, 400)} L${p(292, 312)}`, `M${p(350, 400)} L${p(350, 312)}`, `M${p(520, 400)} L${p(412, 312)}`,
-    /* nervadura de la pared del fondo */
-    `M${p(300, 148)} L${p(300, 312)}`, `M${p(330, 148)} L${p(330, 312)}`,
-    `M${p(372, 148)} L${p(372, 312)}`, `M${p(404, 148)} L${p(404, 312)}`
-  ];
-  const dots = DATA.sistema.map((s, i) => {
-    const L = s.lead || 26;                 // guía más larga donde los rótulos se pisarían
-    return `
-    <g class="hot" data-i="${i}" tabindex="0" role="button" aria-label="${s.t}">
-      <line x1="${s.dot[0]}" y1="${s.dot[1]}" x2="${s.dot[0]}" y2="${s.dot[1] - L}"></line>
-      <circle class="hit" cx="${s.dot[0]}" cy="${s.dot[1]}" r="22"></circle>
-      <circle class="dot" cx="${s.dot[0]}" cy="${s.dot[1]}" r="5.5"></circle>
-      <text x="${s.dot[0]}" y="${s.dot[1] - L - 7}" text-anchor="middle">${s.t}</text>
-    </g>`;
-  }).join('');
-
-  /* Planos con relleno: sin esto el dibujo son cuatro líneas sueltas y se
-     lee como un marco vacío, no como el interior de una cabina. Los tonos
-     imitan cómo cae la luz en las fotos — techo y fondo más claros que las
-     paredes laterales, piso apenas insinuado. */
-  const planos = `
-    <polygon class="pl pl-techo" points="${F[0]},${F[1]} ${B[0]},${B[1]} ${B[2]},${B[1]} ${F[2]},${F[1]}"/>
-    <polygon class="pl pl-izq"   points="${F[0]},${F[1]} ${B[0]},${B[1]} ${B[0]},${B[3]} ${F[0]},${F[3]}"/>
-    <polygon class="pl pl-der"   points="${F[2]},${F[1]} ${B[2]},${B[1]} ${B[2]},${B[3]} ${F[2]},${F[3]}"/>
-    <polygon class="pl pl-piso"  points="${F[0]},${F[3]} ${B[0]},${B[3]} ${B[2]},${B[3]} ${F[2]},${F[3]}"/>
-    <rect class="pl pl-fondo" x="${B[0]}" y="${B[1]}" width="${B[2] - B[0]}" height="${B[3] - B[1]}"/>`;
-
-  return `<svg class="iso" id="iso" viewBox="0 0 700 440" role="img"
-      aria-label="Esquema del interior de una cabina RM: paredes, techo, iluminación, piso, instalación eléctrica y accesorios.">
-    ${planos}
-    <g>${paths.map(d => `<path class="stroke" d="${d}"/>`).join('')}</g>${dots}</svg>`;
-}
-
 function bindIso(root) {
   const iso = $('#iso', root); if (!iso) return;
   $$('.stroke', iso).forEach((el, i) => {
@@ -592,110 +653,138 @@ function bindCmp(root) {
   }), { rootMargin: '-20% 0px' }).observe(c);
 }
 
-/* ── MEDIDOR DE ESPACIO ─────────────────────────────────────── */
-const VEH = {
-  Moto: { l: 2.2, a: 0.9, n: 'una moto' },
-  Auto: { l: 4.4, a: 1.8, n: 'un auto mediano' },
-  Camioneta: { l: 5.4, a: 2.0, n: 'una camioneta' }
-};
-/* Cómo se llama cada vehículo en el paso 2 del cotizador. */
-const VEH_COT = { Moto: 'Una moto', Auto: 'Un auto', Camioneta: 'Una camioneta' };
-
-/* El medidor dice lo que calcula y lo que no: compara un vehículo de
-   referencia con la planta que carga el visitante. No conoce la medida
-   de ninguna cabina (no está publicada) ni evalúa el alto. Nada es
-   obligatorio: el botón de WhatsApp manda lo que haya.
+/* ── MEDIDAS ────────────────────────────────────────────────────
+   Las frecuentes son las que mencionó RM, para arrancar la consulta;
+   «Otra» abre un campo para pedir la propia. La planta dibuja la medida
+   elegida a escala con lo que tiene que entrar: el modelo elegido o, si
+   no hay, un auto de referencia. No es un plano de fabricación: qué
+   combinación se fabrica, el alto y la medida interior los confirma RM.
+   Las medidas del local del visitante son aparte y opcionales.
    autocomplete="off": la vista se dibuja antes de que termine la carga y,
    al recargar, Chrome restauraba valores en los campos sin que pasaran por
    CTX — se veían en pantalla pero no viajaban en el mensaje. */
 function fitBlock() {
-  const sel = CTX.veh || 'Auto';
+  const M = DATA.medidas;
+  const grupo = (k, lb, vals) => {
+    const otra = CTX[k] && !vals.includes(CTX[k]);
+    return `
+    <fieldset class="chips">
+      <legend>${lb}</legend><div class="chips-l">
+      ${[...vals, 'otra'].map(v => `
+        <label class="chip"><input type="radio" name="${k}" value="${v}" autocomplete="off"${(v === 'otra' ? otra : CTX[k] === v) ? ' checked' : ''}><span>${v === 'otra' ? 'Otra' : v + ' m'}</span></label>`).join('')}
+      <span class="chip-otra"${otra ? '' : ' hidden'}><input type="text" inputmode="decimal" data-m="${k}" placeholder="0,00"
+        autocomplete="off" aria-label="${lb}: otra medida, en metros" value="${otra ? esc(CTX[k]) : ''}"><span aria-hidden="true">m</span></span>
+    </div></fieldset>`;
+  };
   return `
   <div class="med rv" id="medir">
-    <h3 class="d3">¿Entra en tu espacio?</h3>
-    <p class="med-i">Cargá el ancho y el largo del lugar donde iría la cabina.</p>
-    <div class="opts med-veh" role="group" aria-label="Vehículo de referencia">
-      ${Object.keys(VEH).map(k => `
-        <button type="button" class="opt${k === sel ? ' sel' : ''}" data-veh="${k}" aria-pressed="${k === sel}">${k}</button>`).join('')}
-    </div>
-    <div class="fit-in">
-      ${[['ancho', 'Ancho'], ['largo', 'Largo'], ['alto', 'Alto libre']].map(f => `
-        <div class="f-fld"><label for="f-${f[0]}">${f[1]} (m)</label>
-          <input id="f-${f[0]}" data-f="${f[0]}" type="text" inputmode="decimal" placeholder="0,00" autocomplete="off" value="${esc(CTX[f[0]])}"></div>`).join('')}
-    </div>
-    <p class="mono med-alto">Alto libre: hasta lo más bajo que haya (viga, caño o luminaria).</p>
-    <div class="f-fld med-loc"><label for="f-loc">Localidad (opcional)</label>
-      <input id="f-loc" data-f="loc" type="text" autocomplete="off" placeholder="Rosario, Santa Fe" value="${esc(CTX.loc)}"></div>
-    <div class="plan" id="planWrap">${planSVG(null)}</div>
-    <div class="verdict" id="verdict" hidden></div>
-    <dl class="med-nota">
-      <div><dt>Qué hace</dt><dd>Dibuja tu planta a escala y prueba si entra un vehículo de referencia, con el margen que queda alrededor.</dd></div>
-      <div><dt>Qué no calcula</dt><dd>La medida de la cabina, el alto libre ni obstáculos como columnas o puertas. El modelo que corresponde lo confirma RM con tus medidas.</dd></div>
-    </dl>
+    <h3 class="d3">¿Qué medida necesitás?</h3>
+    <p class="med-i">Las que más se piden, para arrancar la consulta. Si necesitás otra, tocá «Otra» y cargala.</p>
+    <div class="med-gs">${grupo('mA', 'Ancho', M.ancho)}${grupo('mL', 'Largo', M.largo)}</div>
+    <div class="plan" id="planWrap">${cabinaPlan()}</div>
+    <p class="med-v" id="verdict" aria-live="polite"></p>
+    <p class="mono med-alto">Esquema de referencia, no un plano de fabricación. Qué combinaciones se fabrican, el alto y la medida interior te los confirmamos por WhatsApp.</p>
+    <details class="med-local"${CTX.ancho ? ' open' : ''}>
+      <summary>Sumar las medidas de tu local <span>opcional</span></summary>
+      <div class="fit-in">
+        ${[['ancho', 'Ancho'], ['largo', 'Largo'], ['alto', 'Alto libre']].map(f => `
+          <div class="f-fld"><label for="f-${f[0]}">${f[1]} (m)</label>
+            <input id="f-${f[0]}" data-f="${f[0]}" type="text" inputmode="decimal" placeholder="0,00" autocomplete="off" value="${esc(CTX[f[0]])}"></div>`).join('')}
+      </div>
+      <p class="mono med-alto">Alto libre: hasta lo más bajo que haya (viga, caño o luminaria).</p>
+    </details>
     <div class="med-cta">
-      ${btnWA('Mandar por WhatsApp')}
+      ${btnWA('Consultar por WhatsApp')}
       <a class="txt-l" id="fitGo" href="/presupuesto" data-quote-ctx>Armar presupuesto paso a paso</a>
     </div>
-    <p class="quiet med-q">Nada es obligatorio: mandá lo que tengas y lo completamos por WhatsApp.</p>
   </div>`;
 }
-function planSVG(st) {
-  if (!st) return `<svg viewBox="0 0 640 400"><rect width="640" height="400" fill="none"/>
-    <text x="320" y="196" text-anchor="middle" fill="#4A4E54" font-family="Azeret Mono,monospace" font-size="12" letter-spacing="1.4">CARGÁ TU ESPACIO</text>
-    <text x="320" y="220" text-anchor="middle" fill="#33373C" font-family="Azeret Mono,monospace" font-size="10" letter-spacing="1.2">EL PLANO SE DIBUJA SOLO</text></svg>`;
-  const { W, L, v } = st, pad = 54, w = 640, h = 400;
-  const sc = Math.min((w - pad * 2) / W, (h - pad * 2) / L);
-  const bw = W * sc, bl = L * sc, x0 = (w - bw) / 2, y0 = (h - bl) / 2;
-  const cw = v.a * sc, cl = v.l * sc, cx = (w - cw) / 2, cy = (h - cl) / 2;
-  const fits = v.a < W && v.l < L;
-  const col = fits ? '#FFC800' : '#FF6B4A';
-  return `<svg viewBox="0 0 640 400" role="img" aria-label="Plano a escala de tu espacio con el vehículo adentro">
-    <defs><pattern id="hatch" width="7" height="7" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
-      <line x1="0" y1="0" x2="0" y2="7" stroke="#1D2023" stroke-width="3"/></pattern></defs>
-    <rect x="${x0}" y="${y0}" width="${bw}" height="${bl}" fill="url(#hatch)" stroke="${col}" stroke-width="1.5"/>
-    ${fits ? `<rect x="${cx}" y="${cy}" width="${cw}" height="${cl}" rx="${cw * .12}" fill="#101315" stroke="#5C6167" stroke-width="1.2"/>
-      <text x="${w / 2}" y="${cy + cl / 2 + 4}" text-anchor="middle" fill="#6E747B" font-family="Azeret Mono,monospace" font-size="10" letter-spacing="1.2">${v.n.toUpperCase()}</text>
-      <line x1="${x0}" y1="${cy + cl / 2}" x2="${cx}" y2="${cy + cl / 2}" stroke="${col}" stroke-width="1" stroke-dasharray="3 3"/>
-      <line x1="${cx + cw}" y1="${cy + cl / 2}" x2="${x0 + bw}" y2="${cy + cl / 2}" stroke="${col}" stroke-width="1" stroke-dasharray="3 3"/>
-      <text class="pd" x="${(x0 + cx) / 2}" y="${cy + cl / 2 - 9}" text-anchor="middle" fill="${col}" font-family="Azeret Mono,monospace" font-size="10">${dec((W - v.a) / 2)}</text>
-      <text class="pd" x="${(cx + cw + x0 + bw) / 2}" y="${cy + cl / 2 - 9}" text-anchor="middle" fill="${col}" font-family="Azeret Mono,monospace" font-size="10">${dec((W - v.a) / 2)}</text>`
-      : `<text class="pd" x="${w / 2}" y="${h / 2}" text-anchor="middle" fill="#FF6B4A" font-family="Azeret Mono,monospace" font-size="11" letter-spacing="1.3">NO ENTRA EL VEHÍCULO</text>`}
-    <text class="pd" x="${x0 + bw / 2}" y="${y0 - 16}" text-anchor="middle" fill="#8A9098" font-family="Azeret Mono,monospace" font-size="11">${dec(W)} m</text>
-    <text class="pd" x="${x0 - 16}" y="${y0 + bl / 2}" text-anchor="middle" fill="#8A9098" font-family="Azeret Mono,monospace" font-size="11" transform="rotate(-90 ${x0 - 16} ${y0 + bl / 2})">${dec(L)} m</text>
+
+/* Lo que entra, según el modelo elegido. Sin modelo (o «A medida»), un
+   auto de referencia: es lo que la mayoría tiene que meter adentro. */
+const queEntra = () => {
+  const m = DATA.modelos.find(x => x.n === CTX.modelo);
+  return m && m.plan ? m.plan : ['auto'];
+};
+const DESC_VEH = {
+  auto: ['un auto mediano de referencia', 'dos autos medianos de referencia'],
+  moto: ['una moto de referencia', 'dos motos de referencia']
+};
+/* Luz mínima de 30 cm entre vehículos y paredes en el esquema: sin ella,
+   «entra» podría ser cierto por un par de centímetros. */
+const LUZ = 0.3;
+
+/* Planta de la cabina a escala, con el largo en horizontal (las cabinas
+   son más largas que anchas y la caja es apaisada) y cotas como en un
+   plano. Devuelve el SVG; `planFit` guarda si entra, para el texto. */
+let planFit = null;
+function cabinaPlan() {
+  const W = parseFloat(String(CTX.mA).replace(',', '.')) || 0;
+  const L = parseFloat(String(CTX.mL).replace(',', '.')) || 0;
+  /* En el celular la caja es más chica en unidades: así las cotas y los
+     textos no quedan diminutos al escalar el SVG a 320 px. */
+  const chico = matchMedia('(max-width:599px)').matches;
+  const vw = chico ? 420 : 640, vh = chico ? 290 : 360, pad = chico ? 48 : 58;
+  planFit = null;
+  if (!W || !L) return `<svg viewBox="0 0 ${vw} ${vh}" class="mplan dark" role="img" aria-label="Elegí ancho y largo para ver la planta a escala">
+    <rect x="${pad}" y="${pad}" width="${vw - pad * 2}" height="${vh - pad * 2}" class="mp-box" stroke-dasharray="7 7"/>
+    <text x="${vw / 2}" y="${vh / 2 - 4}" text-anchor="middle" class="mp-t">ELEGÍ ANCHO Y LARGO</text>
+    <text x="${vw / 2}" y="${vh / 2 + 20}" text-anchor="middle" class="mp-s">LA PLANTA SE DIBUJA A ESCALA</text></svg>`;
+  const sc = Math.min((vw - pad * 2) / L, (vh - pad * 2) / W);
+  const bw = L * sc, bh = W * sc, x0 = (vw - bw) / 2, y0 = (vh - bh) / 2;
+  const tipos = queEntra(), s = SILUETA[tipos[0]], n = tipos.length;
+  /* Uno al lado del otro a lo ancho si entran; si no, en fila a lo largo. */
+  let pos = null;
+  if (n * s.a + (n + 1) * LUZ <= W && s.l + 2 * LUZ <= L) {
+    const g = (W - n * s.a) / (n + 1);
+    pos = tipos.map((t, i) => [L / 2, g * (i + 1) + s.a * (i + .5)]);
+  } else if (s.a + 2 * LUZ <= W && n * s.l + (n + 1) * LUZ <= L) {
+    const g = (L - n * s.l) / (n + 1);
+    pos = tipos.map((t, i) => [g * (i + 1) + s.l * (i + .5), W / 2]);
+  }
+  planFit = { ok: !!pos, desc: DESC_VEH[tipos[0]][n - 1], W: CTX.mA, L: CTX.mL, s };
+  const k = sc / 100;
+  const veh = pos ? pos.map(([px, py]) => `<g transform="translate(${(x0 + px * sc).toFixed(1)} ${(y0 + py * sc).toFixed(1)}) rotate(-90) scale(${k.toFixed(4)}) translate(${-s.a * 50} ${-s.l * 50})">
+      <path d="${s.cuerpo}" class="mp-veh"/><path d="${s.detalle}" class="mp-det"/><path d="${s.espejos}" class="mp-det"/></g>`).join('') : '';
+  /* Cotas: línea con topes en los extremos y la medida al medio. */
+  const cy = y0 - 24, cx = x0 - 24;
+  return `<svg viewBox="0 0 ${vw} ${vh}" class="mplan dark" role="img"
+    aria-label="Planta a escala de ${CTX.mA} por ${CTX.mL} metros${pos ? ' con ' + planFit.desc : ''}">
+    <path d="M${x0} ${cy}H${x0 + bw}M${x0} ${cy - 5}v10M${x0 + bw} ${cy - 5}v10M${cx} ${y0}V${y0 + bh}M${cx - 5} ${y0}h10M${cx - 5} ${y0 + bh}h10" class="mp-cota"/>
+    <text x="${x0 + bw / 2}" y="${cy - 9}" text-anchor="middle" class="mp-c">${CTX.mL} M</text>
+    <text x="${cx - 9}" y="${y0 + bh / 2}" text-anchor="middle" class="mp-c" transform="rotate(-90 ${cx - 9} ${y0 + bh / 2})">${CTX.mA} M</text>
+    <rect x="${x0}" y="${y0}" width="${bw}" height="${bh}" class="mp-cab"/>
+    <rect x="${x0 + 4}" y="${y0 + 4}" width="${Math.max(bw - 8, 0)}" height="${Math.max(bh - 8, 0)}" class="mp-in"/>
+    ${veh}
+    ${pos ? '' : `<text x="${vw / 2}" y="${vh / 2 + 4}" text-anchor="middle" class="mp-no">NO ENTRA A ESCALA</text>`}
   </svg>`;
 }
+
+function dibujarPlan() {
+  const wrap = $('#planWrap'), vd = $('#verdict');
+  if (!wrap) return;
+  wrap.innerHTML = cabinaPlan();
+  if (!vd) return;
+  const f = planFit;
+  if (!f) { vd.textContent = ''; vd.classList.remove('warn'); return; }
+  const med = `${f.W} × ${f.L} m`, dim = `(${dec(f.s.l)} × ${dec(f.s.a)} m)`;
+  const dos = f.desc.startsWith('dos');
+  const sujeto = f.desc.charAt(0).toUpperCase() + f.desc.slice(1);
+  vd.classList.toggle('warn', !f.ok);
+  vd.textContent = f.ok
+    ? `${sujeto} ${dim} ${dos ? 'entran' : 'entra'} a escala en ${med}.`
+    : `A escala, ${f.desc} ${dim} no ${dos ? 'entran' : 'entra'} en ${med}. Probá otra medida o pedí una a medida.`;
+}
+
+/* Las medidas del local: opcionales, viajan en el mensaje como MI LOCAL. */
 function bindFit(root) {
-  const wrap = $('#planWrap', root); if (!wrap) return;
-  let veh = CTX.veh || 'Auto';
+  if (!$('#planWrap', root)) return;
   const num = s => { const n = parseFloat(String(s).replace(',', '.')); return isFinite(n) && n > 0 ? n : 0; };
-  const vd = $('#verdict', root);
-  const upd = () => {
-    const W = num(CTX.ancho), L = num(CTX.largo), A = num(CTX.alto), v = VEH[veh];
-    if (!W || !L) { wrap.innerHTML = planSVG(null); vd.hidden = true; return; }
-    wrap.innerHTML = planSVG({ W, L, v });
-    const fits = v.a < W && v.l < L;
-    const mL = ((W - v.a) / 2), mF = ((L - v.l) / 2);
-    vd.hidden = false;
-    vd.classList.toggle('warn', !fits);
-    vd.innerHTML = fits
-      ? `<p><b>Entra ${v.n} de referencia</b> (${dec(v.l)} × ${dec(v.a)} m): quedan <b class="num">${dec(mL)} m</b> a cada lado y <b class="num">${dec(mF)} m</b> adelante y atrás.</p>
-         <p class="mono">No es la medida de la cabina. ${A ? `Alto libre cargado: ${dec(A)} m; el medidor no lo evalúa.` : 'El alto libre no se evalúa acá.'}</p>`
-      : `<p><b>No entra ${v.n} de referencia</b> (${dec(v.l)} × ${dec(v.a)} m) en ${dec(W)} × ${dec(L)} m. Puede servir otro vehículo o una cabina a medida: mandanos las medidas igual.</p>`;
-  };
-  $$('[data-veh]', root).forEach(b => b.onclick = () => {
-    veh = b.dataset.veh; CTX.veh = veh;
-    $$('[data-veh]', root).forEach(o => { o.classList.toggle('sel', o === b); o.setAttribute('aria-pressed', o === b); });
-    upd(); refreshWA();
+  $$('[data-f="ancho"],[data-f="largo"],[data-f="alto"]', root).forEach(i => i.oninput = () => {
+    CTX[i.dataset.f] = num(i.value) ? dec(num(i.value)) : '';
+    refreshWA();
   });
-  $$('[data-f]', root).forEach(i => i.oninput = () => {
-    const f = i.dataset.f;
-    if (f === 'loc') CTX.loc = i.value.trim();
-    else CTX[f] = num(i.value) ? dec(num(i.value)) : '';
-    /* Con medidas cargadas, el vehículo elegido (o el de base) entra al mensaje. */
-    if (f !== 'loc' && CTX.ancho && !CTX.veh) CTX.veh = veh;
-    upd(); refreshWA();
-  });
-  upd();
+  dibujarPlan();
 }
 
 /* ── VISTA: RUBRO ───────────────────────────────────────────── */
@@ -1439,50 +1528,6 @@ function modeloPane(i) {
     </div>`;
 }
 
-/* ── Muestras de material ─────────────────────────────────────────
-   Antes esto eran rayas dibujadas con CSS. RM tiene fotografiadas las
-   dos terminaciones y los tres techos: mostrar la chapa real en vez de
-   una textura inventada es más honesto y además se ve el producto. */
-const swatch = (name, lb, sub) => `
-  <figure class="sw" data-img="${name}" data-cur="Ampliar">
-    ${pic(name, { cls: 'fill', ratio: '3/2', sizes: '(min-width:820px) 30vw, 46vw' })}
-    <figcaption><b>${lb}</b>${sub ? `<span>${sub}</span>` : ''}</figcaption>
-  </figure>`;
-
-/* Tres bandas apiladas en vez de tres columnas: cada opción tiene distinta
-   cantidad de muestras (2 terminaciones, 3 techos, 2 colores) y en columnas
-   quedaban alturas muy dispares, con dos columnas casi vacías. */
-const cfgFila = (kicker, texto, cols, muestras) => `
-  <div class="cfg-row">
-    <div class="cfg-lb">
-      <span class="mono am">${kicker}</span>
-      <p class="quiet">${texto}</p>
-    </div>
-    <div class="cfg-sw" style="--cols:${cols}">${muestras}</div>
-  </div>`;
-
-const configBlock = () => `
-  <div class="cfg-stack">
-    ${cfgFila('Terminación',
-  'La negra separa el vehículo del fondo. La blanca devuelve luz y rinde mejor en locales de techo bajo.', 2,
-  swatch('negra-wide', 'Negra') + swatch('blanca-wide', 'Blanca'))}
-
-    ${cfgFila('Techo',
-  `Los tres sistemas están en cabinas entregadas: cada foto es uno de ellos. Si son intercambiables en todos los modelos, ${TBD()}.`, 3,
-  swatch('negraBajo-wide', 'Chapa con luces embutidas')
-  + swatch('hero-wide', 'Cielorraso luminoso')
-  + swatch('moto', 'Cielorraso con paneles LED'))}
-
-    ${cfgFila('Franja del piso',
-  `Amarillo y magenta están vistos en cabinas entregadas. La carta completa de colores, ${TBD()}.`, 1,
-  `<div class="sw-row">
-        <span class="sw-dot" style="--c:#FFC800"><b>Amarillo</b></span>
-        <span class="sw-dot" style="--c:#E0397E"><b>Magenta</b></span>
-        <span class="sw-dot sw-more"><i>+</i><b>Otros a pedido</b></span>
-      </div>`)}
-  </div>`;
-
-
 /* Cada sección termina en el paso lógico siguiente, no en el mismo botón */
 const ctaBand = (kicker, text, btn) => `
   <div class="ctab rv"><div><span class="mono am">${kicker}</span><p class="d3">${text}</p></div>
@@ -1550,14 +1595,18 @@ const SI = `${IC_OK}<span class="sr">Incluido</span>`;
 const NO = '<span class="no-inc" aria-hidden="true">—</span><span class="sr">No figura en este pack</span>';
 
 /* Packs: primero las diferencias (tres filas iguales en las tres
-   columnas, para comparar de un vistazo); el detalle técnico completo
-   queda plegado, con un filtro para ver sólo lo que cambia. */
+   columnas, para comparar de un vistazo). Tocar la tarjeta suma el pack a
+   la orden de consulta; el botón lo consulta directo. Materiales y
+   componentes quedan plegados, agrupados por parte de la cabina, con un
+   filtro para ver sólo lo que cambia. */
 function packsBlock() {
   const P = DATA.packs;
   const val = v => v === true ? SI : v === false ? NO : `<small>${v}</small>`;
+  const igual = v => v.every(x => x === v[0]);
   const cards = P.map((p, i) => `
     <article class="pack rv" data-d="${i + 1}" data-pack-card="${p.n}">
-      <h3 class="d3">${p.n}</h3>
+      <input class="pk-in" type="radio" name="pack" id="p-${i}" value="${p.n}" autocomplete="off"${CTX.pack === p.n ? ' checked' : ''}>
+      <h3 class="d3"><label for="p-${i}"><span class="pk" aria-hidden="true"></span>${p.n}</label></h3>
       <span class="pack-badge">En tu consulta</span>
       <p class="pack-r">${p.resumen}</p>
       <dl class="pack-s">
@@ -1567,31 +1616,32 @@ function packsBlock() {
       </dl>
       ${btnWA('Consultar este pack', { pack: p.n, aria: `Consultar por el ${p.n} por WhatsApp` }, 'btn-g')}
     </article>`).join('');
-  const filas = DATA.packSpec.map(([lb, ...v]) => `
-    <tr${v.every(x => x === v[0]) ? ' data-igual' : ''}><th scope="row">${lb}</th>${v.map(x => `<td>${val(x)}</td>`).join('')}</tr>`).join('');
+  const filas = DATA.packSpec.map(([g, rows]) => `
+    <tr class="pg"${rows.every(([, ...v]) => igual(v)) ? ' data-igual' : ''}><th scope="colgroup" colspan="4">${g}</th></tr>${rows.map(([lb, ...v]) => `
+    <tr${igual(v) ? ' data-igual' : ''}><th scope="row">${lb}</th>${v.map(x => `<td>${val(x)}</td>`).join('')}</tr>`).join('')}`).join('');
   return `
     <div class="packs">${cards}</div>
     <details class="pack-det rv">
-      <summary>Ver el detalle técnico de cada pack</summary>
+      <summary>Materiales y componentes de cada pack</summary>
       <div class="pack-tw">
         <button type="button" class="pack-tg" aria-pressed="false">Solo lo que cambia</button>
         <table class="pack-tab">
-          <caption class="sr">Qué incluye cada pack</caption>
+          <caption class="sr">Materiales y componentes de cada pack</caption>
           <colgroup><col class="c-l"><col><col><col></colgroup>
           <thead><tr><td></td>${P.map(p => `<th scope="col">${p.corto}</th>`).join('')}</tr></thead>
           <tbody>${filas}</tbody>
         </table>
-        <p class="pack-ley">— No figura en las especificaciones de ese pack.</p>
+        <p class="pack-ley">— No figura en las especificaciones de ese pack. Publicamos sólo lo que confirmó el taller: si necesitás el detalle de un material, preguntalo en la consulta.</p>
       </div>
     </details>`;
 }
 
-/* Los cinco modelos a la vista, para comparar sin tocar pestañas.
-   Elegir uno es opcional: sólo lo suma al mensaje de WhatsApp. */
+/* Los cinco modelos a la vista, por lo que tiene que entrar. Elegir uno es
+   opcional: se suma al mensaje y la planta de arriba lo dibuja adentro. */
 function modelosHome() {
   return `
     <fieldset class="mods7 rv">
-      <legend>Tocá uno para sumarlo a tu consulta</legend>
+      <legend>¿Qué tiene que entrar? Tocá uno y se suma a tu consulta</legend>
       ${DATA.modelos.map(m => `
         <div class="mrow">
           <input type="radio" name="modelo" id="m-${m.slug}" value="${m.n}" autocomplete="off"${CTX.modelo === m.n ? ' checked' : ''}>
@@ -1600,39 +1650,85 @@ function modelosHome() {
             <span class="mrow-d">${m.qe}</span></label>
           <a class="mrow-f" href="${urlModelo(m)}" aria-label="Ficha: ${m.n}">Ficha</a>
         </div>`).join('')}
-      <p class="mods7-p"><span class="tbd">a confirmar</span> Tabla de medidas por modelo. La medida final se define con la de tu local.</p>
+      <p class="mods7-p">La medida de cada modelo la confirmamos con la de tu local.</p>
     </fieldset>`;
 }
 
+/* Rubros: los cuatro con página y, debajo, los otros usos posibles que
+   mencionó RM, en tipografía. Todos son la misma elección: el rubro que
+   viaja en la consulta. */
 function rubrosHome() {
-  return `<ul class="rbl">${DATA.rubros.map(r => `
-    <li class="rv" data-rubro-row="${r.qRubro}">
-      <div class="rbl-n"><h3 class="d3">${r.n}</h3><span class="rbl-b">En tu consulta</span></div>
-      <p>${r.claim}</p>
-      <div class="rbl-a">
-        <a class="btn-t" href="${urlRubro(r)}">Ver cabinas para ${r.n.toLowerCase()}</a>
-        ${btnWA('Consultar', { rubro: r.qRubro, aria: `Consultar por WhatsApp para ${r.n.toLowerCase()}` }, 'btn-g btn-sm')}
+  const chk = v => CTX.rubro === v ? ' checked' : '';
+  const usos = DATA.usos.map(u => {
+    const foto = u.img && IMG[u.img] ? pic(u.img, { sizes: '(min-width:900px) 16vw, 44vw', ratio: '4/3' }) : '';
+    return `
+        <label class="uso${foto ? ' con-img' : ''}"><input type="radio" name="rubro" value="${u.q}" autocomplete="off"${chk(u.q)}>${foto}<span>${u.n}</span></label>`;
+  }).join('');
+  return `
+    <ul class="rbl">${DATA.rubros.map(r => `
+      <li class="rv" data-rubro-row="${r.qRubro}">
+        <input class="pk-in" type="radio" name="rubro" id="r-${r.slug}" value="${r.qRubro}" autocomplete="off"${chk(r.qRubro)}>
+        <div class="rbl-n"><h3 class="d3"><label for="r-${r.slug}"><span class="pk" aria-hidden="true"></span>${r.n}</label></h3><span class="rbl-b">En tu consulta</span></div>
+        <p>${r.claim}</p>
+        <div class="rbl-a">
+          <a class="btn-t" href="${urlRubro(r)}">Ver cabinas para ${r.n.toLowerCase()}</a>
+          ${btnWA('Consultar', { rubro: r.qRubro, aria: `Consultar por WhatsApp para ${r.n.toLowerCase()}` }, 'btn-g btn-sm')}
+        </div>
+      </li>`).join('')}</ul>
+    <div class="usos rv">
+      <div class="usos-t">
+        <h3 class="d3">Otros usos posibles</h3>
+        <p>Las cabinas son modulares y pueden aplicarse a otros rubros. Elegí el tuyo, o «Otro» y nos contás.</p>
       </div>
-    </li>`).join('')}</ul>`;
+      <fieldset class="usos-l"><legend class="sr">Otros rubros</legend>${usos}
+        <label class="uso"><input type="radio" name="rubro" value="Otro rubro" autocomplete="off"${chk('Otro rubro')}><span>Otro</span></label>
+      </fieldset>
+      <div class="usos-a">${btnWA('Consultar por WhatsApp', {}, 'btn-g')}</div>
+    </div>`;
 }
 
 /* Sólo lo confirmado. Plazo, pago, armado y garantía van juntos en una
    línea "a confirmar" en vez de un recuadro por paso. */
 const PASOS = [
-  ['Consulta', 'Nos escribís por WhatsApp con el pack que te interesa, tu rubro y, si los tenés, tus medidas y tu localidad. Con eso te cotizamos.'],
+  ['Consulta', 'Nos escribís por WhatsApp con tu rubro, el pack que te interesa y, si los tenés, la medida y tu localidad. Con eso te cotizamos.'],
   ['Fabricación', 'Se fabrica en nuestro taller de Puerto General San Martín, Santa Fe.'],
   ['Envío', 'Enviamos a todo el país. El costo del envío generalmente se suma en la cotización.'],
-  ['Armado', 'La estructura es 100% desarmable y se arma adentro de tu local.']
+  ['Armado', 'La estructura es modular y 100% desarmable.']
 ];
+
+/* Cierre: la orden de consulta completa. Se pinta con lo que ya hay en
+   CTX; después la actualiza pintarOrden(). */
+function ordenBlock() {
+  const V = ordenVals();
+  return `
+      <div class="cierre rv" id="configurar">
+        <div class="cierre-c">
+          <h2 class="d2">Tu consulta, lista para mandar</h2>
+          <p class="lede">Lo que fuiste eligiendo viaja en el mensaje. Si falta algo no pasa nada: lo completamos por WhatsApp.</p>
+          <a class="txt-l" href="/presupuesto" data-quote-ctx>Prefiero armar el presupuesto paso a paso</a>
+        </div>
+        <div class="orden">
+          <p class="orden-h"><span>Orden de consulta</span><span>RM · Cabinas desarmables</span></p>
+          <dl class="orden-f">${ORDEN.map(([k, lb, href]) => `
+            <div data-of="${k}"${V[k] ? ' class="lleno"' : ''}><dt>${lb}</dt>
+              <dd><span class="of-v" data-v="${esc(V[k] || '')}">${esc(V[k] || 'Sin elegir')}</span><a href="${href}" aria-label="${V[k] ? 'Cambiar' : 'Elegir'} ${lb.toLowerCase()}">${V[k] ? 'Cambiar' : 'Elegir'}</a></dd></div>`).join('')}
+          </dl>
+          <div class="f-fld orden-loc"><label for="o-loc">Localidad</label>
+            <input id="o-loc" data-f="loc" type="text" autocomplete="off" placeholder="Ej.: Rosario, Santa Fe" value="${esc(CTX.loc)}"></div>
+          ${btnWA('Abrir en WhatsApp', { aria: 'Abrir WhatsApp con esta consulta' })}
+          <p class="orden-n">Se abre WhatsApp con el mensaje armado. Lo revisás y lo enviás vos.</p>
+        </div>
+      </div>`;
+}
 
 function viewHome() {
   const P = PORTADA;
   const obras = DATA.trabajos.filter(t => t.img !== P.img && !FUERA_DE_HOME.includes(t.img));
   const n = obras.length + 1;                    // fotos + tarjeta de Instagram
-  /* Gráfica de envíos: entera y con su proporción (3:4). Si faltara en
-     assets.js, el bloque se sostiene con el texto, que dice lo mismo. */
-  const envioG = IMG['envios-camion'] ? `<figure class="envio-g">${pic('envios-camion', {
-    sizes: '(min-width:900px) 380px, (min-width:600px) 420px, 88vw', fit: 'contain'
+  /* Gráfica de envíos: el camión entero, con su proporción (3,7:1). Si
+     faltara en assets.js, el bloque se sostiene con el texto. */
+  const envioG = IMG['camion-rm'] ? `<figure class="envio-g">${pic('camion-rm', {
+    sizes: '(min-width:1400px) 740px, (min-width:900px) 52vw, 92vw', fit: 'contain'
   })}</figure>` : '';
   return `
   <section class="portada" data-lam="01" data-name="Portada">
@@ -1641,10 +1737,10 @@ function viewHome() {
     })}</div>
     <div class="portada-copy">
       <h1 class="d1"><span class="ln"><i>Cabinas</i></span><span class="ln"><i>desarmables</i></span></h1>
-      <p class="portada-lede">Para detailing, lavaderos, lubricentros y concesionarias. Se arman adentro de tu local.</p>
+      <p class="portada-lede">Modulares y 100% desarmables, para detailing, lavaderos y otros rubros.</p>
       <div class="portada-cta">
         ${btnWA('Escribir por WhatsApp')}
-        <a class="txt-l" href="/#sistema">Ver los tres packs</a>
+        <a class="txt-l" href="/#rubros">Elegir rubro, pack y medida</a>
       </div>
       <dl class="portada-meta">
         <div><dt class="mono">Estructura</dt><dd>100% desarmable</dd></div>
@@ -1662,8 +1758,7 @@ function viewHome() {
         <figure class="ig-card">
           <a href="${IG}" target="_blank" rel="noopener">
             <span class="mono am">Instagram</span>
-            <b class="d4">Publicamos cada cabina que sale del taller</b>
-            <span class="ig-n"><b class="num">6.900+</b> seguidores</span>
+            <b class="d4">Más cabinas entregadas, en nuestro Instagram</b>
             <span class="btn-t">@cabinasdesarmablesrm →</span>
           </a>
         </figure>
@@ -1675,28 +1770,28 @@ function viewHome() {
     </div>
   </section>
 
-  <section class="sec paper" id="sistema" data-lam="03" data-name="Packs">
+  <section class="sec" id="rubros" data-lam="03" data-name="Rubro">
     <div class="wrap">
-      ${lamina('03', 'Tres packs, según cuánto viene resuelto', 'El pack define qué trae la cabina. El tamaño lo define el modelo, más abajo.')}
-      ${packsBlock()}
-      <p class="pack-nota rv">El envío generalmente se suma en la cotización.</p>
-    </div>
-  </section>
-
-  <section class="sec grid-bg" id="modelos" data-lam="04" data-name="Modelos y medidas">
-    <div class="wrap">
-      ${lamina('04', 'Modelos y medidas', 'Los modelos van por lo que tiene que entrar adentro. Elegí uno si ya sabés, o cargá tu espacio.')}
-      <div class="mm">
-        ${modelosHome()}
-        ${fitBlock()}
-      </div>
-    </div>
-  </section>
-
-  <section class="sec" id="rubros" data-lam="05" data-name="Por rubro" style="background:var(--ink-2);border-block:1px solid var(--line)">
-    <div class="wrap">
-      ${lamina('05', 'Para tu rubro', 'Cada rubro tiene su página: el problema que resuelve la cabina y el modelo que solemos recomendar.')}
+      ${lamina('03', 'Para tu rubro', 'Elegí el tuyo y se suma a tu consulta. Detailing, lavaderos, lubricentros y concesionarias tienen su página con el detalle.')}
       ${rubrosHome()}
+    </div>
+  </section>
+
+  <section class="sec paper" id="sistema" data-lam="04" data-name="Packs">
+    <div class="wrap">
+      ${lamina('04', 'Tres packs, según cuánto viene resuelto', 'Tocá uno para sumarlo a tu consulta. El tamaño lo define la medida, más abajo.')}
+      ${packsBlock()}
+      <p class="pack-nota rv">No hay precios fijos: cada cabina se cotiza según la medida y lo que necesitás. El envío generalmente se suma en la cotización.</p>
+    </div>
+  </section>
+
+  <section class="sec grid-bg" id="modelos" data-lam="05" data-name="Medidas">
+    <div class="wrap">
+      ${lamina('05', 'Medidas y modelos', 'Elegí una medida frecuente o pedí la tuya, y contanos qué tiene que entrar adentro.')}
+      <div class="mm">
+        ${fitBlock()}
+        ${modelosHome()}
+      </div>
     </div>
   </section>
 
@@ -1712,6 +1807,7 @@ function viewHome() {
         <div class="envio-t">
           <h3 class="${envioG ? 'd3' : 'd2'}">Envíos a todo el país</h3>
           <p>Fabricamos en nuestro taller de Puerto General San Martín, Santa Fe, y enviamos a todo el país. El costo del envío generalmente se suma en la cotización: contanos tu localidad.</p>
+          <div class="envio-a">${btnWA('Consultar el envío', {}, 'btn-g btn-sm')}</div>
         </div>
       </div>
 
@@ -1726,16 +1822,7 @@ function viewHome() {
     <div class="wrap">
       ${lamina('07', 'Lo que más nos preguntan')}
       ${faqBlock(DATA.faqHome)}
-      <div class="cierre rv" id="configurar">
-        <div>
-          <h2 class="d2">El auto entra a un galpón. Sale de un estudio.</h2>
-          <p class="lede">Escribinos por WhatsApp con el pack que te interesa, tu rubro y tus medidas si las tenés.</p>
-        </div>
-        <div class="cierre-a">
-          ${btnWA('Escribir por WhatsApp')}
-          <a class="txt-l" href="/presupuesto" data-quote-ctx>Prefiero armar el presupuesto paso a paso</a>
-        </div>
-      </div>
+      ${ordenBlock()}
     </div>
   </section>`;
 }
@@ -2044,6 +2131,7 @@ function bindV2(root) {
   bindSpy(root); bindIsoCross(root);
   bindBands(root); bindScroll(root);
   bindTabs(root); bindCTAs(root); bindCursor(root);
+  fabHome(root); fab();
 }
 
 /* El router no conoce estos bindings: se enganchan al cambio de #main */
