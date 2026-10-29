@@ -117,9 +117,15 @@ elección sigue pendiente.
 En la home el visitante elige rubro, pack, medida y modelo, y suma su
 localidad. Todo es opcional. Lo elegido vive en `CTX` (`src/app.js`) y
 `waMsg()` lo escribe en el mensaje de **todos** los botones de WhatsApp de la
-home. La «orden de consulta» del cierre y la barra fija del celular muestran lo
-que va a viajar. El sitio solo abre WhatsApp con el texto armado: el mensaje lo
+home. La «orden de consulta» del cierre y el botón fijo del celular muestran lo
+que va a viajar, y los botones de medidas y de rubro dicen en su texto qué
+consulta abren. El sitio solo abre WhatsApp con el texto armado: el mensaje lo
 manda la persona.
+
+El botón fijo (`#fab`) aparece solo en el celular y solo cuando ningún otro
+botón de WhatsApp está a la vista: nunca hay dos iguales juntos y nunca falta
+uno. Se esconde con el teclado abierto y con el menú abierto. En escritorio no
+existe porque el encabezado ya tiene el suyo.
 
 ## Datos que faltan del taller
 
@@ -137,6 +143,15 @@ Lo que no está confirmado no se publica como hecho. Hoy faltan:
 - **Comerciales**: plazos de fabricación, condiciones de pago, costo del flete
   (se suma en la cotización), quién arma y si el armado va incluido, y el
   alcance de la garantía.
+- **Fotos**: que las cinco fotos de cabinas sean todas trabajos propios
+  entregados. Hoy el sitio dice que son de RM y que están publicadas en su
+  Instagram.
+- **Modelos**: los cinco modelos (moto, compacta, de trabajo, doble, a medida)
+  son una clasificación del sitio. Falta que RM confirme sus nombres y
+  medidas, y qué pack corresponde a cada uno.
+- **Canales**: que `facebook.com/cabinasdesarmablesrm` sea la página de RM
+  (está en el pie y en el JSON-LD).
+- **Horario**: el «Abierto ahora» no contempla feriados.
 - **Dominio**: la elección final entre `.com` y `.com.ar`.
 
 Se editan en el objeto `DATA` de `src/app.js`. No hay que tocar el diseño: las

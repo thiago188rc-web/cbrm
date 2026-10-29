@@ -45,7 +45,7 @@ window.RM_IMG = {
   moto: {
     ws: [420, 640, 860], w: 860, h: 1140,
     alt: 'Moto BMW dentro de una cabina RM de terminación blanca con cielorraso modular de paneles LED y enrollador de manguera',
-    cap: 'Cabina para moto',
+    cap: 'Terminación blanca',
     prueba: ['moto', 'terminacion-blanca', 'cielorraso-led', 'chapa-nervada', 'enrollador', 'piso-modular']
   },
 

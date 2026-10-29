@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Cabinas Desarmables RM | Cabinas para detailing, lavaderos y lubricentros</title>
-<meta name="description" content="Cabinas desarmables para detailing, lavaderos, lubricentros y concesionarias. Pack Box, Studio y Studio Pro: estructura 100% desarmable en chapa trapezoidal y, según el pack, piso encastrable e iluminación. Fabricamos en Puerto General San Martín, Santa Fe, y enviamos a todo el país. Consultá por WhatsApp.">
+<meta name="description" content="Cabinas desarmables para detailing, lavaderos, lubricentros y concesionarias. Pack Box, Studio y Studio Pro: estructura 100% desarmable con revestimiento en chapa trapezoidal y, según el pack, piso encastrable e iluminación. Fabricamos en Puerto General San Martín, Santa Fe, y enviamos a todo el país. Consultá por WhatsApp.">
 <meta name="theme-color" content="#08090A">
 <link rel="icon" type="image/png" sizes="32x32" href="/img/logo-32.png">
 <link rel="icon" type="image/png" sizes="240x240" href="/img/logo-240.png">
@@ -24,7 +24,7 @@
 <meta property="og:locale" content="es_AR">
 <meta property="og:site_name" content="Cabinas Desarmables RM">
 <meta property="og:title" content="Cabinas Desarmables RM | El auto entra a un galpón, sale de un estudio">
-<meta property="og:description" content="Cabinas desarmables para detailing, lavaderos, lubricentros y concesionarias. Estructura 100% desarmable en chapa trapezoidal y, según el pack, piso encastrable e iluminación. Envíos a todo el país.">
+<meta property="og:description" content="Cabinas desarmables para detailing, lavaderos, lubricentros y concesionarias. Estructura 100% desarmable con revestimiento en chapa trapezoidal y, según el pack, piso encastrable e iluminación. Envíos a todo el país.">
 <meta property="og:url" content="https://cbrm.vercel.app/">
 <meta property="og:image" content="https://cbrm.vercel.app/img/og.jpg">
 <meta property="og:image:width" content="1200">
@@ -152,7 +152,7 @@ p{max-width:62ch;color:var(--mut)}
 header.hd{position:fixed;top:0;left:0;right:0;height:var(--head);z-index:80;
   display:flex;align-items:center;transition:background .35s,border-color .35s,backdrop-filter .35s;
   border-bottom:1px solid transparent}
-header.hd.on{background:rgba(8,9,10,.86);backdrop-filter:blur(14px) saturate(1.2);border-bottom-color:var(--line)}
+header.hd.on{background:rgba(8,9,10,.96);border-bottom-color:var(--line)}
 .hd .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%}
 .brand{display:flex;align-items:center;gap:10px}
 .brand img{width:32px;height:32px;border-radius:50%;transform:scale(1.06)}
@@ -428,16 +428,18 @@ header.hd.on{background:rgba(8,9,10,.86);backdrop-filter:blur(14px) saturate(1.2
   transition:border-color .2s,color .2s}
 .lead-acts button:hover{border-color:var(--amber);color:var(--amber)}
 
-/* ── FAB / barra fija mobile ─────────────────────── */
-.fab{position:fixed;left:0;right:0;bottom:0;z-index:70;
-  background:rgba(8,9,10,.92);backdrop-filter:blur(12px);border-top:1px solid var(--line);
-  padding:10px var(--pad) calc(10px + env(safe-area-inset-bottom));
-  display:flex;gap:9px;transform:translateY(110%);transition:transform .4s var(--ease)}
-.fab.on{transform:none}
-.fab .btn{flex:1}
-.fab .wa{flex:none;width:52px;padding:0}
-@media(min-width:1000px){.fab{left:auto;right:24px;bottom:24px;border:1px solid var(--line);
-  border-radius:2px;padding:9px;max-width:420px}}
+/* ── Botón fijo de WhatsApp (celular) ─────────────────
+   Un botón en la esquina, no una barra a todo el ancho: la barra medía
+   ~72 px y tapaba contenido al bajar. Respeta el área segura del teléfono
+   y no lleva desenfoque de fondo, que repinta en cada scroll. Oculto, se
+   corre hacia abajo y deja de ser enfocable. En escritorio no existe: el
+   encabezado ya tiene el botón. */
+.fab{position:fixed;z-index:70;right:calc(12px + env(safe-area-inset-right));
+  bottom:calc(12px + env(safe-area-inset-bottom));display:flex;
+  transform:translateY(calc(100% + 28px));visibility:hidden;
+  transition:transform .2s var(--micro),visibility 0s .2s}
+.fab.on{transform:none;visibility:visible;transition:transform .32s var(--ease),visibility 0s}
+@media(min-width:1000px){.fab{display:none}}
 
 /* ── footer ──────────────────────────────────────── */
 footer.ft{border-top:1px solid var(--line);padding-block:clamp(38px,6vh,64px) 30px;background:var(--ink-2)}
@@ -451,8 +453,8 @@ footer.ft{border-top:1px solid var(--line);padding-block:clamp(38px,6vh,64px) 30
   display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
 
 /* ── reveal ──────────────────────────────────────── */
-.rv{opacity:0;transform:translateY(22px);
-  transition:opacity .75s var(--ease),transform .75s var(--ease)}
+.rv{opacity:0;transform:translateY(14px);
+  transition:opacity .6s var(--ease),transform .6s var(--ease)}
 .rv.in{opacity:1;transform:none}
 .rv-i{clip-path:inset(0 0 100% 0);transition:clip-path 1s var(--ease)}
 .rv-i.in{clip-path:inset(0 0 0 0)}
@@ -1037,8 +1039,6 @@ a.trow:hover .tval{color:var(--amber)}
    La barra de abajo es fija y mide ~72 px. Sin este espacio se
    comía el último bloque de cada sección — en la auditoría tapaba
    justo el botón "Ver si entra en mi local". */
-body.has-fab{padding-bottom:86px}
-@media(min-width:1000px){body.has-fab{padding-bottom:0}}
 html{scroll-padding-top:calc(var(--head) + 14px)}
 .fab .btn{min-height:50px}
 
@@ -1192,16 +1192,18 @@ header.hd{isolation:isolate}
    abajo es corto para no apagar la parrilla. */
 .portada-foto{position:relative;height:min(calc(var(--head) + 78vw),64svh);overflow:hidden;background:var(--ink-2)}
 .portada-foto .ph,.portada-foto img{width:100%;height:100%}
-.portada-foto img{object-position:var(--pos-m)!important;animation:pFoto .9s var(--ease) both}
-@keyframes pFoto{from{transform:scale(1.03);filter:brightness(.55)}}
+.portada-foto img{object-position:var(--pos-m)!important;animation:pFoto .7s var(--ease) both}
+/* Opacidad sobre el fondo negro en vez de filter: mismo oscurecido de
+   arranque, pero lo resuelve la GPU sin repintar la foto en cada cuadro. */
+@keyframes pFoto{from{transform:scale(1.03);opacity:.45}}
 .portada-foto::after{content:"";position:absolute;left:0;right:0;bottom:0;height:12%;pointer-events:none;
   background:linear-gradient(to top,var(--ink) 4%,rgba(8,9,10,0))}
 .portada-copy{position:relative;padding:12px var(--pad) clamp(34px,6vh,56px)}
 /* "DESARMABLES" ocupa ~8,5 veces el cuerpo de la letra: a 9,2vw entra con
    margen en 360-430 px, aun con barra de scroll visible. */
 .portada h1{font-size:clamp(32px,9.2vw,64px);line-height:.9;max-width:none}
-.portada h1 .ln i{transform:none;animation:pLn .8s var(--ease) both}
-.portada h1 .ln:nth-child(2) i{animation-delay:.07s}
+.portada h1 .ln i{transform:none;animation:pLn .6s var(--ease) both}
+.portada h1 .ln:nth-child(2) i{animation-delay:.05s}
 @keyframes pLn{from{transform:translateY(104%)}}
 .portada-lede{margin-top:14px;font-size:clamp(15.5px,1.4vw,19px);line-height:1.5;color:#CFD1C9;max-width:40ch}
 .portada-cta{display:flex;flex-direction:column;align-items:flex-start;gap:14px;margin-top:20px}
@@ -1214,10 +1216,11 @@ header.hd{isolation:isolate}
 .portada-meta div:last-child{grid-column:1/-1}
 /* Un solo momento orquestado: título, bajada, botón y datos, en ese orden.
    Todo parte de visible (fill both): si la animación no corre, se lee igual. */
-.portada-lede,.portada-cta,.portada-meta{animation:fadeUp .6s var(--ease) both}
-.portada-lede{animation-delay:.16s}
-.portada-cta{animation-delay:.24s}
-.portada-meta{animation-delay:.32s}
+/* El botón queda listo antes de medio segundo: nadie espera para usarlo. */
+.portada-lede,.portada-cta,.portada-meta{animation:fadeUp .45s var(--ease) both}
+.portada-lede{animation-delay:.08s}
+.portada-cta{animation-delay:.12s}
+.portada-meta{animation-delay:.18s}
 @media(min-width:1000px){
   .portada{display:grid;grid-template-columns:minmax(0,.94fr) minmax(0,1.06fr);min-height:100svh}
   .portada-foto{grid-column:2;grid-row:1;height:auto;min-height:100svh;border-left:1px solid var(--line)}
@@ -1404,8 +1407,10 @@ header.hd{isolation:isolate}
   /* Una grilla para toda la lista (subgrid): las frases quedan alineadas
      entre filas aunque cada nombre y cada enlace midan distinto. Sin
      subgrid, vale la plantilla de la fila. */
-  .rbl{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr) auto;column-gap:32px}
-  .rbl>li{grid-column:1/-1;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr) auto;
+  /* min-content en la primera columna: a ~1000 px quedaba en 164 px y
+     "CONCESIONARIAS" invadía la columna de la frase. */
+  .rbl{display:grid;grid-template-columns:minmax(min-content,.85fr) minmax(0,1.15fr) auto;column-gap:32px}
+  .rbl>li{grid-column:1/-1;grid-template-columns:minmax(min-content,.85fr) minmax(0,1.15fr) auto;
     grid-template-columns:subgrid;align-items:center;gap:32px;padding:26px 16px}
   .rbl>li:hover,.rbl>li:focus-within{background:rgba(255,255,255,.022)}
   .rbl-n{flex-direction:column;gap:6px}
@@ -1490,6 +1495,19 @@ header.hd{isolation:isolate}
   .cierre{grid-template-columns:minmax(0,1fr) minmax(0,480px);align-items:center}
 }
 
+/* ── LA FIRMA: el perfil de la chapa trapezoidal ──────────────
+   El material confirmado de la cabina, dibujado como línea propia de RM.
+   Aparece sólo donde algo es de RM o del visitante: la base de la
+   portada, el pack elegido y la orden de consulta. No es un plano: no
+   tiene cotas ni pretende ser el perfil real de fabricación. */
+.portada::after{content:"";position:absolute;left:0;right:0;bottom:0;height:14px;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='14'%3E%3Cpath d='M0 13.25H10L17 1.5H39L46 13.25H56' fill='none' stroke='%23FFC800' stroke-width='1.5'/%3E%3C/svg%3E") repeat-x left bottom/56px 14px}
+/* El pack elegido: el perfil, relleno, entra de izquierda a derecha. */
+.pack::after{content:"";position:absolute;left:0;right:0;top:0;height:12px;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='12'%3E%3Cpath d='M0 0H48V3H42L36 11H18L12 3H0Z' fill='%23FFC800'/%3E%3C/svg%3E") repeat-x left top/48px 12px;
+  clip-path:inset(0 100% 0 0);transition:clip-path .45s var(--ease)}
+.pack.elegido::after{clip-path:inset(0 0 0 0)}
+
 /* ── ELEGIR RUBRO Y PACK ──────────────────────────────────────
    Se elige tocando la fila o la tarjeta entera. El radio real queda fuera
    de la vista (pero enfocable) y un cuadrado lo dibuja, como la casilla
@@ -1501,11 +1519,12 @@ header.hd{isolation:isolate}
 .pack label::before,.rbl label::before{content:"";position:absolute;inset:0}
 .pack .btn,.rbl-a{position:relative;z-index:1}
 .rbl>li{position:relative}
-/* En los rubros la casilla cuelga a la izquierda del nombre: con ella en
-   línea, "CONCESIONARIAS" no entraba en su columna y la palabra bajaba
-   sola, dejando la casilla arriba. */
-.rbl h3 label{position:relative;display:block;padding-left:1.02em}
-.rbl h3 .pk{position:absolute;left:0;top:.2em;margin:0}
+/* En los rubros la casilla va en su propia columna: con ella en línea,
+   "CONCESIONARIAS" no entraba y la palabra bajaba sola, dejando la casilla
+   arriba. Grilla y no position:relative: la etiqueta no puede ser el
+   contenedor de su ::before, que tiene que cubrir la fila entera. */
+.rbl h3 label{display:grid;grid-template-columns:.6em auto;justify-content:start;column-gap:.42em;align-items:start}
+.rbl h3 .pk{margin:.2em 0 0}
 @media(min-width:900px){.rbl h3{font-size:clamp(21px,1.9vw,28px)}}
 .pack.elegido .pk{background:var(--amber)}
 .rbl>li.elegido .pk{background:var(--amber);border-color:var(--amber)}
@@ -1604,14 +1623,14 @@ input::placeholder{color:#8A8E93;opacity:1}
   .envio-g .ph{transform:none}
 }
 
-/* ── Barra fija: un botón, con texto ──────────────────────── */
-.fab .btn{flex:1;gap:10px}
+/* ── Botón fijo: compacto, con sombra propia (flota sobre fotos) ── */
+.fab .btn{min-height:48px;padding:7px 18px 7px 14px;gap:10px;
+  box-shadow:0 12px 26px -12px rgba(0,0,0,.85),0 2px 6px rgba(0,0,0,.45)}
+.fab-l small{max-width:52vw}
+/* El pie reserva el lugar del botón: lo último de la página nunca queda
+   debajo de él. */
+@media(max-width:999px){footer::after{content:"";display:block;height:calc(64px + env(safe-area-inset-bottom))}}
 @media(min-width:1000px){
-  .fab .btn{flex:none;padding-inline:24px}
-  /* En escritorio la barra flota a 24 px del borde: con translateY(110%)
-     asomaba ~17 px cuando estaba oculta. */
-  .fab{transform:translateY(calc(100% + 40px))}
-  .fab.on{transform:none}
   /* La V6 pasó el botón de menú a display:flex sin media query y le ganó al
      display:none de escritorio: aparecía la hamburguesa junto al nav. */
   .burger{display:none}
@@ -1676,7 +1695,7 @@ input::placeholder{color:#8A8E93;opacity:1}
       <p class="lede" style="margin-top:18px">Cabinas Desarmables RM fabrica en Puerto General San Martín, Santa Fe,
         y envía a todo el país. Tres packs: Box (estructura 100% desarmable y revestimiento en chapa
         trapezoidal, color a elección), Studio (suma piso encastrable e iluminación básica) y Studio Pro
-        (suma piso encastrable e iluminación Full Pro). Se arman adentro del local que ya tenés.</p>
+        (suma piso encastrable e iluminación Full Pro). No hay precios fijos: cada cabina se cotiza según la medida y lo que necesitás.</p>
       <nav class="hero-cta" style="flex-wrap:wrap" aria-label="Secciones">
         <a class="btn btn-p" href="/presupuesto"><span>Pedir presupuesto</span></a>
         <a class="btn btn-g" href="/modelos">Modelos</a>
@@ -1698,7 +1717,7 @@ input::placeholder{color:#8A8E93;opacity:1}
   <a class="btn btn-p" id="fabWa" data-wa target="_blank" rel="noopener">
     <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.5 7.3L3 20.5l1.8-5.3A8.4 8.4 0 1 1 21 11.5z"/><path d="M8.5 9.2c.2 2.4 2.4 4.9 5 5.6.7.2 1.4-.1 1.7-.7l.2-.5-1.9-1-.7.8c-1-.4-2-1.4-2.5-2.5l.8-.7-1-1.9-.5.2c-.6.3-1 .9-1.1 1.6z"/></svg>
-    <span class="fab-l"><span>Escribir por WhatsApp</span><small id="fabCtx" hidden></small></span>
+    <span class="fab-l"><span>WhatsApp</span><small id="fabCtx" hidden></small></span>
   </a>
 </div>
 
@@ -1715,7 +1734,7 @@ input::placeholder{color:#8A8E93;opacity:1}
           <span><b style="font-size:17px">Cabinas Desarmables RM</b>
           <span class="mono" style="display:block;margin-top:4px">Puerto General San Martín · Santa Fe</span></span>
         </div>
-        <p style="font-size:14.5px;max-width:38ch">Cabinas desarmables para detailing, lavaderos, lubricentros y concesionarias. Se arman adentro del local que ya tenés, sin obra.</p>
+        <p style="font-size:14.5px;max-width:38ch">Cabinas modulares y 100% desarmables, para detailing, lavaderos y otros rubros. Sin obra civil.</p>
       </div>
       <div>
         <h4>Cabinas por rubro</h4>

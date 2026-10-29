@@ -75,12 +75,11 @@ const DATA = {
       h1: 'Cabinas para detailing',
       claim: 'Ves la pintura. Y después la mostrás.',
       prob: 'Trabajás en un galpón con luz de tubo. Los swirls aparecen recién cuando el auto sale al sol. Y las fotos que subís no le hacen justicia a lo que hiciste.',
-      sol: 'Un box propio adentro de tu local, con la iluminación del pack que elijas: el Studio trae spots y reflectores; el Studio Pro suma plafones LED laterales y de techo. El mismo espacio te sirve para corregir y para fotografiar.',
+      sol: 'Un box propio adentro de tu local. Con el Pack Studio trae spots y reflectores; con el Studio Pro suma plafones LED laterales y de techo. El mismo espacio te sirve para corregir y para fotografiar.',
       /* Sólo lo confirmado de los packs. Techo y accesorios no figuran en
          las especificaciones: no se afirman ni se descartan. */
       pts: ['Iluminación Full Pro (Pack Studio Pro): plafones LED laterales y de techo', 'Piso encastrable en los packs Studio y Studio Pro', 'Revestimiento en chapa trapezoidal, color a elección', 'Estructura 100% desarmable'],
       foto: 'negra-wide', fotoCap: 'Cabina entregada · terminación negra',
-      rec: 'trabajo',
       faq: ['luz', 'techo', 'entra', 'arma'],
       seoD: 'Cabinas desarmables para detailing en chapa trapezoidal, color a elección. Con el Pack Studio Pro suman piso encastrable e iluminación Full Pro, con plafones LED laterales y de techo. Se arman adentro de tu local.'
     },
@@ -94,7 +93,6 @@ const DATA = {
       sol: 'Un box desarmable adentro de tu local, que te habilita a ofrecer un servicio premium separado del lavado común.',
       pts: ['Un sector diferenciado dentro del mismo local', 'Revestimiento en chapa trapezoidal, color a elección', 'Piso encastrable en los packs Studio y Studio Pro', 'Estructura 100% desarmable'],
       foto: 'blanca-wide', fotoCap: 'Cabina entregada · terminación blanca',
-      rec: 'compacta',
       faq: ['agua', 'material', 'entra', 'envio'],
       seoD: 'Cabinas desarmables para lavaderos de autos: un box propio adentro de tu local para separar el servicio premium del lavado común. Chapa trapezoidal color a elección y, según el pack, piso encastrable e iluminación.'
     },
@@ -103,10 +101,9 @@ const DATA = {
       h1: 'Cabinas para lubricentros',
       claim: 'Separá el sector limpio sin cerrar por obra.',
       prob: 'Tenés el sector sucio y el sector limpio mezclados en el mismo espacio, y la imagen del local no acompaña al servicio que das.',
-      sol: 'Armás un box limpio y presentable adentro del taller que ya tenés, sin albañiles, sin escombros y sin cortar la operación.',
-      pts: ['Se arma adentro del local existente', 'Delimita un sector propio dentro del galpón', 'Sin obra húmeda ni escombros', 'Se desarma si mudás el negocio'],
+      sol: 'Un box limpio y presentable adentro del taller que ya tenés, sin albañiles ni escombros.',
+      pts: ['Delimita un sector propio dentro del galpón', 'Sin obra civil ni escombros', 'Estructura 100% desarmable: se desarma si mudás el negocio', 'Revestimiento en chapa trapezoidal, color a elección'],
       foto: 'negraBajo-wide', fotoCap: 'Cabina entregada · terminación negra',
-      rec: 'compacta',
       faq: ['arma', 'entra', 'obra', 'envio'],
       seoD: 'Cabinas desarmables para lubricentros: delimitá un sector limpio adentro del taller, sin obra húmeda ni escombros. Chapa trapezoidal color a elección y, según el pack, piso encastrable e iluminación.'
     },
@@ -115,12 +112,11 @@ const DATA = {
       h1: 'Cabinas para concesionarias',
       claim: 'Todas las unidades, con la misma foto.',
       prob: 'Cada unidad que ingresa hay que fotografiarla, y cada foto sale distinta según dónde estaba parada y a qué hora se tomó. El resultado es una publicación despareja.',
-      sol: 'Un set fijo dentro de tu propio local: mismo fondo y mismo encuadre para toda la flota, con la iluminación del pack que elijas. Y un espacio de entrega que se siente distinto.',
-      pts: ['Fondo constante en todas las publicaciones', 'Sirve para autos y para motos', 'Espacio de entrega de unidad', 'La marca de la agencia adentro, según el proyecto'],
+      sol: 'Un set fijo dentro de tu propio local: mismo fondo y mismo encuadre para toda la flota, con la iluminación de los packs Studio y Studio Pro. Y un espacio de entrega que se siente distinto.',
+      pts: ['Fondo constante en todas las publicaciones', 'Sirve para autos y para motos', 'Espacio de entrega de unidad', 'Revestimiento en chapa trapezoidal, color a elección'],
       /* Esta foto ES una foto de producto tomada adentro de la cabina:
          es la prueba literal del argumento del rubro. */
-      foto: 'hero-wide', fotoCap: 'Unidad fotografiada adentro de una cabina RM',
-      rec: 'trabajo',
+      foto: 'hero-wide', fotoCap: 'Auto adentro de una cabina RM · terminación blanca',
       faq: ['techo', 'marca', 'entra', 'envio'],
       seoD: 'Cabinas para concesionarias: un set fijo adentro de tu local para fotografiar toda la flota con el mismo fondo, y para entregar la unidad. Sirve para autos y motos.'
     }
@@ -167,7 +163,7 @@ const DATA = {
     ]],
     /* Así lo agrupa RM: el tablero y los tomacorrientes son parte de la
        iluminación básica (Studio) y de la Full Pro (Studio Pro). */
-    ['Iluminación e instalación eléctrica', [
+    ['Iluminación', [
       ['Tablero eléctrico con disyuntor y térmicas', false, true, true],
       ['Spots dicroicos de 7 W', false, 'Parte baja y laterales', 'Parte media y laterales bajos'],
       ['Plafones LED laterales y de techo', false, false, true],
@@ -201,7 +197,7 @@ const DATA = {
     { img: 'negraBajo', cap: 'Terminación negra', alt: 'Interior de cabina RM en terminación negra, con cielorraso de chapa nervada y luminarias embutidas' },
     { img: 'blanca', cap: 'Terminación blanca', alt: 'Cabina RM de terminación blanca vacía, con piso encastrable y franja perimetral amarilla' },
     { img: 'negraFrente', cap: 'Terminación negra', alt: 'Interior de cabina RM en terminación negra con barras retroiluminadas y franja de piso magenta' },
-    { img: 'moto', cap: 'Cabina para moto', alt: 'Moto dentro de una cabina RM de terminación blanca con cielorraso de paneles LED' }
+    { img: 'moto', cap: 'Terminación blanca', alt: 'Moto dentro de una cabina RM de terminación blanca con cielorraso de paneles LED' }
   ],
 
   faq: {
@@ -210,17 +206,17 @@ const DATA = {
        packs. Lo que no figura ahí no se afirma ni se descarta. */
     luz: ['¿Qué iluminación trae?', 'Depende del pack. El Studio trae iluminación básica: tablero eléctrico con disyuntor y térmicas, spots dicroicos de 7&nbsp;W en la parte baja y los laterales, reflectores y cajas tomacorrientes dobles. El Studio Pro trae iluminación Full Pro: tablero eléctrico con disyuntor y térmicas, spots dicroicos de 7&nbsp;W en la parte media y los laterales bajos, plafones LED laterales y de techo, reflectores y cajas tomacorrientes dobles. El Pack Box es la estructura con su revestimiento.'],
     techo: ['¿La cabina incluye techo?', 'Las especificaciones de los packs que publicamos no detallan el techo: si lo incluye y cómo se resuelve en tu caso, lo confirmamos en la consulta.'],
-    arma: ['¿Cuánto tarda el armado y quién la arma?', 'Es un sistema desarmable: se monta adentro del local que ya tenés, sin obra húmeda ni escombros. Los tiempos exactos y si el armado va incluido son datos que estamos terminando de definir para publicar.'],
-    obra: ['¿Tengo que hacer obra o pedir permiso?', 'La cabina se arma sobre el piso existente y no requiere obra húmeda. Cualquier requisito municipal depende de tu localidad y de tu habilitación: no damos una respuesta general para no decir algo que no corresponda a tu caso.'],
+    arma: ['¿Cuánto tarda el armado y quién la arma?', 'Es un sistema modular y 100% desarmable, sin obra civil. Quién arma, en cuánto tiempo y si el armado va incluido lo confirmamos en la consulta.'],
+    obra: ['¿Tengo que hacer obra o pedir permiso?', 'No hace falta obra civil: es un sistema modular y desarmable. Cualquier requisito municipal depende de tu localidad y de tu habilitación: no damos una respuesta general para no decir algo que no corresponda a tu caso.'],
     material: ['¿De qué material es el revestimiento?', 'Chapa trapezoidal, color a elección, sobre una estructura 100% desarmable. El espesor lo confirmamos en la consulta.'],
     agua: ['¿Aguanta un lavadero, con agua todos los días?', 'Es la pregunta correcta para este rubro y merece una respuesta precisa, no un “sí” genérico: te la contestamos por WhatsApp con el detalle de material y mantenimiento según cómo trabajes.'],
-    marca: ['¿Le puedo poner la marca de mi negocio adentro?', 'Hay cabinas entregadas con cartelería propia del cliente montada sobre la pared del fondo. El alcance de la personalización lo vemos según el proyecto.'],
+    marca: ['¿Le puedo poner la marca de mi negocio adentro?', 'Contanos qué querés poner y dónde, y lo vemos en la consulta.'],
     envio: ['¿Hacen envíos? ¿A qué zonas?', 'Sí, a todo el país. Fabricamos en Puerto General San Martín, Santa Fe, y el costo del envío generalmente se suma en la cotización: por eso te pedimos la localidad.'],
     precio: ['¿Cuánto sale?', 'Depende del pack, del modelo y del envío, que generalmente se suma en la cotización. No publicamos una lista de precios: escribinos con tu caso y te pasamos el presupuesto.'],
-    packModelo: ['¿Qué diferencia hay entre un pack y un modelo?', 'Son dos cosas distintas. El pack dice qué trae la cabina: el Box es estructura y revestimiento; el Studio y el Studio Pro suman piso encastrable e iluminación. El modelo dice qué entra adentro: una moto, un auto, dos autos o una medida especial. Por eso conviene que en la consulta nos cuentes las dos cosas.'],
-    pago: ['¿Cómo se paga?', 'Las condiciones de pago las coordinamos en la consulta. Es información que preferimos darte por escrito y de forma clara antes de que decidas.'],
-    garantia: ['¿Tiene garantía?', 'El alcance de la garantía es un dato que estamos terminando de definir para publicarlo. Preguntalo en la consulta y te lo damos por escrito.'],
-    motos: ['¿Sirve para motos?', 'Sí. Hay cabinas entregadas trabajando con motos: una está en la galería de trabajos.']
+    packModelo: ['¿Qué diferencia hay entre un pack y un modelo?', 'El pack dice qué trae la cabina: el Box es estructura y revestimiento; el Studio y el Studio Pro suman piso encastrable e iluminación. El modelo describe qué tiene que entrar adentro: una moto, un auto, dos autos o una medida especial. Qué pack corresponde a cada modelo lo vemos en la consulta: contanos las dos cosas.'],
+    pago: ['¿Cómo se paga?', 'Las condiciones de pago las vemos en la consulta.'],
+    garantia: ['¿Tiene garantía?', 'Preguntalo en la consulta: es un dato que todavía no publicamos.'],
+    motos: ['¿Sirve para motos?', 'Sí: en la galería de trabajos hay una cabina de RM con una moto adentro.']
   },
   /* Sólo preguntas con respuesta respaldada. Plazos, pago, armado y garantía
      siguen a confirmar: van juntos en una línea de "Cómo se compra". */
@@ -263,8 +259,14 @@ function waMsg(o = {}) {
 
 /* Botón de WhatsApp de la home. `o.pack` / `o.rubro` fijan la opción del
    botón; el resto del mensaje sale de CTX. */
-const btnWA = (label, o = {}, cls = 'btn-p') => `<a class="btn ${cls}" data-wa${o.pack ? ` data-wa-pack="${o.pack}"` : ''}${o.rubro ? ` data-wa-rubro="${o.rubro}"` : ''}
+const btnWA = (label, o = {}, cls = 'btn-p') => `<a class="btn ${cls}" data-wa${o.pack ? ` data-wa-pack="${o.pack}"` : ''}${o.rubro ? ` data-wa-rubro="${o.rubro}"` : ''}${o.lb ? ` data-wa-lb="${o.lb}" data-wa-base="${label}"` : ''}
   href="${wa(waMsg({ ...(o.pack && { pack: o.pack }), ...(o.rubro && { rubro: o.rubro }) }))}" target="_blank" rel="noopener"${o.aria ? ` aria-label="${o.aria}"` : ''}>${IC_WA}<span>${label}</span></a>`;
+
+/* Botones que dicen qué consulta abren: el texto cambia con lo elegido. */
+const LB = {
+  med: () => medTxt(CTX) && `Consultar ${medTxt(CTX)}`,
+  rubro: () => CTX.rubro && CTX.rubro !== 'Otro rubro' && `Consultar para ${CTX.rubro.toLowerCase()}`
+};
 
 function refreshWA() {
   const home = location.pathname === '/';
@@ -277,6 +279,7 @@ function refreshWA() {
   /* Lo elegido queda a la vista: así el mensaje no sorprende a nadie. */
   $$('[data-pack-card]').forEach(c => c.classList.toggle('elegido', c.dataset.packCard === CTX.pack));
   $$('[data-rubro-row]').forEach(c => c.classList.toggle('elegido', c.dataset.rubroRow === CTX.rubro));
+  $$('a[data-wa-lb]').forEach(a => { $('span', a).textContent = (home && LB[a.dataset.waLb]()) || a.dataset.waBase; });
   $$('input[name="pack"]').forEach(i => { i.checked = i.value === CTX.pack; });
   $$('input[name="rubro"]').forEach(i => { i.checked = i.value === CTX.rubro; });
   pintarOrden();
@@ -285,7 +288,7 @@ function refreshWA() {
 /* ── ORDEN DE CONSULTA ──────────────────────────────────────────
    El gesto de la home: la consulta se arma como la cabina, por módulos.
    Cada fila muestra lo elegido y lleva a donde se elige; la misma
-   selección viaja en todos los botones de WhatsApp. La barra fija del
+   selección viaja en todos los botones de WhatsApp. El botón fijo del
    celular muestra el resumen. */
 const ORDEN = [['rubro', 'Rubro', '/#rubros'], ['pack', 'Pack', '/#sistema'],
   ['med', 'Medida', '/#medir'], ['modelo', 'Modelo', '/#modelos']];
@@ -312,6 +315,7 @@ function pintarOrden() {
     const home = location.pathname === '/';
     s.textContent = home ? res : '';
     s.hidden = !home || !res;
+    $('#fabWa').setAttribute('aria-label', home && res ? `Abrir WhatsApp con tu consulta: ${res}` : 'Escribir por WhatsApp');
   }
 }
 
@@ -321,6 +325,7 @@ function ctxAlCotizador() {
   if (CTX.rubro) Q.d.rubro = CTX.rubro;
   if (CTX.modelo) Q.d.modelo = CTX.modelo;
   if (CTX.pack) Q.d.pack = CTX.pack;
+  if (CTX.mA || CTX.mL) Q.d.medida = medTxt(CTX) + (CTX.mA && CTX.mL ? ' (ancho × largo)' : '') + (CTX.mOtra ? ', a medida' : '');
   if (CTX.loc) Q.d.loc = CTX.loc;
   if (CTX.ancho && CTX.largo) { PRE.ancho = CTX.ancho; PRE.largo = CTX.largo; PRE.alto = CTX.alto; }
   if (!PRE.vehiculo && !PRE.ancho && Q.d.rubro && Q.i === 0) Q.i = 1;
@@ -389,45 +394,54 @@ burger.onclick = () => {
   burger.setAttribute('aria-expanded', on);
   document.body.style.overflow = on ? 'hidden' : '';
   $$('#mob a').forEach((a, i) => a.style.animationDelay = (i * 55) + 'ms');
+  fab();
 };
-const closeMob = () => { mob.classList.remove('on'); burger.classList.remove('x'); document.body.style.overflow = ''; };
+const closeMob = () => { mob.classList.remove('on'); burger.classList.remove('x'); document.body.style.overflow = ''; fab(); };
 $$('#mob a').forEach(a => a.onclick = closeMob);
 
-/* Barra fija. En la home aparece cuando el botón de la portada sale de la
-   pantalla y se corre mientras la orden de consulta está a la vista: nunca
-   dos botones de WhatsApp iguales juntos. En el resto de las páginas
-   aparece al bajar, como antes. Nunca en el panel interno. */
-const FAB_HOME = { portada: true, orden: false };
-let fabIO = null;
-function fabHome(root) {
+/* Botón fijo de WhatsApp (celular). Antes era una barra de ~72 px a todo el
+   ancho que tapaba contenido al bajar. Ahora es un botón en la esquina que
+   aparece sólo cuando ningún otro botón de WhatsApp está a la vista: nunca
+   hay dos iguales juntos y nunca falta uno. Se esconde con el teclado
+   abierto (un campo con foco) y con el menú abierto. Nunca en el panel
+   interno; en escritorio no existe (el encabezado ya tiene el suyo). */
+const WA_A_LA_VISTA = new Set();
+let fabIO = null, fabT = 0;
+function fabObservar(root) {
   if (fabIO) fabIO.disconnect();
-  /* Se arranca como si la portada estuviera a la vista: si no, al volver a
-     la home la barra quedaba con el estado de la página anterior hasta el
-     primer aviso del observador. */
-  FAB_HOME.portada = true; FAB_HOME.orden = false;
-  const cta = $('.portada-cta', root), orden = $('#configurar', root);
-  if (!cta || !('IntersectionObserver' in window)) { FAB_HOME.portada = false; return; }
+  WA_A_LA_VISTA.clear();
+  if (!('IntersectionObserver' in window)) return;
+  /* intersectionRatio y no isIntersecting: con un umbral de 0,6,
+     isIntersecting sigue en true cuando el botón ya salió a medias, y al
+     salir del todo no llegaba aviso (el 0 no era umbral): quedaba "a la
+     vista" para siempre y el fijo no volvía. */
   fabIO = new IntersectionObserver(es => {
-    es.forEach(e => { FAB_HOME[e.target === cta ? 'portada' : 'orden'] = e.isIntersecting; });
+    es.forEach(e => { if (e.intersectionRatio >= 0.6) WA_A_LA_VISTA.add(e.target); else WA_A_LA_VISTA.delete(e.target); });
     fab();
-  });
-  fabIO.observe(cta);
-  if (orden) fabIO.observe(orden);
+  }, { threshold: [0, 0.6] });
+  $$('a[data-wa]', root).forEach(a => fabIO.observe(a));
 }
 function fab() {
-  const p = location.pathname;
-  const ver = !p.startsWith('/panel') && (p === '/'
-    ? !FAB_HOME.portada && !FAB_HOME.orden
-    : scrollY > innerHeight * 0.35);
-  $('#fab').classList.toggle('on', ver);
-  /* La barra fija mide ~72px: sin este espacio tapa el final de la página. */
-  document.body.classList.toggle('has-fab', ver);
+  const el = document.activeElement;
+  /* Sólo los campos que abren el teclado: un radio con foco (elegir pack o
+     rubro) no tapa nada y escondía el botón sin motivo. */
+  const campo = el && el.matches && el.matches('textarea, input:not([type=radio]):not([type=checkbox]):not([type=button]):not([type=submit])');
+  const ver = !location.pathname.startsWith('/panel') && scrollY > innerHeight * 0.35
+    && !WA_A_LA_VISTA.size && !campo && !mob.classList.contains('on');
+  const f = $('#fab');
+  clearTimeout(fabT);
+  /* Esconder es inmediato; mostrar espera un instante: al pasar de un botón
+     de la página al siguiente, el fijo no parpadea en el medio. */
+  if (!ver) f.classList.remove('on');
+  else if (!f.classList.contains('on')) fabT = setTimeout(() => f.classList.add('on'), 220);
 }
 addEventListener('scroll', () => {
   $('#hd').classList.toggle('on', scrollY > 40);
   fab();
 }, { passive: true });
 addEventListener('resize', fab, { passive: true });
+document.addEventListener('focusin', fab);
+document.addEventListener('focusout', () => setTimeout(fab, 0));
 
 /* Lightbox */
 const lbx = $('#lbx');
@@ -573,7 +587,7 @@ function modeloPlan(m, tone = 'dark') {
     ${margen}
     ${shapes}
     <text x="${x0 + bw / 2}" y="${y0 - 16}" text-anchor="middle" class="mp-s">${m.veh.toUpperCase()}</text>
-    <text x="${W / 2}" y="${H - 14}" text-anchor="middle" class="mp-s">PLANTA A ESCALA · MEDIDAS SEGÚN TU LOCAL</text>
+    <text x="${W / 2}" y="${H - 14}" text-anchor="middle" class="mp-s">ESQUEMA DE REFERENCIA · MEDIDAS SEGÚN TU LOCAL</text>
   </svg>`;
 }
 
@@ -694,7 +708,7 @@ function fitBlock() {
       <p class="mono med-alto">Alto libre: hasta lo más bajo que haya (viga, caño o luminaria).</p>
     </details>
     <div class="med-cta">
-      ${btnWA('Consultar por WhatsApp')}
+      ${btnWA('Consultar por WhatsApp', { lb: 'med' })}
       <a class="txt-l" id="fitGo" href="/presupuesto" data-quote-ctx>Armar presupuesto paso a paso</a>
     </div>
   </div>`;
@@ -769,11 +783,10 @@ function dibujarPlan() {
   if (!f) { vd.textContent = ''; vd.classList.remove('warn'); return; }
   const med = `${f.W} × ${f.L} m`, dim = `(${dec(f.s.l)} × ${dec(f.s.a)} m)`;
   const dos = f.desc.startsWith('dos');
-  const sujeto = f.desc.charAt(0).toUpperCase() + f.desc.slice(1);
   vd.classList.toggle('warn', !f.ok);
   vd.textContent = f.ok
-    ? `${sujeto} ${dim} ${dos ? 'entran' : 'entra'} a escala en ${med}.`
-    : `A escala, ${f.desc} ${dim} no ${dos ? 'entran' : 'entra'} en ${med}. Probá otra medida o pedí una a medida.`;
+    ? `En el esquema, ${f.desc} ${dim} ${dos ? 'entran' : 'entra'} en una planta de ${med}.`
+    : `En el esquema, ${f.desc} ${dim} no ${dos ? 'entran' : 'entra'} en una planta de ${med}. Probá otra medida o pedí una a medida.`;
 }
 
 /* Las medidas del local: opcionales, viajan en el mensaje como MI LOCAL. */
@@ -790,7 +803,6 @@ function bindFit(root) {
 /* ── VISTA: RUBRO ───────────────────────────────────────────── */
 function viewRubro(slug) {
   const r = DATA.rubros.find(x => x.slug === slug); if (!r) return view404();
-  const m = DATA.modelos.find(x => x.slug === r.rec);
   meta({
     u: urlRubro(r),
     t: `${r.h1} | Cabinas Desarmables RM`,
@@ -807,7 +819,7 @@ function viewRubro(slug) {
       <p class="lede rv" data-d="2" style="margin-top:20px">${r.sol}</p>
       <div class="hero-cta rv" data-d="3">
         <button class="btn btn-p" data-goquote="${r.n}"><span>Consultar para mi ${r.n.toLowerCase().replace(/s$/, '')}</span></button>
-        <a class="btn btn-g" href="${urlModelo(m)}">Ver el modelo recomendado</a>
+        <a class="btn btn-g" href="/#sistema">Comparar los packs</a>
       </div>
     </div>
   </section>
@@ -823,31 +835,6 @@ function viewRubro(slug) {
           <div style="margin-top:22px;display:flex;flex-direction:column;gap:0">
             ${r.pts.map(p => `<div style="display:grid;grid-template-columns:14px 1fr;gap:13px;padding:13px 0;border-bottom:1px solid var(--line-2);font-size:15px;color:#CFD1C9">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FFC800" stroke-width="2.2" style="margin-top:5px"><path d="M4 12.5 9.5 18 20 6.5"/></svg><span>${p}</span></div>`).join('')}
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="sec paper">
-    <div class="wrap">
-      <div class="sec-head rv">
-        <span class="mono">Configuración recomendada</span>
-        <h2 class="d2">Para ${r.n.toLowerCase()} solemos ir por acá</h2>
-        <p class="lede" style="color:#4A4D46">Es un punto de partida, no una regla. La medida final sale de tu espacio.</p>
-      </div>
-      <div class="sel-body rv">
-        <div>${modeloPlan(m, 'light')}</div>
-        <div class="sel-copy">
-          <h3 class="d2">${m.n}</h3>
-          <p class="lede" style="color:#4A4D46;margin-top:10px">${m.qe}</p>
-          <dl class="spec">
-            <dt>Entra</dt><dd>${m.veh}</dd>
-            ${fichaComun().map(f => `<dt>${f[0]}</dt><dd>${f[1]}</dd>`).join('')}
-            <dt>Medidas</dt><dd>Se define con las de tu local</dd>
-          </dl>
-          <div class="sel-actions">
-            <a class="btn btn-g" href="${urlModelo(m)}">Ver ficha completa</a>
           </div>
         </div>
       </div>
@@ -900,9 +887,8 @@ function viewModelo(slug) {
   meta({
     u: urlModelo(m),
     t: `${m.n} | Cabinas Desarmables RM`,
-    d: `${m.n}: ${m.qe} Cabina desarmable en chapa trapezoidal, color a elección; piso e iluminación según el pack. Se arma adentro de tu local, sin obra.`
+    d: `${m.n}: ${m.qe} Cabina desarmable con revestimiento en chapa trapezoidal, color a elección. Sin obra civil.`
   });
-  const rubrosDe = DATA.rubros.filter(r => r.rec === m.slug);
   return `
   <section style="padding-top:calc(var(--head) + clamp(30px,6vh,64px))">
     <div class="wrap">
@@ -915,19 +901,11 @@ function viewModelo(slug) {
 
           <h2 class="mono am" style="margin:30px 0 10px">Ficha</h2>
           <dl style="display:grid;grid-template-columns:auto 1fr;gap:11px 20px;border-top:1px solid var(--line-2);padding-top:14px">
-            ${[['Entra', m.veh], ...fichaComun(), ['Medidas', 'Se define con las de tu local ' + TBD('Tabla por publicar')]]
+            ${[['Entra', m.veh], ...fichaComun(), ['Medidas', 'Se define con las de tu local']]
       .map(f => `<dt class="mono" style="padding-top:2px">${f[0]}</dt><dd>${f[1]}</dd>`).join('')}
           </dl>
 
-          <h2 class="mono am" style="margin:30px 0 10px">Qué trae cada pack</h2>
-          <div style="border-top:1px solid var(--line-2)">
-            ${DATA.packs.map(p => `<div style="display:grid;grid-template-columns:minmax(120px,auto) 1fr;gap:4px 16px;padding:11px 0;border-bottom:1px solid var(--line-2);font-size:15px">
-              <b style="font-variation-settings:'wdth' 104,'wght' 650">${p.n}</b><span style="color:var(--mut)">${p.resumen}</span></div>`).join('')}
-          </div>
-          <p class="quiet" style="margin-top:12px">Contanos en la consulta qué pack te interesa, junto con el modelo. <a class="btn-t" href="/#sistema">Comparar los packs</a></p>
-
-          ${rubrosDe.length ? `<h2 class="mono am" style="margin:30px 0 10px">Recomendada para</h2>
-            <div style="display:flex;gap:14px;flex-wrap:wrap">${rubrosDe.map(r => `<a class="btn-t" href="${urlRubro(r)}">${r.n}</a>`).join('')}</div>` : ''}
+          <p class="quiet" style="margin-top:30px">Qué trae la cabina lo definen los packs Box, Studio y Studio Pro; qué pack corresponde a este modelo lo vemos en la consulta. <a class="btn-t" href="/#sistema">Ver los packs</a></p>
 
           <div class="hero-cta" style="margin-top:32px">
             <button class="btn btn-p" data-goquotemodel="${m.slug}"><span>Consultar por este modelo</span></button>
@@ -947,7 +925,7 @@ function viewTrabajos() {
   meta({
     u: '/trabajos',
     t: 'Cabinas entregadas | Cabinas Desarmables RM',
-    d: 'Fotos de cabinas desarmables RM instaladas y funcionando, en terminación negra y blanca. Ninguna es un render.'
+    d: 'Fotos de cabinas desarmables RM, publicadas en nuestro Instagram, en terminación negra y blanca.'
   });
   const cls = ['e-a', 'e-b', 'e-c', 'e-d', 'e-e'];
   return `<section class="sec" style="padding-top:calc(var(--head) + clamp(34px,6vh,76px))">
@@ -956,16 +934,16 @@ function viewTrabajos() {
         <nav class="crumb" aria-label="Migas"><a href="/">Inicio</a><span>/</span><b>Trabajos</b></nav>
         <span class="mono am">Trabajos</span>
         <h1 class="d1" style="font-size:clamp(34px,6vw,72px)">Cabinas entregadas</h1>
-        <p class="lede">Cabinas de RM instaladas y funcionando. Ninguna es un render. No atribuimos rubro ni modelo donde no consta.</p>
+        <p class="lede">Cabinas de RM, publicadas en nuestro Instagram. No atribuimos rubro ni modelo donde no consta.</p>
       </div>
       <div class="edit rv">
         ${DATA.trabajos.map((t, i) => figura(t.img, {
       cls: cls[i], cap: t.cap, alt: t.alt,
       sizes: '(min-width:760px) 34vw, 92vw'
     })).join('')}
-        <figure class="e-f">${resv('cabina instalada en un lavadero o un lubricentro', '3/4')}</figure>
+        <figure class="e-f ig-card"><a href="${IG}" target="_blank" rel="noopener"><span class="mono am">Instagram</span>
+          <b class="d4">Más cabinas, en nuestro Instagram</b><span class="btn-t">@cabinasdesarmablesrm →</span></a></figure>
       </div>
-      <p class="quiet rv" style="margin-top:18px;line-height:1.9">Las cabinas entregadas son muchas más que estas cinco: el resto está en Instagram, donde publicamos cada una a medida que sale del taller.</p>
       <div class="hero-cta" style="margin-top:30px">
         <button class="btn btn-p" data-goquote=""><span>Quiero una así</span></button>
         <a class="btn btn-g" href="${IG}" target="_blank" rel="noopener">Ver más en Instagram</a>
@@ -984,7 +962,7 @@ const view404 = () => `<section class="sec" style="padding-top:calc(var(--head) 
    ══════════════════════════════════════════════════════════════ */
 const Q = {
   i: 0,
-  d: { rubro: '', vehiculo: '', ancho: '', largo: '', alto: '', pack: '', nombre: '', tel: '', loc: '', msg: '', modelo: '' },
+  d: { rubro: '', vehiculo: '', ancho: '', largo: '', alto: '', pack: '', medida: '', nombre: '', tel: '', loc: '', msg: '', modelo: '' },
   steps: [
     { k: 'Paso 1 de 5', q: '¿Qué tenés?', f: 'rubro', o: ['Detailing', 'Lavadero', 'Lubricentro', 'Concesionaria', 'Cochera particular', 'Voy a abrir un negocio'] },
     { k: 'Paso 2 de 5', q: '¿Qué necesitás que entre?', f: 'vehiculo', o: ['Una moto', 'Un auto', 'Un auto con lugar para trabajar alrededor', 'Dos autos', 'Una camioneta', 'Todavía no sé'] },
@@ -995,25 +973,16 @@ const Q = {
 };
 
 
-/* Cada opción del paso 2 corresponde a un modelo del catálogo:
-   así la consulta llega clasificada sin sumarle un paso al visitante. */
-const VEH_MODELO = {
-  'Una moto': 'Cabina moto',
-  'Un auto': 'Cabina compacta',
-  'Un auto con lugar para trabajar alrededor': 'Cabina de trabajo',
-  'Dos autos': 'Cabina doble',
-  'Una camioneta': 'A medida'
-};
-const modeloPorVehiculo = v => VEH_MODELO[v] || '';
 
 function quoteMsg() {
   const d = Q.d, L = [];
   L.push('Hola RM, quiero cotizar una cabina.', '');
   L.push('▸ RUBRO: ' + (d.rubro || 'sin especificar'));
   L.push('▸ NECESITO QUE ENTRE: ' + (d.vehiculo || 'sin especificar'));
-  const mod = d.modelo || modeloPorVehiculo(d.vehiculo);
+  const mod = d.modelo;
   if (mod) L.push('▸ MODELO DE INTERÉS: ' + mod);
   if (d.pack) L.push('▸ PACK: ' + d.pack);          // sólo si se eligió en la home
+  if (d.medida) L.push('▸ MEDIDA: ' + d.medida);    // ídem
   L.push('▸ MI ESPACIO: ' + (d.ancho && d.largo
     ? `${d.ancho} ancho × ${d.largo} largo${d.alto ? ` × ${d.alto} alto libre` : ''} (m)`
     : 'todavía no lo medí'));
@@ -1024,7 +993,7 @@ function quoteMsg() {
      igual se queda con el de contacto. */
   if (d.tel) L.push('▸ TELÉFONO: ' + d.tel);
   if (d.msg.trim()) L.push('', 'Comentario: ' + d.msg.trim());
-  L.push('', '—', 'Consulta enviada desde ' + SITE.replace(/^https?:\/\//, ''));
+  L.push('', '—', 'Consulta desde ' + SITE.replace(/^https?:\/\//, ''));
   L.push('Ref: ' + refCode());
   return L.join('\n');
 }
@@ -1040,7 +1009,7 @@ function quoteSummary() {
      referencia no cambia si el minuto pasa entre una cosa y la otra. */
   Q.msg = quoteMsg();
   const rows = [['Rubro', d.rubro], ['Entra', d.vehiculo],
-  ['Modelo', d.modelo || modeloPorVehiculo(d.vehiculo)], ['Pack', d.pack],
+  ['Modelo', d.modelo], ['Pack', d.pack], ['Medida', d.medida],
   ['Espacio', d.ancho && d.largo ? `${d.ancho} × ${d.largo}${d.alto ? ` × ${d.alto}` : ''} m` : 'Sin medir'],
   ['Localidad', d.loc], ['Nombre', d.nombre]]
     .filter(r => r[1]);
@@ -1187,7 +1156,7 @@ function pushLead(d, txt) {
     loc: d.loc || '—', veh: d.vehiculo || '—',
     med: d.ancho && d.largo ? `${d.ancho} × ${d.largo}${d.alto ? ` × ${d.alto}` : ''}` : 'Sin medir',
     st: 'nueva', ts: Date.now(), ref: refCode(), tel: d.tel, msg: txt,
-    modelo: d.modelo || modeloPorVehiculo(d.vehiculo)
+    modelo: d.modelo
   });
   guardarLeads();
 }
@@ -1347,7 +1316,7 @@ function render() {
       u: '/',
       t: 'Cabinas Desarmables RM | Cabinas para detailing, lavaderos y lubricentros',
       ogt: 'Cabinas Desarmables RM | El auto entra a un galpón, sale de un estudio',
-      d: 'Fabricamos cabinas desarmables para detailing, lavaderos, lubricentros y concesionarias. Pack Box, Studio y Studio Pro: estructura 100% desarmable en chapa trapezoidal y, según el pack, piso encastrable e iluminación. Envíos a todo el país desde Puerto General San Martín, Santa Fe.'
+      d: 'Fabricamos cabinas desarmables para detailing, lavaderos, lubricentros y concesionarias. Pack Box, Studio y Studio Pro: estructura 100% desarmable con revestimiento en chapa trapezoidal y, según el pack, piso encastrable e iluminación. Envíos a todo el país desde Puerto General San Martín, Santa Fe.'
     });
   }
   else if (rubroSlug) {
@@ -1363,7 +1332,7 @@ function render() {
     meta({
       u: '/presupuesto',
       t: 'Pedir presupuesto de cabina | Cabinas Desarmables RM',
-      d: 'Contanos tu rubro, qué vehículo tiene que entrar y cuánto medís. Con eso te cotizamos la cabina que corresponde a tu espacio, en la primera respuesta.'
+      d: 'Contanos tu rubro, qué vehículo tiene que entrar y cuánto medís. Con eso RM tiene los datos para cotizarte.'
     });
   }
   else if (parts[0] === 'panel') html = viewPanel();
@@ -1415,7 +1384,7 @@ function viewCotizar() {
       <div class="sec-head rv">
         <span class="mono am">Configurá tu cabina</span>
         <h1 class="d2">Armá tu proyecto</h1>
-        <p class="lede">Cinco pasos, casi todo con el pulgar. Al final se abre WhatsApp con tu proyecto escrito, para que RM pueda cotizarte en la primera respuesta en vez de preguntarte ocho cosas.</p>
+        <p class="lede">Cinco pasos, casi todo con el pulgar. Al final se abre WhatsApp con tu proyecto escrito, así RM tiene los datos para cotizarte.</p>
       </div>
       <div id="quoteMount"></div>
       <div class="rv" style="margin-top:30px;display:flex;gap:20px;flex-wrap:wrap">
@@ -1465,35 +1434,6 @@ function fotoRubro(r, eager) {
   </figure>`;
 }
 
-/* ── RUBROS: selector sin fotografía forzada ────────────────── */
-function rubroSelector() {
-  return `
-  <div class="tabs" role="tablist" data-sel="rub">
-    ${DATA.rubros.map((r, i) => `<button class="tab${i === 0 ? ' on' : ''}" role="tab" data-i="${i}"
-      aria-selected="${i === 0}">${r.n}</button>`).join('')}
-  </div>
-  <div class="sel-body" data-selbody="rub" role="tabpanel">${rubroPane(0)}</div>`;
-}
-function rubroPane(i) {
-  const r = DATA.rubros[i], m = DATA.modelos.find(x => x.slug === r.rec);
-  return `
-    <div>${fotoRubro(r, false)}</div>
-    <div class="sel-copy">
-      <span class="mono am">${r.n}</span>
-      <h3 class="d2" style="margin:12px 0 16px">${r.claim}</h3>
-      <p class="lede">${r.prob}</p>
-      <p style="margin-top:14px;color:#C6C8C0;font-size:15.5px">${r.sol}</p>
-      <div class="pts">${r.pts.map(p => `<div>
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FFC800" stroke-width="2.4" style="margin-top:5px"><path d="M4 12.5 9.5 18 20 6.5"/></svg>
-        <span>${p}</span></div>`).join('')}</div>
-      <div class="sel-actions">
-        <a class="btn btn-p" href="${urlRubro(r)}"><span>Ver esta solución</span></a>
-        <button class="btn btn-g" data-goquote="${r.n}">Consultar por mi ${r.n.toLowerCase().replace(/s$/, '')}</button>
-      </div>
-      <p class="quiet" style="margin-top:16px">Modelo que solemos recomendar: <b style="color:var(--txt)">${m.n}</b></p>
-    </div>`;
-}
-
 /* ── MODELOS: índice tipográfico + detalle del seleccionado ─── */
 function modeloSelector() {
   return `
@@ -1509,7 +1449,6 @@ function modeloSelector() {
 }
 function modeloPane(i) {
   const m = DATA.modelos[i];
-  const rub = DATA.rubros.filter(r => r.rec === m.slug);
   return `
     <div>${modeloPlan(m, 'light')}</div>
     <div class="sel-copy">
@@ -1518,9 +1457,8 @@ function modeloPane(i) {
       <dl class="spec">
         <dt>Entra</dt><dd>${m.veh}</dd>
         ${fichaComun().map(f => `<dt>${f[0]}</dt><dd>${f[1]}</dd>`).join('')}
-        <dt>Medidas</dt><dd>Se define con las de tu local ${TBD('Tabla por publicar')}</dd>
+        <dt>Medidas</dt><dd>Se define con las de tu local</dd>
       </dl>
-      ${rub.length ? `<p class="quiet" style="margin-top:16px">Recomendada para ${rub.map(r => r.n.toLowerCase()).join(' y ')}.</p>` : ''}
       <div class="sel-actions">
         <button class="btn btn-p" data-goquotemodel="${m.slug}"><span>Consultar por este modelo</span></button>
         <a class="btn btn-g" href="${urlModelo(m)}">Ver ficha</a>
@@ -1552,12 +1490,12 @@ function trustBlock() {
       <a class="trow" data-wa href="${wa(waMsg())}" target="_blank" rel="noopener">
         <span class="tlb">WhatsApp</span><span class="tval">${TEL_HUMAN}<small>Es donde respondemos las consultas</small></span></a>
       <a class="trow" href="${IG}" target="_blank" rel="noopener">
-        <span class="tlb">Instagram</span><span class="tval">@cabinasdesarmablesrm<small>Ahí publicamos cada cabina que sale del taller</small></span></a>
+        <span class="tlb">Instagram</span><span class="tval">@cabinasdesarmablesrm<small>Fotos de cabinas de RM</small></span></a>
     </div>
     <div class="hours rv" data-d="1">
       <span class="now ${abierto ? '' : 'off'}"><i></i>${abierto ? 'Abierto ahora' : 'Cerrado ahora'}</span>
       ${EMPRESA.horarios.map(x => `<div class="hr ${x[2] ? '' : 'off'}"><span>${x[0]}</span><b>${x[1]}</b></div>`).join('')}
-      <p class="quiet" style="margin-top:16px">Si escribís fuera de horario, la consulta queda igual y te contestamos al abrir.</p>
+      <p class="quiet" style="margin-top:16px">Fuera de horario podés escribir igual: el mensaje queda en WhatsApp.</p>
     </div>
   </div>`;
 }
@@ -1683,7 +1621,7 @@ function rubrosHome() {
       <fieldset class="usos-l"><legend class="sr">Otros rubros</legend>${usos}
         <label class="uso"><input type="radio" name="rubro" value="Otro rubro" autocomplete="off"${chk('Otro rubro')}><span>Otro</span></label>
       </fieldset>
-      <div class="usos-a">${btnWA('Consultar por WhatsApp', {}, 'btn-g')}</div>
+      <div class="usos-a">${btnWA('Consultar por WhatsApp', { lb: 'rubro' }, 'btn-g')}</div>
     </div>`;
 }
 
@@ -1752,7 +1690,7 @@ function viewHome() {
 
   <section class="sec" id="trabajos" data-lam="02" data-name="Cabinas entregadas" style="background:var(--ink-2);border-bottom:1px solid var(--line)">
     <div class="wrap">
-      ${lamina('02', 'Cabinas entregadas', 'Fotos de cabinas de RM funcionando. Ninguna es un render.')}
+      ${lamina('02', 'Cabinas entregadas', 'Fotos de cabinas de RM, publicadas en nuestro Instagram.')}
       <div class="obras rv${n % 2 ? ' impar' : ''}" style="--n:${n === 6 ? 3 : n}">
         ${obras.map(t => figura(t.img, { cap: t.cap, alt: t.alt, sizes: `(min-width:900px) ${n === 6 ? 31 : Math.round(92 / n)}vw, 46vw` })).join('')}
         <figure class="ig-card">
@@ -1800,7 +1738,7 @@ function viewHome() {
       ${lamina('06', 'Cómo se compra', 'Comprás a distancia. Así funciona, de la consulta a la cabina armada.')}
       <ol class="pasos rv">${PASOS.map((p, i) => `
         <li><span class="k">0${i + 1}</span><h3>${p[0]}</h3><p>${p[1]}</p></li>`).join('')}</ol>
-      <p class="pend rv"><span class="tbd">a confirmar</span> Plazo de fabricación, formas de pago, quién arma y en cuánto tiempo, y garantía. Te los pasamos por escrito en la consulta.</p>
+      <p class="pend rv"><span class="tbd">a confirmar</span> Plazo de fabricación, formas de pago, quién arma y en cuánto tiempo, y garantía. Los vemos en la consulta.</p>
 
       <div class="envio rv${envioG ? ' con-g' : ''}">
         ${envioG}
@@ -1837,7 +1775,6 @@ function viewModelos() {
     <div class="wrap">
       <div class="sec-head rv">
         <nav class="crumb" aria-label="Migas"><a href="/">Inicio</a><span>/</span><b>Modelos</b></nav>
-        <span class="mono">Catálogo</span>
         <h1 class="d1" style="font-size:clamp(34px,6vw,72px)">Modelos</h1>
         <p class="lede" style="color:#4A4D46">Ordenados por lo que tenés que meter adentro, que es como se elige de verdad.</p>
       </div>
@@ -1904,9 +1841,9 @@ function quoteHTML() {
     </div>`;
 
   const live = [['Rubro', Q.d.rubro], ['Entra', Q.d.vehiculo],
-  ['Modelo', Q.d.modelo || modeloPorVehiculo(Q.d.vehiculo)],
+  ['Modelo', Q.d.modelo],
   ['Tu espacio', Q.d.ancho && Q.d.largo ? `${Q.d.ancho} × ${Q.d.largo}${Q.d.alto ? ` × ${Q.d.alto}` : ''} m` : ''],
-  ['Pack', Q.d.pack], ['Localidad', Q.d.loc]];
+  ['Pack', Q.d.pack], ['Medida', Q.d.medida], ['Localidad', Q.d.loc]];
 
   return `<div class="quote">${rail}<div class="q-grid">
     <div class="q-body">
@@ -2032,7 +1969,7 @@ function bindTabs(root) {
   $$('[data-sel]', root).forEach(tabs => {
     const key = tabs.dataset.sel;
     const body = $(`[data-selbody="${key}"]`, root);
-    const pane = key === 'rub' ? rubroPane : modeloPane;
+    const pane = modeloPane;
     const go = i => {
       $$('.tab', tabs).forEach(t => {
         const on = +t.dataset.i === i;
@@ -2131,7 +2068,7 @@ function bindV2(root) {
   bindSpy(root); bindIsoCross(root);
   bindBands(root); bindScroll(root);
   bindTabs(root); bindCTAs(root); bindCursor(root);
-  fabHome(root); fab();
+  fabObservar(root); fab();
 }
 
 /* El router no conoce estos bindings: se enganchan al cambio de #main */
