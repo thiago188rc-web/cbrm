@@ -16,7 +16,12 @@ Reglas:
     encuadre: el sujeto es una habitación, así que el corte horizontal es
     legítimo y muestra mejor la cabina que el vertical completo.
 
-Uso:  python tools/build-images.py
+Uso:  python tools/build-images.py              regenera todo
+      python tools/build-images.py hero-detailing envios-camion
+                                                sólo esas fuentes (por nombre,
+                                                sin extensión): suma una imagen
+                                                sin reescribir las variantes que
+                                                ya están publicadas.
 """
 import os
 import sys
@@ -55,7 +60,22 @@ CROPS = [
 ]
 
 # Fotos completas que se publican verticales, sin recortar.
-PORTRAITS = ["hero.jpg", "blanca.jpg", "negraFrente.jpg", "negraBajo.jpg", "moto.jpg"]
+# hero-detailing.jpg es la portada de la home: una escena de referencia del
+# rubro, NO una cabina entregada. Por eso no tiene recortes ni va a Open Graph.
+PORTRAITS = ["hero.jpg", "blanca.jpg", "negraFrente.jpg", "negraBajo.jpg", "moto.jpg",
+             "hero-detailing.jpg"]
+
+# Gráficas con texto (no fotos): enteras, con su proporción, y con más calidad
+# que las fotos porque la compresión de foto ensucia los bordes de las letras.
+GRAPHICS = ["envios-camion.png"]
+Q_GRAPHIC = {"avif": 72, "jpg": 90}
+
+# Filtro opcional por nombre (ver Uso). Vacío = todo.
+ONLY = set(sys.argv[1:])
+
+
+def wanted(stem):
+    return not ONLY or stem in ONLY
 
 
 def enhance(im, resized):
@@ -69,7 +89,7 @@ def enhance(im, resized):
     return im.filter(ImageFilter.UnsharpMask(radius=1.0, percent=34, threshold=4))
 
 
-def export(im, stem, widths):
+def export(im, stem, widths, q_avif=55, q_jpg=80):
     """Escribe avif + jpg en cada ancho. Nunca agranda.
 
     Sin WebP a propósito: en estas fotos (textura de rombos del piso, chapa
@@ -86,8 +106,8 @@ def export(im, stem, widths):
         h = round(w * im.height / im.width)
         r = enhance(im.resize((w, h), Image.LANCZOS), w < im.width)
         base = os.path.join(OUT, f"{stem}-{w}")
-        r.save(base + ".avif", quality=55, speed=6)
-        r.save(base + ".jpg", quality=80, optimize=True, progressive=True)
+        r.save(base + ".avif", quality=q_avif, speed=6)
+        r.save(base + ".jpg", quality=q_jpg, optimize=True, progressive=True)
         made.append((w, h))
     return made
 
@@ -99,15 +119,31 @@ def main():
 
     for f in PORTRAITS:
         p = os.path.join(SRC, f)
+        stem = os.path.splitext(f)[0]
+        if not wanted(stem):
+            continue
         if not os.path.exists(p):
             print(f"  ! falta {f}, se saltea")
             continue
         im = Image.open(p).convert("RGB")
-        stem = os.path.splitext(f)[0]
         made = export(im, stem, W_PORTRAIT)
         print(f"{stem:16s} vertical {im.size} -> {[w for w, _ in made]}")
 
+    for f in GRAPHICS:
+        p = os.path.join(SRC, f)
+        stem = os.path.splitext(f)[0]
+        if not wanted(stem):
+            continue
+        if not os.path.exists(p):
+            print(f"  ! falta {f}, se saltea")
+            continue
+        im = Image.open(p).convert("RGB")
+        made = export(im, stem, W_PORTRAIT, Q_GRAPHIC["avif"], Q_GRAPHIC["jpg"])
+        print(f"{stem:16s} grafica  {im.size} -> {[w for w, _ in made]}")
+
     for name, f, box, _why in CROPS:
+        if not wanted(name):
+            continue
         p = os.path.join(SRC, f)
         if not os.path.exists(p):
             print(f"  ! falta {f}, se saltea {name}")
@@ -122,7 +158,7 @@ def main():
     # Open Graph: 1200×630 exacto. Es el único caso donde se agranda,
     # porque las redes exigen esa medida y el origen queda 11% corto.
     p = os.path.join(SRC, "hero.jpg")
-    if os.path.exists(p):
+    if wanted("og") and os.path.exists(p):
         im = Image.open(p).convert("RGB")
         W, H = im.size
         box = CROPS[0][2]
@@ -135,7 +171,7 @@ def main():
     # un logo-512 interpolado que pesaba 149 kB — más que la foto del hero —
     # para mostrarse a 38 px en el header.
     p = os.path.join(SRC, "logo.png")
-    if os.path.exists(p):
+    if wanted("logo") and os.path.exists(p):
         lg = Image.open(p).convert("RGBA")
         for s in (32, 64, 128, 180, 240):
             if s > lg.width:

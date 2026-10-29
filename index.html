@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Cabinas Desarmables RM | Cabinas para detailing, lavaderos y lubricentros</title>
-<meta name="description" content="Cabinas desarmables para detailing, lavaderos, lubricentros y concesionarias. Paredes, techo, iluminación, piso e instalación eléctrica. Se arman sin obra y se pueden desmontar. Fabricamos en Puerto General San Martín, Santa Fe. Pedí tu presupuesto por WhatsApp.">
+<meta name="description" content="Cabinas desarmables para detailing, lavaderos, lubricentros y concesionarias. Pack Box, Studio y Studio Pro: estructura 100% desarmable en chapa trapezoidal y, según el pack, piso encastrable e iluminación. Fabricamos en Puerto General San Martín, Santa Fe, y enviamos a todo el país. Consultá por WhatsApp.">
 <meta name="theme-color" content="#08090A">
 <link rel="icon" type="image/png" sizes="32x32" href="/img/logo-32.png">
 <link rel="icon" type="image/png" sizes="240x240" href="/img/logo-240.png">
@@ -24,7 +24,7 @@
 <meta property="og:locale" content="es_AR">
 <meta property="og:site_name" content="Cabinas Desarmables RM">
 <meta property="og:title" content="Cabinas Desarmables RM | El auto entra a un galpón, sale de un estudio">
-<meta property="og:description" content="Cabinas desarmables completas para detailing, lavaderos, lubricentros y concesionarias. Paredes, techo cerrado, iluminación, piso e instalación eléctrica. Se arman sin obra.">
+<meta property="og:description" content="Cabinas desarmables para detailing, lavaderos, lubricentros y concesionarias. Estructura 100% desarmable en chapa trapezoidal y, según el pack, piso encastrable e iluminación. Envíos a todo el país.">
 <meta property="og:url" content="https://cbrm.vercel.app/">
 <meta property="og:image" content="https://cbrm.vercel.app/img/og.jpg">
 <meta property="og:image:width" content="1200">
@@ -34,9 +34,9 @@
 <meta name="twitter:card" content="summary_large_image">
 
 <!-- La foto del hero es el LCP: se pide antes de que el navegador llegue al CSS. -->
-<link rel="preload" as="image" href="/img/hero-1080.avif" type="image/avif"
-      imagesrcset="/img/hero-420.avif 420w, /img/hero-640.avif 640w, /img/hero-860.avif 860w, /img/hero-1080.avif 1080w"
-      imagesizes="(min-width:1000px) 54vw, 100vw" fetchpriority="high">
+<link rel="preload" as="image" href="/img/hero-detailing-1080.avif" type="image/avif"
+      imagesrcset="/img/hero-detailing-420.avif 420w, /img/hero-detailing-640.avif 640w, /img/hero-detailing-860.avif 860w, /img/hero-detailing-1080.avif 1080w, /img/hero-detailing-1364.avif 1364w"
+      imagesizes="(min-width:1000px) 53vw, 100vw" fetchpriority="high">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1145,6 +1145,341 @@ header.hd{isolation:isolate}
   .rfig img,.sw img{transition:none}
 }
 </style>
+
+<style>
+/* ══════════════════════════════════════════════════════════════
+   V7 — LA HOME LLEVA A WHATSAPP
+
+   Quien llega desde Instagram viene en el celular y ya vio cabinas en
+   el feed. La home pasa de doce láminas a siete (portada, entregadas,
+   packs, modelos y medidas, rubros, compra, preguntas) y WhatsApp es la
+   acción principal en todas. Mismo mundo: tinta, el amarillo enmarca,
+   plano técnico. Clases nuevas, propias de la home: no pisan las de
+   las otras páginas.
+   ══════════════════════════════════════════════════════════════ */
+
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* ── Botones: el estado presionado ────────────────────────────
+   El hover ya existía; en el celular el único estado que se ve es
+   el del dedo encima. */
+.btn{transition:color .3s var(--micro),background .3s var(--micro),
+  border-color .3s var(--micro),transform .16s var(--micro)}
+.btn:active{transform:scale(.97)}
+.btn-sm{min-height:44px;padding:10px 16px;font-size:12.5px;gap:8px}
+.btn-g:active{border-color:var(--amber)}
+.txt-l{font-size:14.5px;color:var(--mut);border-bottom:1px solid #3A3D41;padding:4px 0 2px;
+  transition:color .2s var(--micro),border-color .2s var(--micro)}
+.txt-l:hover,.txt-l:focus-visible{color:var(--amber);border-bottom-color:var(--amber)}
+.paper .txt-l{color:#44473F;border-bottom-color:#B9BCB2}
+
+/* ── Encabezado de lámina ─────────────────────────────────── */
+.hh{display:flex;flex-direction:column;gap:14px;margin-bottom:clamp(28px,4.5vh,52px)}
+.hh h2{max-width:20ch}
+.hh .lede{margin-top:0}
+.paper .hh .lede{color:#44473F}
+
+/* ── PORTADA ──────────────────────────────────────────────────
+   Celular: la foto arriba, pasando por debajo del header (que ya trae
+   su velo), y el texto debajo sobre tinta. El botón de WhatsApp tiene
+   que entrar en la primera pantalla con la barra fija ya visible: la
+   foto se limita a header + 75vw y la bajada es de dos líneas. */
+.portada{position:relative;background:var(--ink);overflow:hidden}
+/* La foto del box (3:4,6 aprox.) se recorta a header + 78vw: el header tapa
+   el tramo de estantes de arriba, y debajo entran el techo del auto, las
+   paredes con luz, la franja magenta y el paragolpes completo. El velo de
+   abajo es corto para no apagar la parrilla. */
+.portada-foto{position:relative;height:min(calc(var(--head) + 78vw),64svh);overflow:hidden;background:var(--ink-2)}
+.portada-foto .ph,.portada-foto img{width:100%;height:100%}
+.portada-foto img{object-position:var(--pos-m)!important;animation:pFoto .9s var(--ease) both}
+@keyframes pFoto{from{transform:scale(1.03);filter:brightness(.55)}}
+.portada-foto::after{content:"";position:absolute;left:0;right:0;bottom:0;height:12%;pointer-events:none;
+  background:linear-gradient(to top,var(--ink) 4%,rgba(8,9,10,0))}
+.portada-copy{position:relative;padding:12px var(--pad) clamp(34px,6vh,56px)}
+/* "DESARMABLES" ocupa ~8,5 veces el cuerpo de la letra: a 9,2vw entra con
+   margen en 360-430 px, aun con barra de scroll visible. */
+.portada h1{font-size:clamp(32px,9.2vw,64px);line-height:.9;max-width:none}
+.portada h1 .ln i{transform:none;animation:pLn .8s var(--ease) both}
+.portada h1 .ln:nth-child(2) i{animation-delay:.07s}
+@keyframes pLn{from{transform:translateY(104%)}}
+.portada-lede{margin-top:14px;font-size:clamp(15.5px,1.4vw,19px);line-height:1.5;color:#CFD1C9;max-width:40ch}
+.portada-cta{display:flex;flex-direction:column;align-items:flex-start;gap:14px;margin-top:20px}
+.portada-cta .btn{width:100%}
+.portada-meta{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:16px 20px;margin-top:30px;
+  padding-top:18px;border-top:1px solid var(--line)}
+/* Un tramo ámbar sobre la línea: la franja del piso, en chiquito. */
+.portada-meta::before{content:"";position:absolute;top:-1px;left:0;width:56px;height:2px;background:var(--amber)}
+.portada-meta dd{font-variation-settings:"wdth" 104,"wght" 640;font-size:14.5px;margin-top:4px;line-height:1.35}
+.portada-meta div:last-child{grid-column:1/-1}
+/* Un solo momento orquestado: título, bajada, botón y datos, en ese orden.
+   Todo parte de visible (fill both): si la animación no corre, se lee igual. */
+.portada-lede,.portada-cta,.portada-meta{animation:fadeUp .6s var(--ease) both}
+.portada-lede{animation-delay:.16s}
+.portada-cta{animation-delay:.24s}
+.portada-meta{animation-delay:.32s}
+@media(min-width:1000px){
+  .portada{display:grid;grid-template-columns:minmax(0,.94fr) minmax(0,1.06fr);min-height:100svh}
+  .portada-foto{grid-column:2;grid-row:1;height:auto;min-height:100svh;border-left:1px solid var(--line)}
+  /* La foto llena la caja sin dictar su alto: si no, una vertical estiraba
+     la portada más allá de la pantalla. */
+  .portada-foto .ph{position:absolute;inset:0}
+  .portada-foto img{object-position:var(--pos-d)!important}
+  .portada-foto::after{top:0;height:auto;
+    background:linear-gradient(to bottom,rgba(8,9,10,.62) 0,rgba(8,9,10,0) calc(var(--head) + 60px))}
+  .portada-copy{grid-column:1;grid-row:1;display:flex;flex-direction:column;justify-content:center;
+    padding:calc(var(--head) + 48px) clamp(40px,4.4vw,80px) 56px var(--pad)}
+  /* La columna de texto mide ~47vw menos los rellenos; "DESARMABLES" pide
+     ~8,7 cuerpos. 4,1vw entra de 1000 a 1920 px. */
+  .portada h1{font-size:clamp(40px,4.1vw,76px)}
+  .portada-lede{margin-top:22px}
+  .portada-cta{flex-direction:row;flex-wrap:wrap;align-items:center;gap:16px 26px;margin-top:32px}
+  .portada-cta .btn{flex:none;width:auto;min-height:56px;padding-inline:28px;white-space:nowrap}
+  .portada-meta{grid-template-columns:repeat(3,auto);justify-content:start;gap:34px;margin-top:clamp(40px,7vh,72px)}
+  .portada-meta div:last-child{grid-column:auto}
+}
+
+/* ── CABINAS ENTREGADAS ───────────────────────────────────────
+   Cada foto una sola vez. Dos columnas en el celular (antes eran cinco
+   fotos verticales apiladas: casi 2.400 px de scroll). */
+.obras{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.obras>figure{position:relative;overflow:hidden;aspect-ratio:3/4;background:var(--ink);margin:0}
+.obras>figure[data-img]{cursor:zoom-in}
+.obras figure img{transition:transform .9s var(--ease)}
+.obras figure:hover img{transform:scale(1.04)}
+.obras figcaption{position:absolute;left:0;right:0;bottom:0;padding:28px 12px 11px;
+  background:linear-gradient(to top,rgba(8,9,10,.9) 30%,transparent);
+  font-family:var(--m);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:#D6D8D0}
+.obras>.ig-card{aspect-ratio:auto}
+.obras.impar>.ig-card{grid-column:1/-1}
+@media(min-width:900px){
+  .obras{grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:14px}
+  .obras.impar>.ig-card{grid-column:auto}
+  .obras figcaption{font-size:10px;padding:32px 14px 13px}
+}
+.fila-cta{display:flex;flex-wrap:wrap;align-items:center;gap:16px 26px;margin-top:clamp(26px,4vh,40px)}
+
+/* ── PACKS (estrato claro: el catálogo) ───────────────────────
+   Tres columnas con las mismas tres filas: se compara de un vistazo,
+   a la misma altura. El detalle técnico va plegado. */
+.packs{display:grid;gap:1px;background:var(--paper-line);border:1px solid var(--paper-line)}
+@media(min-width:860px){.packs{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.pack{position:relative;background:var(--paper);padding:24px clamp(18px,2vw,28px);
+  display:flex;flex-direction:column;gap:14px;transition:background .3s var(--micro)}
+/* Franja ámbar arriba del pack al pasar, al enfocar y cuando está en la
+   consulta: el amarillo enmarca, como en el piso de la cabina. */
+.pack::before{content:"";position:absolute;left:-1px;right:-1px;top:-1px;height:3px;background:var(--amber);
+  transform:scaleX(0);transform-origin:left center;transition:transform .45s var(--ease)}
+.pack:hover::before,.pack:focus-within::before,.pack.elegido::before{transform:scaleX(1)}
+.pack:hover{background:#F3F4EF}
+.paper :focus-visible{outline-color:var(--on-paper)}
+.pack h3{color:var(--on-paper)}
+.pack-r{font-size:15px;line-height:1.5}
+@media(min-width:860px){.pack-r{min-height:4.5em}}
+.pack-s{border-top:1px solid var(--paper-line);margin:2px 0 8px}
+.pack-s div{display:flex;justify-content:space-between;align-items:center;gap:14px;
+  padding:11px 0;border-bottom:1px solid var(--paper-line)}
+.pack-s dt{font-size:14.2px;color:#44473F}
+.pack-s dd{display:flex;align-items:center;min-height:24px;color:var(--on-paper);
+  font-variation-settings:"wdth" 104,"wght" 660;font-size:14px}
+.pack .no-inc,.pack-tab .no-inc{color:#63675E}
+.luz{padding:3px 9px;border:1px solid var(--on-paper);font-family:var(--m);font-size:10.5px;
+  letter-spacing:.1em;text-transform:uppercase;font-variation-settings:normal}
+.luz.pro{background:var(--amber);border-color:var(--amber);color:#000}
+.pack .btn{margin-top:auto;width:100%}
+.pack-badge{display:none;align-items:center;gap:7px;margin-top:-6px;
+  font-family:var(--m);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--on-paper)}
+.pack-badge::before{content:"";width:8px;height:8px;background:var(--amber);outline:1px solid var(--on-paper)}
+.pack.elegido{background:#F5F6F1}
+.pack.elegido .pack-badge{display:inline-flex}
+
+.pack-det{margin-top:18px;border-top:1px solid var(--paper-line);border-bottom:1px solid var(--paper-line)}
+.pack-det>summary{list-style:none;cursor:pointer;position:relative;padding:18px 44px 18px 0;
+  font-variation-settings:"wdth" 104,"wght" 640;font-size:16px;color:var(--on-paper)}
+.pack-det>summary::-webkit-details-marker{display:none}
+.pack-det>summary::before,.pack-det>summary::after{content:"";position:absolute;right:8px;top:50%;
+  width:14px;height:1.5px;background:var(--on-paper);transform:translateY(-50%);transition:transform .3s var(--ease)}
+.pack-det>summary::after{transform:translateY(-50%) rotate(90deg)}
+.pack-det[open]>summary::after{transform:translateY(-50%) rotate(0)}
+.pack-det>summary:hover{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+.pack-tw{padding:2px 0 22px;animation:fadeUp .45s var(--ease) both}
+.pack-tg{display:inline-flex;align-items:center;gap:9px;min-height:40px;margin-bottom:14px;padding:8px 14px;
+  background:transparent;border:1px solid #B9BCB2;color:var(--on-paper);cursor:pointer;
+  font-family:var(--m);font-size:11px;letter-spacing:.11em;text-transform:uppercase;
+  transition:background .2s var(--micro),color .2s var(--micro),border-color .2s var(--micro),transform .16s var(--micro)}
+.pack-tg::before{content:"";width:9px;height:9px;border:1px solid currentColor;transition:background .2s}
+.pack-tg[aria-pressed="true"]{background:var(--on-paper);border-color:var(--on-paper);color:var(--paper)}
+.pack-tg[aria-pressed="true"]::before{background:var(--amber);border-color:var(--amber)}
+.pack-tg:hover{border-color:var(--on-paper)}
+.pack-tg:active{transform:scale(.97)}
+.pack-tab{width:100%;border-collapse:collapse;table-layout:fixed;font-size:13.5px;color:var(--on-paper)}
+.pack-tab .c-l{width:40%}
+.pack-tab th,.pack-tab td{padding:12px 6px;border-bottom:1px solid var(--paper-line);text-align:center;
+  vertical-align:middle;font-weight:400}
+.pack-tab thead th{font-family:var(--m);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#63675E;padding-top:4px}
+.pack-tab tbody th{text-align:left;padding-left:0;color:#2B2E29;line-height:1.4}
+.pack-tab td small{display:block;font-size:12.5px;line-height:1.35}
+.pack-tab .ok{display:inline-block;vertical-align:middle}
+.pack-tab.solo-dif tr[data-igual]{display:none}
+@media(min-width:760px){.pack-tab .c-l{width:46%}.pack-tab{font-size:15px}.pack-tab td small{font-size:13.5px}}
+.pack-nota{margin-top:18px;font-size:14.5px}
+.pack-ley{margin-top:12px;font-size:13px;color:#44473F}
+/* El enlace ámbar no se lee sobre el papel claro (~1,5:1): ahí va en tinta. */
+.paper .btn-t{color:var(--on-paper);border-bottom-color:rgba(12,13,11,.4)}
+.paper .btn-t:hover{border-bottom-color:var(--on-paper)}
+
+/* ── MODELOS Y MEDIDAS ────────────────────────────────────────
+   Los cinco modelos a la vista (antes: uno por vez, en pestañas) y el
+   medidor al lado. Elegir un modelo es opcional y se suma al mensaje. */
+.mm{display:grid;gap:clamp(30px,4vw,56px)}
+@media(min-width:1000px){.mm{grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);align-items:start}}
+.mods7{border:0;margin:0;padding:0;min-width:0}
+.mods7 legend{font-family:var(--m);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--mut-2);padding:0;margin-bottom:12px}
+.mrow{position:relative;display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:14px;align-items:start;
+  padding:15px 2px;border-bottom:1px solid var(--line-2);transition:background .3s var(--micro)}
+.mods7 .mrow:first-of-type{border-top:1px solid var(--line-2)}
+.mrow input{-webkit-appearance:none;appearance:none;width:18px;height:18px;margin:3px 0 0;border:1px solid #4A4E54;
+  border-radius:50%;display:grid;place-items:center;cursor:pointer;background:var(--ink);transition:border-color .2s}
+.mrow input::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--amber);
+  transform:scale(0);transition:transform .22s var(--ease)}
+.mrow input:checked{border-color:var(--amber)}
+.mrow input:checked::after{transform:scale(1)}
+.mrow label{display:grid;gap:4px;cursor:pointer}
+.mrow label::before{content:"";position:absolute;inset:0}       /* toda la fila es tocable */
+.mrow label b{font-variation-settings:"wdth" 106,"wght" 700;text-transform:uppercase;font-size:15.5px;letter-spacing:.01em}
+.mrow-e{font-family:var(--m);font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--mut-2)}
+.mrow-d{font-size:14.2px;color:var(--mut);line-height:1.45}
+.mrow-f{position:relative;z-index:1;align-self:center;padding:10px 2px;font-family:var(--m);font-size:11px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--mut);text-decoration:underline;
+  text-underline-offset:4px;text-decoration-color:#3A3D41}
+.mrow-f:hover{color:var(--amber);text-decoration-color:var(--amber)}
+.mrow:hover{background:var(--ink-2)}
+.mrow:has(input:checked){background:rgba(255,200,0,.05)}
+.mrow:has(input:checked) .mrow-e{color:var(--amber)}
+.mrow:has(input:focus-visible){outline:2px solid var(--amber);outline-offset:-2px}
+.mods7-p{margin-top:16px;font-size:14px;color:var(--mut)}
+.mods7-p .tbd,.pend .tbd{margin-right:8px}
+
+.med{border:1px solid var(--line);background:var(--ink-2);padding:clamp(18px,2.6vw,30px)}
+.med h3{margin-bottom:6px}
+.med-i{font-size:14.5px;margin-bottom:18px}
+.opts.med-veh{grid-template-columns:repeat(3,minmax(0,1fr));margin-bottom:22px}
+.med-veh .opt{justify-content:center;min-height:46px;font-size:14px;padding:10px}
+.med-alto{margin-top:12px;line-height:1.7}
+.med-loc{margin-top:20px}
+.med-loc input{font-family:var(--f);font-size:17px}
+.med .plan{margin-top:22px;background:var(--ink)}
+.med .verdict p{color:var(--txt);max-width:52ch;font-size:15px}
+.med .verdict p.mono{color:var(--mut-2);font-size:10.5px;margin-top:8px;line-height:1.7}
+.med-nota{display:grid;gap:12px;margin-top:20px;padding-top:16px;border-top:1px solid var(--line-2)}
+.med-nota div{display:grid;grid-template-columns:118px minmax(0,1fr);gap:14px}
+.med-nota dt{font-family:var(--m);font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--mut-2);padding-top:3px}
+.med-nota dd{font-size:14px;color:var(--mut);line-height:1.55}
+.med-cta{display:flex;flex-wrap:wrap;align-items:center;gap:14px 24px;margin-top:24px}
+.med-q{margin-top:12px}
+@media(max-width:479px){
+  .med-nota div{grid-template-columns:1fr;gap:3px}
+  .med-cta .btn{width:100%}
+}
+/* El plano del medidor se dibuja en 640 unidades: en un celular quedaba
+   escalado a la mitad y las cotas no se leían. */
+@media(max-width:759px){.plan svg text.pd{font-size:19px}}
+
+/* ── RUBROS ───────────────────────────────────────────────── */
+.rbl{list-style:none;border-top:1px solid var(--line)}
+.rbl>li{display:grid;gap:8px;padding:22px 0;border-bottom:1px solid var(--line);transition:background .3s var(--micro)}
+.rbl-n{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px 14px}
+.rbl p{color:#C6C8C0;font-size:16px;max-width:42ch}
+.rbl-a{display:flex;flex-wrap:wrap;align-items:center;gap:12px 24px;margin-top:8px}
+.rbl-b{display:none;align-items:center;gap:7px;font-family:var(--m);font-size:9.5px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--amber)}
+.rbl-b::before{content:"";width:7px;height:7px;background:var(--amber)}
+.rbl>li.elegido .rbl-b{display:inline-flex}
+.rbl h3{font-size:clamp(21px,2.1vw,30px)}
+@media(min-width:900px){
+  /* Una grilla para toda la lista (subgrid): las frases quedan alineadas
+     entre filas aunque cada nombre y cada enlace midan distinto. Sin
+     subgrid, vale la plantilla de la fila. */
+  .rbl{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr) auto;column-gap:32px}
+  .rbl>li{grid-column:1/-1;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr) auto;
+    grid-template-columns:subgrid;align-items:center;gap:32px;padding:26px 16px}
+  .rbl>li:hover,.rbl>li:focus-within{background:rgba(255,255,255,.022)}
+  .rbl-n{flex-direction:column;gap:6px}
+  .rbl-a{margin-top:0;justify-content:flex-end}
+}
+
+/* ── CÓMO SE COMPRA ───────────────────────────────────────────
+   Los pasos se unen con una línea, como una cota: en el celular
+   vertical, en escritorio horizontal. */
+.pasos{list-style:none;display:grid}
+.pasos li{position:relative;padding:0 0 26px 32px}
+.pasos li::before{content:"";position:absolute;left:0;top:6px;width:9px;height:9px;background:var(--amber);z-index:1}
+.pasos li::after{content:"";position:absolute;left:4px;top:15px;bottom:0;width:1px;background:var(--line)}
+.pasos li:last-child{padding-bottom:0}
+.pasos li:last-child::after{display:none}
+.pasos .k{font-family:var(--m);font-size:10px;letter-spacing:.12em;color:var(--mut-2)}
+.pasos h3{font-variation-settings:"wdth" 106,"wght" 700;text-transform:uppercase;font-size:16px;letter-spacing:.01em;margin-top:3px}
+.pasos p{font-size:14.8px;margin-top:6px;max-width:34ch}
+@media(min-width:900px){
+  .pasos{grid-template-columns:repeat(4,minmax(0,1fr));gap:0 30px}
+  .pasos li{padding:30px 0 0}
+  .pasos li::before{top:-4px}
+  .pasos li::after{left:0;right:-30px;top:0;bottom:auto;width:auto;height:1px}
+  .pasos li:last-child::after{display:block;right:0}
+}
+.pend{margin-top:clamp(26px,4vh,38px);font-size:14.5px;color:var(--mut);max-width:72ch;line-height:1.75}
+/* Envíos: la gráfica de RM entera, con su proporción (3:4). En el celular
+   va después del texto y a un ancho que mantiene legible la leyenda; en
+   escritorio, a la izquierda. */
+.envio{display:grid;gap:clamp(26px,3.4vw,64px);align-items:center;margin-top:clamp(48px,8vh,96px);
+  padding-top:clamp(32px,5vh,56px);border-top:1px solid var(--line)}
+.envio h3{max-width:14ch}
+.envio p{margin-top:16px;color:#C6C8C0;max-width:46ch}
+.envio-g{order:2;margin:0;width:100%;max-width:340px;justify-self:center}
+.envio-g .ph,.envio-g img{width:100%;height:auto}
+@media(min-width:900px){
+  .envio.con-g{grid-template-columns:minmax(0,380px) minmax(0,1fr)}
+  .envio-g{order:0;max-width:none}
+}
+.emp{margin-top:clamp(48px,8vh,96px);padding-top:clamp(32px,5vh,56px);border-top:1px solid var(--line)}
+.emp>h3{margin-bottom:clamp(20px,3vh,32px)}
+
+/* ── CIERRE: el amarillo enmarca, no rellena ──────────────── */
+.cierre{display:grid;gap:26px;margin-top:clamp(52px,9vh,104px);border:1px solid var(--amber);
+  background:rgba(255,200,0,.045);padding:clamp(18px,4.4vw,56px)}
+.cierre h2{max-width:17ch}
+.cierre .lede{margin-top:16px}
+.cierre-a{display:flex;flex-direction:column;align-items:flex-start;gap:16px}
+/* Dentro del marco el botón tiene ~20 px menos que en la portada: con el
+   relleno de siempre, "Escribir por WhatsApp" cortaba línea a 390 px. */
+.cierre-a .btn{width:100%;min-height:56px;padding-inline:18px}
+@media(min-width:900px){
+  .cierre{grid-template-columns:minmax(0,1.4fr) auto;align-items:end;gap:56px}
+  .cierre-a .btn{width:auto;padding-inline:30px}
+}
+
+/* Movimiento reducido: la regla global acorta las animaciones pero no sus
+   demoras, y con fill "both" el botón quedaba transparente ~0,3 s. Acá la
+   entrada directamente no corre: todo está en su lugar desde el inicio. */
+@media(prefers-reduced-motion:reduce){
+  .portada-foto img,.portada h1 .ln i,.portada-lede,.portada-cta,.portada-meta,.pack-tw{animation:none}
+}
+
+/* ── Barra fija: un botón, con texto ──────────────────────── */
+.fab .btn{flex:1;gap:10px}
+@media(min-width:1000px){
+  .fab .btn{flex:none;padding-inline:24px}
+  /* En escritorio la barra flota a 24 px del borde: con translateY(110%)
+     asomaba ~17 px cuando estaba oculta. */
+  .fab{transform:translateY(calc(100% + 40px))}
+  .fab.on{transform:none}
+  /* La V6 pasó el botón de menú a display:flex sin media query y le ganó al
+     display:none de escritorio: aparecía la hamburguesa junto al nav. */
+  .burger{display:none}
+}
+.hd-cta{gap:8px}
+</style>
 </head>
 <body>
 
@@ -1162,19 +1497,21 @@ header.hd{isolation:isolate}
     </a>
     <span class="hd-ctx" id="hdCtx" aria-hidden="true"></span>
     <nav class="nav" id="nav" aria-label="Principal">
-      <a href="/#sistema">Cómo funciona</a>
+      <a href="/#sistema">Packs</a>
       <a href="/#rubros">Rubros</a>
       <a href="/modelos">Modelos</a>
       <a href="/trabajos">Trabajos</a>
       <a href="/#empresa">La empresa</a>
     </nav>
-    <a class="btn btn-p hd-cta" href="/presupuesto"><span>Pedir presupuesto</span></a>
+    <a class="btn btn-p hd-cta" id="hdWa" data-wa target="_blank" rel="noopener">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.5 7.3L3 20.5l1.8-5.3A8.4 8.4 0 1 1 21 11.5z"/><path d="M8.5 9.2c.2 2.4 2.4 4.9 5 5.6.7.2 1.4-.1 1.7-.7l.2-.5-1.9-1-.7.8c-1-.4-2-1.4-2.5-2.5l.8-.7-1-1.9-.5.2c-.6.3-1 .9-1.1 1.6z"/></svg>
+      <span>WhatsApp</span></a>
     <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="mob"><i></i><i></i></button>
   </div>
 </header>
 
 <div class="mob" id="mob">
-  <a href="/#sistema">Cómo funciona</a>
+  <a href="/#sistema">Packs</a>
   <a href="/#rubros">Rubros</a>
   <a href="/modelos">Modelos</a>
   <a href="/trabajos">Trabajos</a>
@@ -1182,7 +1519,7 @@ header.hd{isolation:isolate}
   <a href="/#empresa">La empresa</a>
   <a href="/presupuesto">Pedir presupuesto</a>
   <div class="mob-foot">
-    <a class="mob-wa" id="mobWa" target="_blank" rel="noopener">
+    <a class="mob-wa" id="mobWa" data-wa target="_blank" rel="noopener">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
         stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.5 7.3L3 20.5l1.8-5.3A8.4 8.4 0 1 1 21 11.5z"/></svg>
       <span id="mobTel"></span></a>
@@ -1198,10 +1535,10 @@ header.hd{isolation:isolate}
   <section class="sec" style="padding-top:calc(var(--head) + 40px)">
     <div class="wrap">
       <h1 class="d2">Cabinas desarmables para detailing, lavaderos, lubricentros y concesionarias</h1>
-      <p class="lede" style="margin-top:18px">Cabinas Desarmables RM fabrica en Puerto General San Martín, Santa Fe.
-        Cada cabina llega con las cuatro paredes de chapa nervada, el techo cerrado, la iluminación,
-        el piso modular y la instalación eléctrica resueltos. Se arma adentro del local que ya tenés,
-        sin obra húmeda, y se desmonta si mudás el negocio.</p>
+      <p class="lede" style="margin-top:18px">Cabinas Desarmables RM fabrica en Puerto General San Martín, Santa Fe,
+        y envía a todo el país. Tres packs: Box (estructura 100% desarmable y revestimiento en chapa
+        trapezoidal, color a elección), Studio (suma piso encastrable e iluminación básica) y Studio Pro
+        (suma piso encastrable e iluminación Full Pro). Se arman adentro del local que ya tenés.</p>
       <nav class="hero-cta" style="flex-wrap:wrap" aria-label="Secciones">
         <a class="btn btn-p" href="/presupuesto"><span>Pedir presupuesto</span></a>
         <a class="btn btn-g" href="/modelos">Modelos</a>
@@ -1217,11 +1554,13 @@ header.hd{isolation:isolate}
   </section>
 </main>
 
+<!-- Barra fija: un solo trabajo, WhatsApp con texto. El cotizador sigue a
+     mano en el menú, en la portada y en el cierre de la home. -->
 <div class="fab" id="fab">
-  <a class="btn btn-p" href="#/cotizar">Pedir presupuesto</a>
-  <a class="btn btn-g wa" id="fabWa" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">
+  <a class="btn btn-p" id="fabWa" data-wa target="_blank" rel="noopener">
     <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
-      stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.5 7.3L3 20.5l1.8-5.3A8.4 8.4 0 1 1 21 11.5z"/><path d="M8.5 9.2c.2 2.4 2.4 4.9 5 5.6.7.2 1.4-.1 1.7-.7l.2-.5-1.9-1-.7.8c-1-.4-2-1.4-2.5-2.5l.8-.7-1-1.9-.5.2c-.6.3-1 .9-1.1 1.6z"/></svg>
+      stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.5 7.3L3 20.5l1.8-5.3A8.4 8.4 0 1 1 21 11.5z"/><path d="M8.5 9.2c.2 2.4 2.4 4.9 5 5.6.7.2 1.4-.1 1.7-.7l.2-.5-1.9-1-.7.8c-1-.4-2-1.4-2.5-2.5l.8-.7-1-1.9-.5.2c-.6.3-1 .9-1.1 1.6z"/></svg>
+    <span>Escribir por WhatsApp</span>
   </a>
 </div>
 
@@ -1257,10 +1596,9 @@ header.hd{isolation:isolate}
           Pres. Juan Domingo Perón 1119<br>Puerto General San Martín, Santa Fe<br>
           <span class="mono" style="display:block;margin-top:8px">Lun a vie 9 a 17 · Sáb 9 a 12</span></address>
         <h4 style="margin-top:16px">Contacto</h4>
-        <a id="ftWa" target="_blank" rel="noopener"></a>
+        <a id="ftWa" data-wa target="_blank" rel="noopener"></a>
         <a href="https://www.instagram.com/cabinasdesarmablesrm/" target="_blank" rel="noopener">@cabinasdesarmablesrm</a>
         <a href="https://www.facebook.com/cabinasdesarmablesrm" target="_blank" rel="noopener">Facebook</a>
-        <a href="/panel" class="ft-int">Panel de consultas (interno)</a>
       </div>
     </div>
     <div class="ft-bot">
@@ -1274,7 +1612,7 @@ header.hd{isolation:isolate}
 {"@context":"https://schema.org","@graph":[
 {"@type":["LocalBusiness","HomeAndConstructionBusiness"],"@id":"https://cbrm.vercel.app/#negocio",
 "name":"Cabinas Desarmables RM",
-"description":"Fabricación de cabinas desarmables para detailing, lavaderos, lubricentros y concesionarias. Paredes de chapa nervada, techo cerrado, iluminación en capas, piso modular e instalación eléctrica. Se arman sin obra y se pueden desmontar.",
+"description":"Fabricación de cabinas desarmables para detailing, lavaderos, lubricentros y concesionarias. Estructura 100% desarmable con revestimiento en chapa trapezoidal y, según el pack, piso encastrable e iluminación. Envíos a todo el país.",
 "telephone":"+5493476569154","url":"https://cbrm.vercel.app/",
 "image":"https://cbrm.vercel.app/img/og.jpg","logo":"https://cbrm.vercel.app/img/logo-240.png",
 "address":{"@type":"PostalAddress","streetAddress":"Pres. Juan Domingo Perón 1119",

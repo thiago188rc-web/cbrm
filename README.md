@@ -67,8 +67,14 @@ Las originales viven en `img/src/`. El pipeline genera AVIF + JPEG progresivo
 en varios anchos, más los recortes apaisados y la imagen de Open Graph:
 
 ```bash
-python tools/build-images.py
+python tools/build-images.py                                # todo
+python tools/build-images.py hero-detailing envios-camion   # sólo esas fuentes
 ```
+
+Con nombres (sin extensión) procesa sólo esas fuentes y no reescribe las
+variantes ya publicadas. `hero-detailing.jpg` es la portada de la home: una
+escena de referencia del rubro, no una cabina entregada. `envios-camion.png` es
+la gráfica de envíos y se publica entera, con su proporción.
 
 Reglas, escritas en el propio script:
 
@@ -103,8 +109,9 @@ cambian esos cuatro y listo.
 
 Lo que no está confirmado aparece marcado como «a confirmar» en el sitio, y no
 se inventa. Hoy son: medidas por modelo, espesor de la chapa, carta completa de
-colores de la franja, plazos de fabricación, condiciones de pago, zonas y costo
-de flete, quién arma y si el armado va incluido, y el alcance de la garantía.
+colores de la franja, plazos de fabricación, condiciones de pago, costo del
+flete (se suma en la cotización), quién arma y si el armado va incluido, y el
+alcance de la garantía.
 
 Se editan en el objeto `DATA` de `src/app.js`. No hay que tocar el diseño: las
 fichas ya están armadas para recibir esos datos.
@@ -116,6 +123,13 @@ fichas ya están armadas para recibir esos datos.
 - Taller en Pres. Juan Domingo Perón 1119, Puerto General San Martín, Santa Fe.
 - Horarios: lunes a viernes de 9 a 17, sábados de 9 a 12.
 - Instagram [@cabinasdesarmablesrm](https://www.instagram.com/cabinasdesarmablesrm/).
+- Envíos a todo el país; el envío generalmente se suma en la cotización.
+- Packs (en `DATA.packs` y `DATA.packSpec`): **Box** (estructura 100%
+  desarmable, chapa trapezoidal color a elección), **Studio** (suma piso
+  encastrable e iluminación básica) y **Studio Pro** (suma piso encastrable e
+  iluminación Full Pro). Son otra dimensión que los modelos: el pack dice qué
+  trae la cabina, el modelo qué entra adentro. Ningún dato dice qué pack va con
+  qué modelo, así que el sitio no los cruza.
 
 ## Panel de consultas
 

@@ -1,6 +1,11 @@
 /* ═══════════════════════════════════════════════════════════════
    FOTOGRAFÍA — inventario de lo que RM tiene, y de lo que prueba.
 
+   `cap` es el epígrafe visible: sólo la terminación. Techo, luces y
+   accesorios que se ven en las fotos no figuran en las especificaciones
+   de los packs, y un epígrafe los haría leer como incluidos. El detalle
+   de lo que se ve queda en `alt`, que es una descripción de la imagen.
+
    Son cinco fotos reales de cabinas entregadas. No hay renders.
    Cada entrada declara QUÉ SE VE, porque de eso depende dónde se
    puede usar: una foto sirve para ilustrar un argumento sólo si el
@@ -16,7 +21,7 @@ window.RM_IMG = {
   hero: {
     ws: [420, 640, 860, 1080], w: 1080, h: 1431,
     alt: 'Auto rojo dentro de una cabina RM de terminación blanca, con cielorraso luminoso, franja de piso amarilla y piso modular',
-    cap: 'Terminación blanca · cielorraso luminoso',
+    cap: 'Terminación blanca',
     prueba: ['terminacion-blanca', 'cielorraso-luminoso', 'franja-piso', 'piso-modular', 'auto', 'spots-pared']
   },
   blanca: {
@@ -28,19 +33,19 @@ window.RM_IMG = {
   negraFrente: {
     ws: [420, 640, 860], w: 860, h: 1139,
     alt: 'Interior de cabina RM en terminación negra, con barras retroiluminadas, spots rasantes, organizadores de producto y franja de piso magenta',
-    cap: 'Terminación negra · barras retroiluminadas',
+    cap: 'Terminación negra',
     prueba: ['terminacion-negra', 'chapa-nervada', 'retroiluminada', 'rasante', 'accesorios', 'franja-piso', 'piso-modular']
   },
   negraBajo: {
     ws: [420, 640, 860], w: 860, h: 1139,
     alt: 'Cabina RM negra vista desde el piso: techo cerrado de chapa nervada con luminarias embutidas y enrollador de manguera sobre la pared',
-    cap: 'Terminación negra · techo cerrado',
+    cap: 'Terminación negra',
     prueba: ['terminacion-negra', 'techo-chapa', 'cenital', 'accesorios', 'enrollador']
   },
   moto: {
     ws: [420, 640, 860], w: 860, h: 1140,
     alt: 'Moto BMW dentro de una cabina RM de terminación blanca con cielorraso modular de paneles LED y enrollador de manguera',
-    cap: 'Cabina para moto · cielorraso de paneles LED',
+    cap: 'Cabina para moto',
     prueba: ['moto', 'terminacion-blanca', 'cielorraso-led', 'chapa-nervada', 'enrollador', 'piso-modular']
   },
 
@@ -69,8 +74,29 @@ window.RM_IMG = {
   'negraBajo-wide': {
     ws: [480, 640, 808], w: 808, h: 539,
     alt: 'Techo cerrado de una cabina RM negra: chapa nervada con luminarias embutidas en toda la superficie',
-    cap: 'Techo de chapa con luces embutidas',
+    cap: 'Terminación negra',
     prueba: ['techo-chapa', 'cenital', 'terminacion-negra', 'accesorios']
+  },
+
+  /* ── Portada de la home ───────────────────────────────────────
+     Escena de referencia del rubro (un box de detailing). NO es una
+     cabina entregada por RM ni un cliente: no lleva epígrafe, no va a
+     la galería de trabajos y no prueba nada del producto. */
+  'hero-detailing': {
+    ws: [420, 640, 860, 1080, 1364], w: 1364, h: 1600,
+    alt: 'Auto rojo estacionado en un box de detailing con paredes de chapa negra, luces en las paredes, estantes con productos de limpieza y piso encastrable con franja magenta',
+    cap: '',
+    prueba: []
+  },
+
+  /* ── Gráfica de envíos ────────────────────────────────────────
+     Pieza gráfica de RM, no fotografía. Se publica entera, con su
+     proporción: el texto de la imagen también está en la página. */
+  'envios-camion': {
+    ws: [420, 640, 860, 1058], w: 1058, h: 1407,
+    alt: 'Ilustración de un camión negro con la leyenda Cabinas Desarmables sobre fondo amarillo y el texto «Envíos a todo el país» con la bandera argentina',
+    cap: '',
+    prueba: []
   }
 };
 
