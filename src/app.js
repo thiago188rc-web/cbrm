@@ -405,41 +405,46 @@ $$('#mob a').forEach(a => a.onclick = closeMob);
    hay dos iguales juntos y nunca falta uno. Se esconde con el teclado
    abierto (un campo con foco) y con el menú abierto. Nunca en el panel
    interno; en escritorio no existe (el encabezado ya tiene el suyo). */
-const WA_A_LA_VISTA = new Set();
-let fabIO = null, fabT = 0;
-function fabObservar(root) {
-  if (fabIO) fabIO.disconnect();
-  WA_A_LA_VISTA.clear();
-  if (!('IntersectionObserver' in window)) return;
-  /* intersectionRatio y no isIntersecting: con un umbral de 0,6,
-     isIntersecting sigue en true cuando el botón ya salió a medias, y al
-     salir del todo no llegaba aviso (el 0 no era umbral): quedaba "a la
-     vista" para siempre y el fijo no volvía. */
-  fabIO = new IntersectionObserver(es => {
-    es.forEach(e => { if (e.intersectionRatio >= 0.6) WA_A_LA_VISTA.add(e.target); else WA_A_LA_VISTA.delete(e.target); });
-    fab();
-  }, { threshold: [0, 0.6] });
-  $$('a[data-wa]', root).forEach(a => fabIO.observe(a));
-}
-function fab() {
+/* Qué botones de WhatsApp de la página se ven: se mide directo, una vez por
+   cuadro. Con IntersectionObserver el estado se perdía: si el scroll saltaba
+   de "entero a la vista" a "casi afuera", el aviso del umbral no llegaba y
+   el botón quedaba marcado como visible después de salir. */
+let WA_LINKS = [], fabT = 0, fabRaf = 0;
+function fabObservar(root) { WA_LINKS = $$('a[data-wa]', root); }
+const waALaVista = () => {
+  const h = innerHeight;
+  return WA_LINKS.some(a => {
+    const r = a.getBoundingClientRect();
+    return r.height > 0 && Math.min(r.bottom, h) - Math.max(r.top, 0) >= r.height * 0.6;
+  });
+};
+function fabVer() {
   const el = document.activeElement;
   /* Sólo los campos que abren el teclado: un radio con foco (elegir pack o
      rubro) no tapa nada y escondía el botón sin motivo. */
   const campo = el && el.matches && el.matches('textarea, input:not([type=radio]):not([type=checkbox]):not([type=button]):not([type=submit])');
-  const ver = !location.pathname.startsWith('/panel') && scrollY > innerHeight * 0.35
-    && !WA_A_LA_VISTA.size && !campo && !mob.classList.contains('on');
+  return !location.pathname.startsWith('/panel') && scrollY > innerHeight * 0.35
+    && !campo && !mob.classList.contains('on') && !waALaVista();
+}
+function fab() {
   const f = $('#fab');
   clearTimeout(fabT);
-  /* Esconder es inmediato; mostrar espera un instante: al pasar de un botón
-     de la página al siguiente, el fijo no parpadea en el medio. */
-  if (!ver) f.classList.remove('on');
-  else if (!f.classList.contains('on')) fabT = setTimeout(() => f.classList.add('on'), 220);
+  /* Esconder es inmediato; mostrar espera un instante y vuelve a medir: al
+     pasar de un botón de la página al siguiente, o mientras uno termina de
+     aparecer, el fijo no se cruza con él. */
+  if (!fabVer()) f.classList.remove('on');
+  else if (!f.classList.contains('on')) fabT = setTimeout(() => { if (fabVer()) f.classList.add('on'); }, 220);
 }
 addEventListener('scroll', () => {
   $('#hd').classList.toggle('on', scrollY > 40);
-  fab();
+  if (!fabRaf) fabRaf = requestAnimationFrame(() => { fabRaf = 0; fab(); });
 }, { passive: true });
 addEventListener('resize', fab, { passive: true });
+/* Una foto diferida que termina de cargar puede correr los botones sin que
+   haya scroll: se vuelve a medir. */
+document.addEventListener('load', e => {
+  if (e.target.tagName === 'IMG' && !fabRaf) fabRaf = requestAnimationFrame(() => { fabRaf = 0; fab(); });
+}, true);
 document.addEventListener('focusin', fab);
 document.addEventListener('focusout', () => setTimeout(fab, 0));
 
