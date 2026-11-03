@@ -153,6 +153,10 @@ Lo que no está confirmado no se publica como hecho. Hoy faltan:
   (está en el pie y en el JSON-LD).
 - **Horario**: el «Abierto ahora» no contempla feriados.
 - **Dominio**: la elección final entre `.com` y `.com.ar`.
+- **Dirección del taller**: el cliente va a cambiarla. Hasta que la pase, el
+  sitio muestra sólo «Puerto General San Martín, Santa Fe». La calle se carga
+  en `EMPRESA.calle` de `src/app.js` (vuelve el «Cómo llegar» a Maps) y en
+  `index.html`: el pie y `streetAddress` del JSON-LD.
 
 Se editan en el objeto `DATA` de `src/app.js`. No hay que tocar el diseño: las
 fichas ya están armadas para recibir esos datos.
@@ -161,7 +165,7 @@ fichas ya están armadas para recibir esos datos.
 
 - WhatsApp **+54 9 3476 56-9154**, verificado contra el enlace oficial de RM en
   Instagram (`wa.me/message/7DHRXLFXX5XEI1` resuelve a `phone=5493476569154`).
-- Taller en Pres. Juan Domingo Perón 1119, Puerto General San Martín, Santa Fe.
+- Taller en Puerto General San Martín, Santa Fe (la calle está pendiente).
 - Horarios: lunes a viernes de 9 a 17, sábados de 9 a 12.
 - Instagram [@cabinasdesarmablesrm](https://www.instagram.com/cabinasdesarmablesrm/).
 - Envíos a todo el país; el envío generalmente se suma en la cotización.

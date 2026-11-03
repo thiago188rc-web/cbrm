@@ -56,11 +56,13 @@ const figura = (name, o = {}) => `
 
 /* ── DATOS ──────────────────────────────────────────────────── */
 const EMPRESA = {
-  calle: 'Pres. Juan Domingo Perón 1119',
+  /* Calle vacía a pedido del cliente: va a cambiar la dirección. Mientras
+     tanto la fila "Taller" muestra sólo la ciudad, sin link a Maps. Cuando
+     la confirmen, cargarla acá y vuelve el "Cómo llegar"; también en
+     index.html (footer y JSON-LD). */
+  calle: '',
   ciudad: 'Puerto General San Martín',
   prov: 'Santa Fe, Argentina',
-  maps: 'https://www.google.com/maps/search/?api=1&query=' +
-        encodeURIComponent('Pres. Juan Domingo Perón 1119, Puerto General San Martín, Santa Fe'),
   horarios: [['Lunes a viernes', '09:00 – 17:00', 1], ['Sábado', '09:00 – 12:00', 1], ['Domingo', 'Cerrado', 0]]
 };
 
@@ -1478,7 +1480,7 @@ const ctaBand = (kicker, text, btn) => `
 const btnP = (label, href) => `<a class="btn btn-p" href="${href}"><span>${label}</span></a>`;
 const btnQ = (label, rubro = '') => `<button class="btn btn-p" data-goquote="${rubro}"><span>${label}</span></button>`;
 
-/* Empresa: dirección y horarios confirmados por el cliente. Los envíos
+/* Empresa: ciudad y horarios confirmados por el cliente. Los envíos
    tienen su propio bloque en "Cómo se compra". */
 function trustBlock() {
   /* "Abierto ahora" con la hora de Argentina, no con la del dispositivo. */
@@ -1489,9 +1491,13 @@ function trustBlock() {
   return `
   <div class="trust">
     <div class="rv">
-      <a class="trow" href="${EMPRESA.maps}" target="_blank" rel="noopener">
+      ${EMPRESA.calle ? `
+      <a class="trow" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${EMPRESA.calle}, ${EMPRESA.ciudad}, ${EMPRESA.prov}`)}" target="_blank" rel="noopener">
         <span class="tlb">Taller</span>
-        <span class="tval">${EMPRESA.calle}<small>${EMPRESA.ciudad}, ${EMPRESA.prov} · Cómo llegar</small></span></a>
+        <span class="tval">${EMPRESA.calle}<small>${EMPRESA.ciudad}, ${EMPRESA.prov} · Cómo llegar</small></span></a>` : `
+      <div class="trow">
+        <span class="tlb">Taller</span>
+        <span class="tval">${EMPRESA.ciudad}<small>${EMPRESA.prov}</small></span></div>`}
       <a class="trow" data-wa href="${wa(waMsg())}" target="_blank" rel="noopener">
         <span class="tlb">WhatsApp</span><span class="tval">${TEL_HUMAN}<small>Es donde respondemos las consultas</small></span></a>
       <a class="trow" href="${IG}" target="_blank" rel="noopener">
@@ -1680,7 +1686,7 @@ function viewHome() {
     })}</div>
     <div class="portada-copy">
       <h1 class="d1"><span class="ln"><i>Cabinas</i></span><span class="ln"><i>desarmables</i></span></h1>
-      <p class="portada-lede">Modulares y 100% desarmables, para detailing, lavaderos y otros rubros.</p>
+      <p class="portada-lede">Modulares 100% desarmables para concesionarias, detailing, lavaderos y otros rubros.</p>
       <div class="portada-cta">
         ${btnWA('Escribir por WhatsApp')}
         <a class="txt-l" href="/#rubros">Elegir rubro, pack y medida</a>
@@ -1722,7 +1728,7 @@ function viewHome() {
 
   <section class="sec paper" id="sistema" data-lam="04" data-name="Packs">
     <div class="wrap">
-      ${lamina('04', 'Tres packs, según cuánto viene resuelto', 'Tocá uno para sumarlo a tu consulta. El tamaño lo define la medida, más abajo.')}
+      ${lamina('04', 'Elegí tu pack de equipamiento', 'Seleccioná uno y después indicá las medidas correspondientes más abajo.')}
       ${packsBlock()}
       <p class="pack-nota rv">No hay precios fijos: cada cabina se cotiza según la medida y lo que necesitás. El envío generalmente se suma en la cotización.</p>
     </div>
