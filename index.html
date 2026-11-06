@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Cabinas Desarmables RM | Cabinas para detailing, lavaderos y lubricentros</title>
-<meta name="description" content="Cabinas desarmables para detailing, lavaderos, lubricentros y concesionarias. Pack Box, Studio y Studio Pro: estructura 100% desarmable con revestimiento en chapa trapezoidal y, según el pack, piso encastrable e iluminación. Fabricamos en Puerto General San Martín, Santa Fe, y enviamos a todo el país. Consultá por WhatsApp.">
+<meta name="description" content="Cabinas desarmables para detailing, lavaderos, lubricentros y concesionarios. Pack Box, Studio y Studio Pro: estructura 100% desarmable con revestimiento en chapa trapezoidal y, según el pack, piso encastrable e iluminación. Fabricamos en Puerto General San Martín, Santa Fe, y enviamos a todo el país. Consultá por WhatsApp.">
 <meta name="theme-color" content="#08090A">
 <link rel="icon" type="image/png" sizes="32x32" href="/img/logo-32.png">
 <link rel="icon" type="image/png" sizes="240x240" href="/img/logo-240.png">
@@ -24,7 +24,7 @@
 <meta property="og:locale" content="es_AR">
 <meta property="og:site_name" content="Cabinas Desarmables RM">
 <meta property="og:title" content="Cabinas Desarmables RM | El auto entra a un galpón, sale de un estudio">
-<meta property="og:description" content="Cabinas desarmables para detailing, lavaderos, lubricentros y concesionarias. Estructura 100% desarmable con revestimiento en chapa trapezoidal y, según el pack, piso encastrable e iluminación. Envíos a todo el país.">
+<meta property="og:description" content="Cabinas desarmables para detailing, lavaderos, lubricentros y concesionarios. Estructura 100% desarmable con revestimiento en chapa trapezoidal y, según el pack, piso encastrable e iluminación. Envíos a todo el país.">
 <meta property="og:url" content="https://cbrm.vercel.app/">
 <meta property="og:image" content="https://cbrm.vercel.app/img/og.jpg">
 <meta property="og:image:width" content="1200">
@@ -963,9 +963,16 @@ a.trow:hover .tval{color:var(--amber)}
 .mplan .mp-box{fill:none;stroke:#3E4247;stroke-width:1.4}
 .mplan .mp-gap{fill:none;stroke:rgba(255,200,0,.5);stroke-width:1;stroke-dasharray:5 5}
 .mplan .mp-g{fill:rgba(255,200,0,.65);font-family:var(--m);font-size:9px;letter-spacing:1.2px}
-.mplan .mp-veh{fill:#16191C;stroke:#6A7077;stroke-width:1.6;vector-effect:non-scaling-stroke;
+/* El vehículo: carrocería plateada con techo, vidrios, ruedas y luces,
+   para que se lea como un auto de verdad visto desde arriba. */
+.mplan .mp-veh{fill:#C3C8CE;stroke:#7E848B;stroke-width:1.4;vector-effect:non-scaling-stroke;
   stroke-linejoin:round}
-.mplan .mp-det{fill:none;stroke:#4C5157;stroke-width:1.2;vector-effect:non-scaling-stroke;
+.mplan .mp-techo{fill:#D9DDE1}
+.mplan .mp-vidrio{fill:#1B2026}
+.mplan .mp-rueda{fill:#030405}
+.mplan .mp-faro{fill:#FFF3C7}
+.mplan .mp-stop{fill:#C9352C}
+.mplan .mp-det{fill:none;stroke:#8C9299;stroke-width:1.1;vector-effect:non-scaling-stroke;
   stroke-linecap:round}
 .mplan .mp-t{fill:#6E747B;font-family:var(--m);font-size:15px;letter-spacing:1.6px}
 .mplan .mp-s{fill:#6E747B;font-family:var(--m);font-size:11px;letter-spacing:1.3px}
@@ -973,7 +980,10 @@ a.trow:hover .tval{color:var(--amber)}
 .mplan.light .mp-box{stroke:#9DA196}
 .mplan.light .mp-gap{stroke:rgba(12,13,11,.42)}
 .mplan.light .mp-g{fill:rgba(12,13,11,.5)}
-.mplan.light .mp-veh{fill:#D3D6CC;stroke:#70746A}
+.mplan.light .mp-veh{fill:#F7F8F4;stroke:#70746A}
+.mplan.light .mp-techo{fill:#FFFFFF}
+.mplan.light .mp-vidrio{fill:#2E312C}
+.mplan.light .mp-rueda{fill:#141512}
 .mplan.light .mp-det{stroke:#A8ACA2}
 .mplan.light .mp-t,.mplan.light .mp-s{fill:#82867C}
 
@@ -1507,6 +1517,45 @@ header.hd{isolation:isolate}
   background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='12'%3E%3Cpath d='M0 0H48V3H42L36 11H18L12 3H0Z' fill='%23FFC800'/%3E%3C/svg%3E") repeat-x left top/48px 12px;
   clip-path:inset(0 100% 0 0);transition:clip-path .45s var(--ease)}
 .pack.elegido::after{clip-path:inset(0 0 0 0)}
+/* El dueño pidió repetir la línea como división entre secciones: debajo
+   de "Cabinas entregadas" y entre los cuatro rubros y los otros usos. */
+.chapa-b::after,.chapa-sep{height:14px;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='14'%3E%3Cpath d='M0 13.25H10L17 1.5H39L46 13.25H56' fill='none' stroke='%23FFC800' stroke-width='1.5'/%3E%3C/svg%3E") repeat-x left bottom/56px 14px}
+.chapa-b::after{content:"";position:absolute;left:0;right:0;bottom:0}
+.chapa-sep{margin:clamp(40px,7vh,72px) calc(50% - 50vw) 0}
+.chapa-sep+.usos{margin-top:clamp(36px,6vh,64px)}
+.rbl>li:last-child{border-bottom:0}
+
+/* ── PACKS EN AMARILLO ────────────────────────────────────────
+   A pedido del dueño: la página va en negro y amarillo, sin el estrato
+   blanco. Los bordes de arriba y abajo de la sección son el perfil de la
+   chapa, recortado en el propio amarillo: la línea es el borde. Lo que
+   era amarillo adentro (franja, casilla, etiquetas) pasa a negro. */
+.amarillo{--paper:var(--amber);--paper-2:#F7C000;--paper-line:rgba(12,13,11,.26)}
+.amarillo::before,.amarillo::after{content:"";position:absolute;left:0;right:0;height:14px;z-index:1;
+  pointer-events:none;background:var(--amber);-webkit-mask-repeat:repeat-x;mask-repeat:repeat-x;
+  -webkit-mask-size:56px 14px;mask-size:56px 14px}
+.amarillo::before{top:-13px;
+  -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='14'%3E%3Cpath d='M0 13.25H10L17 1.5H39L46 13.25H56V14H0Z'/%3E%3C/svg%3E");
+  mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='14'%3E%3Cpath d='M0 13.25H10L17 1.5H39L46 13.25H56V14H0Z'/%3E%3C/svg%3E")}
+.amarillo::after{bottom:-13px;
+  -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='14'%3E%3Cpath d='M0 0H56V12.5H46L39 0.75H17L10 12.5H0Z'/%3E%3C/svg%3E");
+  mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='14'%3E%3Cpath d='M0 0H56V12.5H46L39 0.75H17L10 12.5H0Z'/%3E%3C/svg%3E")}
+.amarillo .mono,.amarillo .no-inc,.amarillo .pack-tab thead th,.amarillo .pack-tab tr.pg th{color:#33352F}
+.amarillo p,.amarillo .hh .lede,.amarillo .pack-s dt,.amarillo .pack-ley{color:#2E302A}
+.amarillo .lam .no{border-color:rgba(12,13,11,.55)}
+.amarillo .pack-tab tr.pg th{border-bottom-color:rgba(12,13,11,.4)}
+.amarillo .pack:hover{background:var(--paper-2)}
+.amarillo .pack.elegido{background:#FFD43A}
+.amarillo .pack::before{background:var(--on-paper)}
+.amarillo .pack::after{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='12'%3E%3Cpath d='M0 0H48V3H42L36 11H18L12 3H0Z' fill='%230C0D0B'/%3E%3C/svg%3E")}
+.amarillo .pack.elegido .pk{background:var(--on-paper)}
+.amarillo .pack-badge::before{background:var(--on-paper);outline:0}
+.amarillo .luz{background:var(--on-paper);border-color:var(--on-paper);color:#F4F4EF}
+.amarillo .luz.pro{color:var(--amber)}
+.amarillo .btn-g,.amarillo .pack-tg{border-color:rgba(12,13,11,.6)}
+.amarillo .txt-l{color:#2E302A;border-bottom-color:rgba(12,13,11,.45)}
+.amarillo ::selection{background:var(--on-paper);color:var(--amber)}
 
 /* ── ELEGIR RUBRO Y PACK ──────────────────────────────────────
    Se elige tocando la fila o la tarjeta entera. El radio real queda fuera
@@ -1691,7 +1740,7 @@ input::placeholder{color:#8A8E93;opacity:1}
 <main id="main">
   <section class="sec" style="padding-top:calc(var(--head) + 40px)">
     <div class="wrap">
-      <h1 class="d2">Cabinas desarmables para detailing, lavaderos, lubricentros y concesionarias</h1>
+      <h1 class="d2">Cabinas desarmables para detailing, lavaderos, lubricentros y concesionarios</h1>
       <p class="lede" style="margin-top:18px">Cabinas Desarmables RM fabrica en Puerto General San Martín, Santa Fe,
         y envía a todo el país. Tres packs: Box (estructura 100% desarmable y revestimiento en chapa
         trapezoidal, color a elección), Studio (suma piso encastrable e iluminación básica) y Studio Pro
@@ -1705,7 +1754,7 @@ input::placeholder{color:#8A8E93;opacity:1}
         <li><a class="btn-t" href="/cabinas-para-detailing">Cabinas para detailing</a></li>
         <li><a class="btn-t" href="/cabinas-para-lavaderos">Cabinas para lavaderos</a></li>
         <li><a class="btn-t" href="/cabinas-para-lubricentros">Cabinas para lubricentros</a></li>
-        <li><a class="btn-t" href="/cabinas-para-concesionarias">Cabinas para concesionarias</a></li>
+        <li><a class="btn-t" href="/cabinas-para-concesionarias">Cabinas para concesionarios</a></li>
       </ul>
     </div>
   </section>
@@ -1734,14 +1783,14 @@ input::placeholder{color:#8A8E93;opacity:1}
           <span><b style="font-size:17px">Cabinas Desarmables RM</b>
           <span class="mono" style="display:block;margin-top:4px">Puerto General San Martín · Santa Fe</span></span>
         </div>
-        <p style="font-size:14.5px;max-width:38ch">Cabinas modulares 100% desarmables para concesionarias, detailing, lavaderos y otros rubros. Sin obra civil.</p>
+        <p style="font-size:14.5px;max-width:38ch">Cabinas modulares 100% desarmables para concesionarios, detailing, lavaderos y otros rubros. Sin obra civil.</p>
       </div>
       <div>
         <h4>Cabinas por rubro</h4>
         <a href="/cabinas-para-detailing">Cabinas para detailing</a>
         <a href="/cabinas-para-lavaderos">Cabinas para lavaderos</a>
         <a href="/cabinas-para-lubricentros">Cabinas para lubricentros</a>
-        <a href="/cabinas-para-concesionarias">Cabinas para concesionarias</a>
+        <a href="/cabinas-para-concesionarias">Cabinas para concesionarios</a>
         <h4 style="margin-top:18px">El producto</h4>
         <a href="/modelos">Modelos</a>
         <a href="/trabajos">Cabinas entregadas</a>
@@ -1769,7 +1818,7 @@ input::placeholder{color:#8A8E93;opacity:1}
 {"@context":"https://schema.org","@graph":[
 {"@type":["LocalBusiness","HomeAndConstructionBusiness"],"@id":"https://cbrm.vercel.app/#negocio",
 "name":"Cabinas Desarmables RM",
-"description":"Fabricación de cabinas desarmables para detailing, lavaderos, lubricentros y concesionarias. Estructura 100% desarmable con revestimiento en chapa trapezoidal y, según el pack, piso encastrable e iluminación. Envíos a todo el país.",
+"description":"Fabricación de cabinas desarmables para detailing, lavaderos, lubricentros y concesionarios. Estructura 100% desarmable con revestimiento en chapa trapezoidal y, según el pack, piso encastrable e iluminación. Envíos a todo el país.",
 "telephone":"+5493476569154","url":"https://cbrm.vercel.app/",
 "image":"https://cbrm.vercel.app/img/og.jpg","logo":"https://cbrm.vercel.app/img/logo-240.png",
 "address":{"@type":"PostalAddress",
@@ -1784,7 +1833,7 @@ input::placeholder{color:#8A8E93;opacity:1}
  {"@type":"Offer","itemOffered":{"@type":"Product","name":"Cabina desarmable para detailing"},"url":"https://cbrm.vercel.app/cabinas-para-detailing"},
  {"@type":"Offer","itemOffered":{"@type":"Product","name":"Cabina desarmable para lavaderos"},"url":"https://cbrm.vercel.app/cabinas-para-lavaderos"},
  {"@type":"Offer","itemOffered":{"@type":"Product","name":"Cabina desarmable para lubricentros"},"url":"https://cbrm.vercel.app/cabinas-para-lubricentros"},
- {"@type":"Offer","itemOffered":{"@type":"Product","name":"Cabina desarmable para concesionarias"},"url":"https://cbrm.vercel.app/cabinas-para-concesionarias"}]},
+ {"@type":"Offer","itemOffered":{"@type":"Product","name":"Cabina desarmable para concesionarios"},"url":"https://cbrm.vercel.app/cabinas-para-concesionarias"}]},
 {"@type":"WebSite","@id":"https://cbrm.vercel.app/#sitio","url":"https://cbrm.vercel.app/",
 "name":"Cabinas Desarmables RM","inLanguage":"es-AR","publisher":{"@id":"https://cbrm.vercel.app/#negocio"}}
 ]}

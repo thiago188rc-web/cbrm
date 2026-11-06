@@ -110,8 +110,8 @@ const DATA = {
       seoD: 'Cabinas desarmables para lubricentros: delimitá un sector limpio adentro del taller, sin obra húmeda ni escombros. Chapa trapezoidal color a elección y, según el pack, piso encastrable e iluminación.'
     },
     {
-      slug: 'concesionarias', n: 'Concesionarias', qRubro: 'Concesionaria',
-      h1: 'Cabinas para concesionarias',
+      slug: 'concesionarias', n: 'Concesionarios', qRubro: 'Concesionario',
+      h1: 'Cabinas para concesionarios',
       claim: 'Todas las unidades, con la misma foto.',
       prob: 'Cada unidad que ingresa hay que fotografiarla, y cada foto sale distinta según dónde estaba parada y a qué hora se tomó. El resultado es una publicación despareja.',
       sol: 'Un set fijo dentro de tu propio local: mismo fondo y mismo encuadre para toda la flota, con la iluminación de los packs Studio y Studio Pro. Y un espacio de entrega que se siente distinto.',
@@ -120,7 +120,7 @@ const DATA = {
          es la prueba literal del argumento del rubro. */
       foto: 'hero-wide', fotoCap: 'Auto adentro de una cabina RM · terminación blanca',
       faq: ['techo', 'marca', 'entra', 'envio'],
-      seoD: 'Cabinas para concesionarias: un set fijo adentro de tu local para fotografiar toda la flota con el mismo fondo, y para entregar la unidad. Sirve para autos y motos.'
+      seoD: 'Cabinas para concesionarios: un set fijo adentro de tu local para fotografiar toda la flota con el mismo fondo, y para entregar la unidad. Sirve para autos y motos.'
     }
   ],
 
@@ -520,16 +520,25 @@ const ph = (label, ratio = '4/3', tone = 'dark') => resv(label, ratio, tone);
 /* Siluetas en planta, dibujadas en centímetros (1 unidad = 1 cm) para que la
    escala sea uniforme en los dos ejes. Antes se escalaba x e y por separado
    desde una caja cuadrada y el auto salía estirado: parecía una tecla. */
+/* Rectángulo de esquinas redondeadas como path (para las ruedas). */
+const rr = (x, y, w, h, r) => `M${x + r} ${y}h${w - 2 * r}a${r} ${r} 0 0 1 ${r} ${r}v${h - 2 * r}a${r} ${r} 0 0 1 ${-r} ${r}h${2 * r - w}a${r} ${r} 0 0 1 ${-r} ${-r}v${2 * r - h}a${r} ${r} 0 0 1 ${r} ${-r}Z`;
 const SILUETA = {
-  /* Auto de 1,80 × 4,40 m visto desde arriba. Capó y baúl más angostos que
-     el habitáculo, techo insinuado adentro: sin eso la planta es una pastilla
-     redondeada y no se entiende que sea un vehículo. */
+  /* Auto de 1,80 × 4,40 m visto desde arriba, trompa hacia y=0. El dueño
+     pidió un auto más lindo que la pastilla anterior: carrocería con
+     guardabarros y cintura, ruedas asomando, parabrisas, techo, luneta,
+     ventanillas, espejos, faros y luces traseras. */
   auto: {
     l: 4.4, a: 1.8, n: 'Auto',
-    cuerpo: 'M90 6c30 0 52 14 60 42l10 42c6 26 8 58 8 130s-2 104-8 130l-10 42c-8 28-30 42-60 42s-52-14-60-42l-10-42c-6-26-8-58-8-130s2-104 8-130l10-42C38 20 60 6 90 6Z',
-    detalle: 'M90 112c30 0 44 6 47 18l5 28c2 14 2 44 0 58l-5 28c-3 12-17 18-47 18s-44-6-47-18l-5-28c-2-14-2-44 0-58l5-28c3-12 17-18 47-18Z'
-      + ' M43 150h94 M43 262h94',
-    espejos: 'M22 150l-14-7 M158 150l14-7'
+    ruedas: [[-5, 60], [166, 60], [-5, 322], [166, 322]].map(([x, y]) => rr(x, y, 19, 64, 4)).join(''),
+    lados: 'M12 160L-6 165C-11 166-12 178-7 180L12 186Z M168 160L186 165C191 166 192 178 187 180L168 186Z',
+    cuerpo: 'M90 5C128 5 156 8 166 22C174 34 176 52 176 78L176 120C176 140 172 150 172 170L172 300C172 318 176 326 176 344L176 380C176 404 173 420 165 428C154 436 126 437 90 437C54 437 26 436 15 428C7 420 4 404 4 380L4 344C4 326 8 318 8 300L8 170C8 150 4 140 4 120L4 78C4 52 6 34 14 22C24 8 52 5 90 5Z',
+    techo: 'M28 212C60 205 120 205 152 212L152 312C120 318 60 318 28 312Z',
+    vidrios: 'M24 208L33 160C60 146 120 146 147 160L156 208C120 201 60 201 24 208Z'
+      + ' M28 318C60 324 120 324 152 318L146 360C120 369 60 369 34 360Z'
+      + ' M11 176L22 168V262H11Z M11 270H22V352L11 344Z M169 176L158 168V262H169Z M169 270H158V352L169 344Z',
+    faros: 'M16 32C24 20 40 13 56 12L54 22C42 24 28 30 20 40Z M164 32C156 20 140 13 124 12L126 22C138 24 152 30 160 40Z',
+    stop: 'M7 396L9 414C14 424 26 430 42 432L43 424C30 421 19 412 14 398Z M173 396L171 414C166 424 154 430 138 432L137 424C150 421 161 412 166 398Z',
+    detalle: 'M52 30C58 70 60 110 60 150 M128 30C122 70 120 110 120 150 M40 386C70 392 110 392 140 386'
   },
   /* Moto de 0,90 × 2,20 m: rueda, cuerpo y manubrio. */
   moto: {
@@ -539,6 +548,20 @@ const SILUETA = {
     espejos: 'M8 54h74 M8 54l-2-6 M82 54l2-6'
   }
 };
+
+/* Capas del vehículo, de abajo hacia arriba. La moto usa sólo cuerpo,
+   detalle y espejos; el auto suma ruedas, vidrios y luces. */
+const vehDraw = s => [
+  s.ruedas && `<path d="${s.ruedas}" class="mp-rueda"/>`,
+  s.lados && `<path d="${s.lados}" class="mp-veh"/>`,
+  `<path d="${s.cuerpo}" class="mp-veh"/>`,
+  s.techo && `<path d="${s.techo}" class="mp-techo"/>`,
+  s.vidrios && `<path d="${s.vidrios}" class="mp-vidrio"/>`,
+  s.faros && `<path d="${s.faros}" class="mp-faro"/>`,
+  s.stop && `<path d="${s.stop}" class="mp-stop"/>`,
+  `<path d="${s.detalle}" class="mp-det"/>`,
+  s.espejos && `<path d="${s.espejos}" class="mp-det"/>`
+].filter(Boolean).join('');
 
 /* Escala única para todos los modelos: 66 px por metro. Así las plantas son
    comparables entre sí — la doble se ve efectivamente más grande que la
@@ -571,10 +594,7 @@ function modeloPlan(m, tone = 'dark') {
   const shapes = v.map(s => {
     const w = s.a * sc, l = s.l * sc;
     const cy = y0 + (bl - l) / 2;
-    const g = `<g transform="translate(${x.toFixed(1)} ${cy.toFixed(1)}) scale(${k.toFixed(4)})">
-        <path d="${s.cuerpo}" class="mp-veh"/>
-        <path d="${s.detalle}" class="mp-det"/>
-        <path d="${s.espejos}" class="mp-det"/></g>`;
+    const g = `<g transform="translate(${x.toFixed(1)} ${cy.toFixed(1)}) scale(${k.toFixed(4)})">${vehDraw(s)}</g>`;
     x += w + m.holgura * sc;
     return g;
   }).join('');
@@ -765,8 +785,7 @@ function cabinaPlan() {
   }
   planFit = { ok: !!pos, desc: DESC_VEH[tipos[0]][n - 1], W: CTX.mA, L: CTX.mL, s };
   const k = sc / 100;
-  const veh = pos ? pos.map(([px, py]) => `<g transform="translate(${(x0 + px * sc).toFixed(1)} ${(y0 + py * sc).toFixed(1)}) rotate(-90) scale(${k.toFixed(4)}) translate(${-s.a * 50} ${-s.l * 50})">
-      <path d="${s.cuerpo}" class="mp-veh"/><path d="${s.detalle}" class="mp-det"/><path d="${s.espejos}" class="mp-det"/></g>`).join('') : '';
+  const veh = pos ? pos.map(([px, py]) => `<g transform="translate(${(x0 + px * sc).toFixed(1)} ${(y0 + py * sc).toFixed(1)}) rotate(-90) scale(${k.toFixed(4)}) translate(${-s.a * 50} ${-s.l * 50})">${vehDraw(s)}</g>`).join('') : '';
   /* Cotas: línea con topes en los extremos y la medida al medio. */
   const cy = y0 - 24, cx = x0 - 24;
   return `<svg viewBox="0 0 ${vw} ${vh}" class="mplan dark" role="img"
@@ -971,7 +990,7 @@ const Q = {
   i: 0,
   d: { rubro: '', vehiculo: '', ancho: '', largo: '', alto: '', pack: '', medida: '', nombre: '', tel: '', loc: '', msg: '', modelo: '' },
   steps: [
-    { k: 'Paso 1 de 5', q: '¿Qué tenés?', f: 'rubro', o: ['Detailing', 'Lavadero', 'Lubricentro', 'Concesionaria', 'Cochera particular', 'Voy a abrir un negocio'] },
+    { k: 'Paso 1 de 5', q: '¿Qué tenés?', f: 'rubro', o: ['Detailing', 'Lavadero', 'Lubricentro', 'Concesionario', 'Cochera particular', 'Voy a abrir un negocio'] },
     { k: 'Paso 2 de 5', q: '¿Qué necesitás que entre?', f: 'vehiculo', o: ['Una moto', 'Un auto', 'Un auto con lugar para trabajar alrededor', 'Dos autos', 'Una camioneta', 'Todavía no sé'] },
     { k: 'Paso 3 de 5', q: '¿Cuánto espacio tenés?', f: 'medidas' },
     { k: 'Paso 4 de 5 · opcional', q: '¿Qué pack te interesa?', f: 'pref' },
@@ -1132,7 +1151,7 @@ const LS = 'rm.leads.v1';
    de a uno desde el panel. Sólo aparecen la primera vez. */
 const LEADS_DEMO = [
   { id: 1, nombre: 'Ejemplo · Mariano', rubro: 'Detailing', loc: 'Funes, Santa Fe', med: '4,20 × 7,00 × 3,10', veh: 'Un auto con lugar para trabajar alrededor', st: 'negociacion', ts: 6, ref: 'DE-0309-1112', demo: 1 },
-  { id: 2, nombre: 'Ejemplo · Lucía', rubro: 'Concesionaria', loc: 'Rosario, Santa Fe', med: '6,00 × 9,00 × 3,60', veh: 'Dos autos', st: 'presupuestada', ts: 4, ref: 'CO-0509-0940', demo: 1 },
+  { id: 2, nombre: 'Ejemplo · Lucía', rubro: 'Concesionario', loc: 'Rosario, Santa Fe', med: '6,00 × 9,00 × 3,60', veh: 'Dos autos', st: 'presupuestada', ts: 4, ref: 'CO-0509-0940', demo: 1 },
   { id: 3, nombre: 'Ejemplo · Damián', rubro: 'Lavadero', loc: 'San Nicolás, Buenos Aires', med: 'Sin medir', veh: 'Un auto', st: 'contactada', ts: 2, ref: 'LA-0709-1830', demo: 1 },
   { id: 4, nombre: 'Ejemplo · Emiliano', rubro: 'Detailing', loc: 'Córdoba Capital', med: '3,80 × 6,50 × 2,90', veh: 'Un auto', st: 'nueva', ts: 1, ref: 'DE-0809-2105', demo: 1 },
   { id: 5, nombre: 'Ejemplo · Sofía', rubro: 'Voy a abrir un negocio', loc: 'Paraná, Entre Ríos', med: 'Sin medir', veh: 'Todavía no sé', st: 'nueva', ts: 0, ref: 'VO-0909-0812', demo: 1 },
@@ -1323,7 +1342,7 @@ function render() {
       u: '/',
       t: 'Cabinas Desarmables RM | Cabinas para detailing, lavaderos y lubricentros',
       ogt: 'Cabinas Desarmables RM | El auto entra a un galpón, sale de un estudio',
-      d: 'Fabricamos cabinas desarmables para detailing, lavaderos, lubricentros y concesionarias. Pack Box, Studio y Studio Pro: estructura 100% desarmable con revestimiento en chapa trapezoidal y, según el pack, piso encastrable e iluminación. Envíos a todo el país desde Puerto General San Martín, Santa Fe.'
+      d: 'Fabricamos cabinas desarmables para detailing, lavaderos, lubricentros y concesionarios. Pack Box, Studio y Studio Pro: estructura 100% desarmable con revestimiento en chapa trapezoidal y, según el pack, piso encastrable e iluminación. Envíos a todo el país desde Puerto General San Martín, Santa Fe.'
     });
   }
   else if (rubroSlug) {
@@ -1362,7 +1381,7 @@ function render() {
 
   
   $$('[data-goquote]', main).forEach(b => b.onclick = () => {
-    if (b.dataset.goquote) { Q.d.rubro = b.dataset.goquote === 'Lavaderos' ? 'Lavadero' : b.dataset.goquote === 'Lubricentros' ? 'Lubricentro' : b.dataset.goquote === 'Concesionarias' ? 'Concesionaria' : b.dataset.goquote; Q.i = 1; }
+    if (b.dataset.goquote) { Q.d.rubro = b.dataset.goquote === 'Lavaderos' ? 'Lavadero' : b.dataset.goquote === 'Lubricentros' ? 'Lubricentro' : b.dataset.goquote === 'Concesionarios' ? 'Concesionario' : b.dataset.goquote; Q.i = 1; }
     go('/presupuesto');
   });
   $$('[data-goquotemodel]', main).forEach(b => b.onclick = () => {
@@ -1624,6 +1643,7 @@ function rubrosHome() {
           ${btnWA('Consultar', { rubro: r.qRubro, aria: `Consultar por WhatsApp para ${r.n.toLowerCase()}` }, 'btn-g btn-sm')}
         </div>
       </li>`).join('')}</ul>
+    <div class="chapa-sep" aria-hidden="true"></div>
     <div class="usos rv">
       <div class="usos-t">
         <h3 class="d3">Otros usos posibles</h3>
@@ -1686,7 +1706,7 @@ function viewHome() {
     })}</div>
     <div class="portada-copy">
       <h1 class="d1"><span class="ln"><i>Cabinas</i></span><span class="ln"><i>desarmables</i></span></h1>
-      <p class="portada-lede">Modulares 100% desarmables para concesionarias, detailing, lavaderos y otros rubros.</p>
+      <p class="portada-lede">Modulares 100% desarmables para concesionarios, detailing, lavaderos y otros rubros.</p>
       <div class="portada-cta">
         ${btnWA('Escribir por WhatsApp')}
         <a class="txt-l" href="/#rubros">Elegir rubro, pack y medida</a>
@@ -1699,7 +1719,7 @@ function viewHome() {
     </div>
   </section>
 
-  <section class="sec" id="trabajos" data-lam="02" data-name="Cabinas entregadas" style="background:var(--ink-2);border-bottom:1px solid var(--line)">
+  <section class="sec chapa-b" id="trabajos" data-lam="02" data-name="Cabinas entregadas" style="background:var(--ink-2)">
     <div class="wrap">
       ${lamina('02', 'Cabinas entregadas', 'Fotos de cabinas de RM, publicadas en nuestro Instagram.')}
       <div class="obras rv${n % 2 ? ' impar' : ''}" style="--n:${n === 6 ? 3 : n}">
@@ -1721,12 +1741,12 @@ function viewHome() {
 
   <section class="sec" id="rubros" data-lam="03" data-name="Rubro">
     <div class="wrap">
-      ${lamina('03', 'Para tu rubro', 'Elegí el tuyo y se suma a tu consulta. Detailing, lavaderos, lubricentros y concesionarias tienen su página con el detalle.')}
+      ${lamina('03', 'Para tu rubro', 'Elegí el tuyo y se suma a tu consulta. Detailing, lavaderos, lubricentros y concesionarios tienen su página con el detalle.')}
       ${rubrosHome()}
     </div>
   </section>
 
-  <section class="sec paper" id="sistema" data-lam="04" data-name="Packs">
+  <section class="sec paper amarillo" id="sistema" data-lam="04" data-name="Packs">
     <div class="wrap">
       ${lamina('04', 'Elegí tu pack de equipamiento', 'Seleccioná uno y después indicá las medidas correspondientes más abajo.')}
       ${packsBlock()}
@@ -2012,7 +2032,7 @@ function bindCTAs(scope) {
   });
   $$('[data-goquote]', scope).forEach(b => b.onclick = () => {
     const v = b.dataset.goquote;
-    if (v) { Q.d.rubro = v === 'Lavaderos' ? 'Lavadero' : v === 'Lubricentros' ? 'Lubricentro' : v === 'Concesionarias' ? 'Concesionaria' : v; Q.i = 1; }
+    if (v) { Q.d.rubro = v === 'Lavaderos' ? 'Lavadero' : v === 'Lubricentros' ? 'Lubricentro' : v === 'Concesionarios' ? 'Concesionario' : v; Q.i = 1; }
     go('/presupuesto');
   });
   $$('[data-goquotemodel]', scope).forEach(b => b.onclick = () => {
