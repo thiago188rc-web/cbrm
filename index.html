@@ -1556,6 +1556,23 @@ header.hd{isolation:isolate}
 .amarillo .btn-g,.amarillo .pack-tg{border-color:rgba(12,13,11,.6)}
 .amarillo .txt-l{color:#2E302A;border-bottom-color:rgba(12,13,11,.45)}
 .amarillo ::selection{background:var(--on-paper);color:var(--amber)}
+/* Títulos sobre amarillo: blancos con un contorno negro fino. El trazo va
+   detrás del relleno (paint-order) para que la letra no se afine. El texto
+   chico sigue en negro: blanco sobre amarillo no se lee en cuerpo chico. */
+.amarillo .hh h2,.amarillo .pack h3{color:#fff;-webkit-text-stroke:2px var(--on-paper);paint-order:stroke fill}
+.amarillo .pack .pk{border-color:var(--on-paper);-webkit-text-stroke:0}
+/* Cabinas entregadas en amarillo: la tarjeta de Instagram queda negra,
+   con "Instagram" del tamaño de los otros títulos. */
+.amarillo .ig-card{background:var(--on-paper);border-color:var(--on-paper)}
+.amarillo .ig-card a{justify-content:center;gap:14px;color:#fff}
+.amarillo .ig-card a:hover{background:#1A1C19}
+.amarillo .ig-card .btn-t{color:var(--amber);border-bottom-color:rgba(255,200,0,.5)}
+.amarillo .obras figcaption{color:#fff}
+/* Sin la lista de modelos al lado (la sacó el dueño), la ficha de medidas
+   no se estira a todo el ancho: la planta quedaba enorme. */
+#modelos .med{max-width:880px}
+/* Título de la portada: letras negras con contorno amarillo fino. */
+.portada h1{color:var(--ink);-webkit-text-stroke:2px var(--amber);paint-order:stroke fill}
 
 /* ── ELEGIR RUBRO Y PACK ──────────────────────────────────────
    Se elige tocando la fila o la tarjeta entera. El radio real queda fuera

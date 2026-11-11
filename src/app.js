@@ -1604,24 +1604,6 @@ function packsBlock() {
     </details>`;
 }
 
-/* Los cinco modelos a la vista, por lo que tiene que entrar. Elegir uno es
-   opcional: se suma al mensaje y la planta de arriba lo dibuja adentro. */
-function modelosHome() {
-  return `
-    <fieldset class="mods7 rv">
-      <legend>¿Qué tiene que entrar? Tocá uno y se suma a tu consulta</legend>
-      ${DATA.modelos.map(m => `
-        <div class="mrow">
-          <input type="radio" name="modelo" id="m-${m.slug}" value="${m.n}" autocomplete="off"${CTX.modelo === m.n ? ' checked' : ''}>
-          <label for="m-${m.slug}"><b>${m.n}</b>
-            <span class="mrow-e">${m.plan ? 'Entra: ' + m.veh.toLowerCase() : 'Según tu espacio'}</span>
-            <span class="mrow-d">${m.qe}</span></label>
-          <a class="mrow-f" href="${urlModelo(m)}" aria-label="Ficha: ${m.n}">Ficha</a>
-        </div>`).join('')}
-      <p class="mods7-p">La medida de cada modelo la confirmamos con la de tu local.</p>
-    </fieldset>`;
-}
-
 /* Rubros: los cuatro con página y, debajo, los otros usos posibles que
    mencionó RM, en tipografía. Todos son la misma elección: el rubro que
    viaja en la consulta. */
@@ -1719,29 +1701,27 @@ function viewHome() {
     </div>
   </section>
 
-  <section class="sec chapa-b" id="trabajos" data-lam="02" data-name="Cabinas entregadas" style="background:var(--ink-2)">
+  <section class="sec paper amarillo" id="trabajos" data-lam="02" data-name="Cabinas entregadas">
     <div class="wrap">
-      ${lamina('02', 'Cabinas entregadas', 'Fotos de cabinas de RM, publicadas en nuestro Instagram.')}
+      ${lamina('02', 'Cabinas entregadas', 'Cabinas publicadas en nuestro Instagram.')}
       <div class="obras rv${n % 2 ? ' impar' : ''}" style="--n:${n === 6 ? 3 : n}">
         ${obras.map(t => figura(t.img, { cap: t.cap, alt: t.alt, sizes: `(min-width:900px) ${n === 6 ? 31 : Math.round(92 / n)}vw, 46vw` })).join('')}
         <figure class="ig-card">
           <a href="${IG}" target="_blank" rel="noopener">
-            <span class="mono am">Instagram</span>
-            <b class="d4">Más cabinas entregadas, en nuestro Instagram</b>
+            <b class="d2 ig-t">Instagram</b>
             <span class="btn-t">@cabinasdesarmablesrm →</span>
           </a>
         </figure>
       </div>
       <div class="fila-cta rv">
-        ${btnWA('Quiero una así', {}, 'btn-g')}
-        <a class="btn-t" href="/trabajos">Ver todas las cabinas entregadas</a>
+        ${btnWA('Cotizar mi cabina', {}, 'btn-g')}
       </div>
     </div>
   </section>
 
   <section class="sec" id="rubros" data-lam="03" data-name="Rubro">
     <div class="wrap">
-      ${lamina('03', 'Para tu rubro', 'Elegí el tuyo y se suma a tu consulta. Detailing, lavaderos, lubricentros y concesionarios tienen su página con el detalle.')}
+      ${lamina('03', 'Tu rubro', 'Seleccioná tu rubro haciendo clic para sumarlo a tu consulta.')}
       ${rubrosHome()}
     </div>
   </section>
@@ -1756,11 +1736,8 @@ function viewHome() {
 
   <section class="sec grid-bg" id="modelos" data-lam="05" data-name="Medidas">
     <div class="wrap">
-      ${lamina('05', 'Medidas y modelos', 'Elegí una medida frecuente o pedí la tuya, y contanos qué tiene que entrar adentro.')}
-      <div class="mm">
-        ${fitBlock()}
-        ${modelosHome()}
-      </div>
+      ${lamina('05', 'Medidas', 'Elegí una medida frecuente o pedí la tuya, y contanos qué tiene que entrar adentro.')}
+      ${fitBlock()}
     </div>
   </section>
 
