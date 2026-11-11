@@ -1735,7 +1735,7 @@ function viewHome() {
 
   <section class="sec grid-bg" id="modelos" data-lam="05" data-name="Medidas">
     <div class="wrap">
-      ${lamina('05', 'Medidas', 'Los módulos se fabrican a la medida que requiera el cliente.')}
+      ${lamina('05', 'Medidas', 'Los módulos son fabricados a medida, según lo requiera el cliente.')}
       ${fitBlock()}
     </div>
   </section>
