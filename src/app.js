@@ -1628,7 +1628,7 @@ function rubrosHome() {
     <div class="usos rv">
       <div class="usos-t">
         <h3 class="d3">Otros usos posibles</h3>
-        <p>Las estructuras son modulares y pueden adaptarse a otros rubros. Elegí el tuyo, o seleccioná «Otro» si no lo encontrás y contanos qué uso le darías.</p>
+        <p>Las estructuras son modulares y pueden adaptarse a otros rubros. Elegí el tuyo, o seleccioná «Otro» en caso de no hallarse y contanos qué utilidad le darías.</p>
       </div>
       <fieldset class="usos-l"><legend class="sr">Otros rubros</legend>${usos}
         <label class="uso"><input type="radio" name="rubro" value="Otro rubro" autocomplete="off"${chk('Otro rubro')}><span>Otro</span></label>
