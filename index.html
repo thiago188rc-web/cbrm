@@ -1577,6 +1577,27 @@ header.hd{isolation:isolate}
 #trabajos .hh .lede{color:var(--amber)}
 #trabajos .lam .no{color:var(--amber);border-color:rgba(255,200,0,.4)}
 #trabajos .lam .ln2,#trabajos .lam .ln2::before,#trabajos .lam .ln2::after{background:rgba(255,255,255,.16)}
+/* Packs: tarjetas negras con letras blancas sobre el amarillo, separadas
+   con aire amarillo como la tarjeta de Instagram (pedido del dueño). */
+.amarillo .packs{gap:12px;background:transparent;border:0}
+.amarillo .pack{--paper-line:rgba(255,255,255,.14);background:var(--on-paper)}
+.amarillo .pack:hover{background:#151714}
+.amarillo .pack.elegido{background:#1A1C18}
+.amarillo .pack .d3,.amarillo .pack .pack-s dd,.amarillo .pack .pack-badge{color:#fff}
+.amarillo .pack p{color:#C9CBC3}
+.amarillo .pack .pack-s dt{color:#D6D8D0}
+.amarillo .pack .no-inc{color:rgba(255,255,255,.45)}
+.amarillo .pack .pk{border-color:#fff}
+.amarillo .pack.elegido .pk{background:var(--amber);border-color:var(--amber)}
+.amarillo .pack::before{background:var(--amber)}
+.amarillo .pack::after{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='12'%3E%3Cpath d='M0 0H48V3H42L36 11H18L12 3H0Z' fill='%23FFC800'/%3E%3C/svg%3E")}
+.amarillo .pack-badge::before{background:var(--amber)}
+.amarillo .pack .luz{background:transparent;border-color:rgba(255,255,255,.7);color:#fff}
+.amarillo .pack .luz.pro{background:var(--amber);border-color:var(--amber);color:#000}
+.amarillo .pack .btn-g{border-color:rgba(255,255,255,.35);color:#fff;background:transparent}
+.amarillo .pack .btn-g:hover{border-color:var(--amber);color:var(--amber);background:transparent}
+.amarillo .pack :focus-visible{outline-color:var(--amber)}
+.amarillo .pack:has(.pk-in:focus-visible){outline-color:var(--amber)}
 /* Sin la lista de modelos al lado (la sacó el dueño), la ficha de medidas
    no se estira a todo el ancho: la planta quedaba enorme. */
 #modelos .med{max-width:880px}
