@@ -184,12 +184,12 @@ const DATA = {
      Cuando RM entregue y apruebe una foto o un render propio de alguno,
      se carga en assets.js y se nombra en `img`: la home lo muestra. */
   usos: [
+    { n: 'Oficinas', q: 'Oficina', img: '' },
     { n: 'Barberías', q: 'Barbería', img: '' },
     { n: 'Heladerías', q: 'Heladería', img: '' },
     { n: 'Quioscos', q: 'Quiosco', img: '' },
     { n: 'Manicura', q: 'Manicura', img: '' },
-    { n: 'Locales de pesca', q: 'Local de pesca', img: '' },
-    { n: 'Oficinas', q: 'Oficina', img: '' }
+    { n: 'Locales de pesca', q: 'Local de pesca', img: '' }
   ],
 
   /* El epígrafe visible es corto. La descripción completa vive en el alt,
@@ -1629,7 +1629,7 @@ function rubrosHome() {
     <div class="usos rv">
       <div class="usos-t">
         <h3 class="d3">Otros usos posibles</h3>
-        <p>Las cabinas son modulares y pueden aplicarse a otros rubros. Elegí el tuyo, o «Otro» y nos contás.</p>
+        <p>Las estructuras son modulares y pueden adaptarse a otros rubros. Elegí el tuyo, o seleccioná «Otro» si no lo encontrás y contanos qué uso le darías.</p>
       </div>
       <fieldset class="usos-l"><legend class="sr">Otros rubros</legend>${usos}
         <label class="uso"><input type="radio" name="rubro" value="Otro rubro" autocomplete="off"${chk('Otro rubro')}><span>Otro</span></label>
