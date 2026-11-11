@@ -523,22 +523,28 @@ const ph = (label, ratio = '4/3', tone = 'dark') => resv(label, ratio, tone);
 /* Rectángulo de esquinas redondeadas como path (para las ruedas). */
 const rr = (x, y, w, h, r) => `M${x + r} ${y}h${w - 2 * r}a${r} ${r} 0 0 1 ${r} ${r}v${h - 2 * r}a${r} ${r} 0 0 1 ${-r} ${r}h${2 * r - w}a${r} ${r} 0 0 1 ${-r} ${-r}v${2 * r - h}a${r} ${r} 0 0 1 ${r} ${-r}Z`;
 const SILUETA = {
-  /* Auto de 1,80 × 4,40 m visto desde arriba, trompa hacia y=0. El dueño
-     pidió un auto más lindo que la pastilla anterior: carrocería con
-     guardabarros y cintura, ruedas asomando, parabrisas, techo, luneta,
-     ventanillas, espejos, faros y luces traseras. */
+  /* Auto de 1,80 × 4,40 m visto desde arriba, trompa hacia y=0. Amarillo
+     RM con techo panorámico negro, a pedido del dueño. Va por capas, de
+     abajo hacia arriba: ruedas, espejos, carrocería, sombras laterales que
+     le dan volumen, brillos de capó y baúl, cabina vidriada con su reflejo,
+     faros LED, parrilla, barra de luz trasera y pliegues del capó. */
   auto: {
     l: 4.4, a: 1.8, n: 'Auto',
-    ruedas: [[-5, 60], [166, 60], [-5, 322], [166, 322]].map(([x, y]) => rr(x, y, 19, 64, 4)).join(''),
-    lados: 'M12 160L-6 165C-11 166-12 178-7 180L12 186Z M168 160L186 165C191 166 192 178 187 180L168 186Z',
     cuerpo: 'M90 5C128 5 156 8 166 22C174 34 176 52 176 78L176 120C176 140 172 150 172 170L172 300C172 318 176 326 176 344L176 380C176 404 173 420 165 428C154 436 126 437 90 437C54 437 26 436 15 428C7 420 4 404 4 380L4 344C4 326 8 318 8 300L8 170C8 150 4 140 4 120L4 78C4 52 6 34 14 22C24 8 52 5 90 5Z',
-    techo: 'M28 212C60 205 120 205 152 212L152 312C120 318 60 318 28 312Z',
-    vidrios: 'M24 208L33 160C60 146 120 146 147 160L156 208C120 201 60 201 24 208Z'
-      + ' M28 318C60 324 120 324 152 318L146 360C120 369 60 369 34 360Z'
-      + ' M11 176L22 168V262H11Z M11 270H22V352L11 344Z M169 176L158 168V262H169Z M169 270H158V352L169 344Z',
-    faros: 'M16 32C24 20 40 13 56 12L54 22C42 24 28 30 20 40Z M164 32C156 20 140 13 124 12L126 22C138 24 152 30 160 40Z',
-    stop: 'M7 396L9 414C14 424 26 430 42 432L43 424C30 421 19 412 14 398Z M173 396L171 414C166 424 154 430 138 432L137 424C150 421 161 412 166 398Z',
-    detalle: 'M52 30C58 70 60 110 60 150 M128 30C122 70 120 110 120 150 M40 386C70 392 110 392 140 386'
+    capas: [
+      ['mp-rueda', [[-6, 58], [167, 58], [-6, 322], [167, 322]].map(([x, y]) => rr(x, y, 19, 66, 5)).join('')],
+      ['mp-veh', 'M12 158L-7 163C-12 164-13 179-8 181L12 188Z M168 158L187 163C192 164 193 179 188 181L168 188Z'],
+      ['mp-veh', 'CUERPO'],
+      ['mp-sombra', 'M8 112C10 100 17 98 19 108L19 364C17 374 10 374 8 364Z M172 112C170 100 163 98 161 108L161 364C163 374 170 374 172 364Z'],
+      ['mp-brillo', 'M83 22C87 20 93 20 97 22L99 134C93 137 87 137 81 134Z M82 376L98 376L99 416C93 419 87 419 81 416Z'],
+      ['mp-techo', 'M34 154C60 142 120 142 146 154L156 214L154 318L146 364C120 374 60 374 34 364L26 318L24 214Z'],
+      ['mp-linea', 'M25 214C60 205 120 205 155 214 M27 318C60 326 120 326 153 318'],
+      ['mp-vidrio', 'M50 156C70 150 90 148 112 149L72 207C60 208 48 210 37 212Z M120 326C132 327 142 326 150 323L144 356C138 359 132 361 126 362Z'],
+      ['mp-faro', 'M18 38C28 23 44 15 62 13L62 19C47 21 32 29 23 43Z M162 38C152 23 136 15 118 13L118 19C133 21 148 29 157 43Z'],
+      ['mp-parrilla', 'M62 9C80 7 100 7 118 9L116 14C100 12 80 12 64 14Z'],
+      ['mp-stop', 'M12 410C40 424 140 424 168 410L167 417C140 431 40 431 13 417Z'],
+      ['mp-det', 'M54 30C60 70 62 110 62 148 M126 30C120 70 118 110 118 148']
+    ]
   },
   /* Moto de 0,90 × 2,20 m: rueda, cuerpo y manubrio. */
   moto: {
@@ -549,19 +555,12 @@ const SILUETA = {
   }
 };
 
-/* Capas del vehículo, de abajo hacia arriba. La moto usa sólo cuerpo,
-   detalle y espejos; el auto suma ruedas, vidrios y luces. */
-const vehDraw = s => [
-  s.ruedas && `<path d="${s.ruedas}" class="mp-rueda"/>`,
-  s.lados && `<path d="${s.lados}" class="mp-veh"/>`,
-  `<path d="${s.cuerpo}" class="mp-veh"/>`,
-  s.techo && `<path d="${s.techo}" class="mp-techo"/>`,
-  s.vidrios && `<path d="${s.vidrios}" class="mp-vidrio"/>`,
-  s.faros && `<path d="${s.faros}" class="mp-faro"/>`,
-  s.stop && `<path d="${s.stop}" class="mp-stop"/>`,
-  `<path d="${s.detalle}" class="mp-det"/>`,
-  s.espejos && `<path d="${s.espejos}" class="mp-det"/>`
-].filter(Boolean).join('');
+/* Capas del vehículo, de abajo hacia arriba. El auto trae su lista de
+   capas; la moto, cuerpo, detalle y espejos. */
+const vehDraw = s => s.capas
+  ? s.capas.map(([c, d]) => `<path d="${d === 'CUERPO' ? s.cuerpo : d}" class="${c}"/>`).join('')
+  : [`<path d="${s.cuerpo}" class="mp-veh"/>`, `<path d="${s.detalle}" class="mp-det"/>`,
+     s.espejos && `<path d="${s.espejos}" class="mp-det"/>`].filter(Boolean).join('');
 
 /* Escala única para todos los modelos: 66 px por metro. Así las plantas son
    comparables entre sí — la doble se ve efectivamente más grande que la
