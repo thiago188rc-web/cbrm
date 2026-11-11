@@ -42,7 +42,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Sólo el tramo de ejes que usa el sitio (wdth 100-125, wght 380-850), no
      el rango completo: el archivo variable baja bastante de peso. -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,380..850&family=Azeret+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,380..850&family=Azeret+Mono:wght@400;500&family=Sora:wght@600..800&display=swap">
 <style>
 /* ══════════════════════════════════════════════════════
    CABINAS DESARMABLES RM — sistema de diseño
@@ -70,6 +70,7 @@
   --ok:#7BD88F;
 
   --f:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --d:"Sora","Archivo","Helvetica Neue",Arial,sans-serif;  /* títulos: moderna y bien legible */
   --m:"Azeret Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
   --pad:clamp(18px,5vw,88px);
   --gap:clamp(72px,11vh,168px);
@@ -93,14 +94,14 @@ a{color:inherit;text-decoration:none}
 
 /* ── tipografía ──────────────────────────────────── */
 .d1,.d2,.d3,.d4{
-  font-family:var(--f);text-transform:uppercase;line-height:.92;
-  letter-spacing:-.02em;text-wrap:balance;font-weight:800;
-  font-variation-settings:"wdth" 112,"wght" 820;
+  font-family:var(--d);text-transform:uppercase;line-height:1.02;
+  letter-spacing:-.015em;text-wrap:balance;font-weight:780;
+  font-variation-settings:normal;
 }
 .d1{font-size:clamp(40px,8.4vw,104px)}
 .d2{font-size:clamp(28px,5vw,60px);line-height:.95}
-.d3{font-size:clamp(21px,2.9vw,34px);line-height:1.02;font-variation-settings:"wdth" 108,"wght" 760}
-.d4{font-size:clamp(16px,1.5vw,20px);line-height:1.14;letter-spacing:.005em;font-variation-settings:"wdth" 106,"wght" 720}
+.d3{font-size:clamp(21px,2.9vw,34px);line-height:1.06;font-weight:740}
+.d4{font-size:clamp(16px,1.5vw,20px);line-height:1.18;letter-spacing:0;font-weight:700}
 .lede{font-size:clamp(16.5px,1.75vw,20px);line-height:1.5;color:#CFD1C9;max-width:54ch;font-weight:380}
 p{max-width:62ch;color:var(--mut)}
 .mono{font-family:var(--m);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--mut-2);font-weight:400}
@@ -1556,11 +1557,13 @@ header.hd{isolation:isolate}
 .amarillo .btn-g,.amarillo .pack-tg{border-color:rgba(12,13,11,.6)}
 .amarillo .txt-l{color:#2E302A;border-bottom-color:rgba(12,13,11,.45)}
 .amarillo ::selection{background:var(--on-paper);color:var(--amber)}
-/* Títulos sobre amarillo: blancos con un contorno negro fino. El trazo va
-   detrás del relleno (paint-order) para que la letra no se afine. El texto
-   chico sigue en negro: blanco sobre amarillo no se lee en cuerpo chico. */
-.amarillo .hh h2,.amarillo .pack h3{color:#fff;-webkit-text-stroke:2px var(--on-paper);paint-order:stroke fill}
-.amarillo .pack .pk{border-color:var(--on-paper);-webkit-text-stroke:0}
+/* Títulos: sin contorno. Sobre amarillo, negros; sobre negro, amarillos
+   (pedido del dueño). Los recuadros negros dentro del amarillo vuelven
+   al amarillo. */
+.d1,.d2,.d3{color:var(--amber)}
+.paper .d1,.paper .d2,.paper .d3{color:var(--on-paper)}
+.amarillo .pack .pk{border-color:var(--on-paper)}
+.amarillo .ig-card .d2,#trabajos .hh h2{color:var(--amber)}
 /* Cabinas entregadas en amarillo: la tarjeta de Instagram queda negra,
    con "Instagram" del tamaño de los otros títulos. */
 .amarillo .ig-card{background:var(--on-paper);border-color:var(--on-paper)}
@@ -1571,15 +1574,12 @@ header.hd{isolation:isolate}
 /* El encabezado de Cabinas entregadas va en un recuadro negro como la
    tarjeta de Instagram, con la bajada en amarillo (pedido del dueño). */
 #trabajos .hh{background:var(--on-paper);padding:clamp(22px,3vw,40px) clamp(20px,3vw,40px)}
-#trabajos .hh h2{color:#fff;-webkit-text-stroke:0}
 #trabajos .hh .lede{color:var(--amber)}
 #trabajos .lam .no{color:var(--amber);border-color:rgba(255,200,0,.4)}
 #trabajos .lam .ln2,#trabajos .lam .ln2::before,#trabajos .lam .ln2::after{background:rgba(255,255,255,.16)}
 /* Sin la lista de modelos al lado (la sacó el dueño), la ficha de medidas
    no se estira a todo el ancho: la planta quedaba enorme. */
 #modelos .med{max-width:880px}
-/* Título de la portada: letras negras con contorno amarillo fino. */
-.portada h1{color:var(--ink);-webkit-text-stroke:2px var(--amber);paint-order:stroke fill}
 
 /* ── ELEGIR RUBRO Y PACK ──────────────────────────────────────
    Se elige tocando la fila o la tarjeta entera. El radio real queda fuera
