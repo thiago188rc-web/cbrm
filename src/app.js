@@ -177,7 +177,7 @@ const DATA = {
   /* Medidas frecuentes que mencionó RM, en metros, para arrancar la
      consulta. NO es una tabla de modelos: qué combinación se fabrica, el
      alto y la medida interior se confirman por WhatsApp. */
-  medidas: { ancho: ['4,50', '5'], largo: ['4', '6', '8', '10'] },
+  medidas: { ancho: ['3', '4', '5', '6'], largo: ['4', '6', '8', '10'] },
 
   /* Otros usos posibles que mencionó RM, además de los cuatro rubros con
      página. Son usos, no trabajos entregados: el bloque es tipográfico.
@@ -1729,7 +1729,7 @@ function viewHome() {
     <div class="wrap">
       ${lamina('04', 'Elegí tu pack de equipamiento', 'Seleccioná uno y después indicá las medidas correspondientes más abajo.')}
       ${packsBlock()}
-      <p class="pack-nota rv">No hay precios fijos: cada cabina se cotiza según la medida y lo que necesitás. El envío generalmente se suma en la cotización.</p>
+      <p class="pack-nota rv">No hay precios fijos: cada módulo se cotiza según las medidas y el equipamiento necesario. Los envíos se suman en la cotización.</p>
     </div>
   </section>
 
