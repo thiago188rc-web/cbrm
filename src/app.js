@@ -718,8 +718,8 @@ function fitBlock() {
   };
   return `
   <div class="med rv" id="medir">
-    <h3 class="d3">¿Qué medida necesitás?</h3>
-    <p class="med-i">Las que más se piden, para arrancar la consulta. Si necesitás otra, tocá «Otra» y cargala.</p>
+    <h3 class="d3">Medidas requeridas</h3>
+    <p class="med-i">En caso de no hallarse, cargá las medidas de fabricación haciendo clic en «Otra».</p>
     <div class="med-gs">${grupo('mA', 'Ancho', M.ancho)}${grupo('mL', 'Largo', M.largo)}</div>
     <div class="plan" id="planWrap">${cabinaPlan()}</div>
     <p class="med-v" id="verdict" aria-live="polite"></p>
