@@ -376,7 +376,12 @@ document.addEventListener('change', e => {
 });
 document.addEventListener('input', e => {
   const t = e.target;
-  if (t.dataset.f === 'loc') { CTX.loc = t.value.trim(); refreshWA(); }
+  if (t.dataset.f === 'loc') {
+    CTX.loc = t.value.trim();
+    /* Hay dos campos de localidad (medidas y orden de consulta): van juntos. */
+    $$('[data-f="loc"]').forEach(i => { if (i !== t) i.value = t.value; });
+    refreshWA();
+  }
   if (t.dataset.m) { CTX[t.dataset.m] = numM(t.value); dibujarPlan(); refreshWA(); }
 });
 
@@ -738,6 +743,8 @@ function fitBlock() {
       </div>
       <p class="mono med-alto">Alto libre: hasta lo más bajo que haya (viga, caño o luminaria).</p>
     </details>
+    <div class="f-fld med-loc"><label for="med-loc">Localidad de envío o instalación</label>
+      <input id="med-loc" data-f="loc" type="text" autocomplete="address-level2" placeholder="Ej.: Rosario, Santa Fe" value="${esc(CTX.loc)}"></div>
     <div class="med-cta">
       ${btnWA('Consultar por WhatsApp', { lb: 'med' })}
       <a class="txt-l" id="fitGo" href="/presupuesto" data-quote-ctx>Armar presupuesto paso a paso</a>
