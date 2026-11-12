@@ -203,26 +203,31 @@ const DATA = {
   ],
 
   faq: {
-    entra: ['¿Cómo sé si me entra en el espacio que tengo?', 'Medí tres cosas: ancho, largo y <b>alto libre</b> (hasta lo más bajo que haya: una viga, un caño o una luminaria). Con esas tres te decimos qué medida te sirve. Podés cargarlas en la sección de medidas de la home y viajan en el mensaje de WhatsApp.'],
+    entra: ['¿Qué medidas necesito tomar de mi local?', 'Ancho, largo y <b>alto libre</b>, es decir, la altura hasta el punto más bajo del techo (vigas, caños o luminarias). Al cargarlas en la sección Medidas, la planta se dibuja a escala y los datos se suman a tu consulta.'],
     /* Iluminación y techo: sólo lo que dicen las especificaciones de los
        packs. Lo que no figura ahí no se afirma ni se descarta. */
     luz: ['¿Qué iluminación trae?', 'Depende del pack. El Studio trae iluminación básica: tablero eléctrico con disyuntor y térmicas, spots dicroicos de 7&nbsp;W en la parte baja y los laterales, reflectores y cajas tomacorrientes dobles. El Studio Pro trae iluminación Full Pro: tablero eléctrico con disyuntor y térmicas, spots dicroicos de 7&nbsp;W en la parte media y los laterales bajos, plafones LED laterales y de techo, reflectores y cajas tomacorrientes dobles. El Pack Box es la estructura con su revestimiento.'],
     techo: ['¿La cabina incluye techo?', 'Las especificaciones de los packs que publicamos no detallan el techo: si lo incluye y cómo se resuelve en tu caso, lo confirmamos en la consulta.'],
-    arma: ['¿Cuánto tarda el armado y quién la arma?', 'Es un sistema modular y 100% desarmable, sin obra civil. Quién arma, en cuánto tiempo y si el armado va incluido lo confirmamos en la consulta.'],
+    arma: ['¿Cómo se realiza el armado y la instalación?', 'Ofrecemos dos alternativas: te enviamos un manual de armado para que puedas instalarla sin inconvenientes, o coordinamos el armado y la instalación con nuestro equipo. Al ser un sistema modular y 100% desarmable, no requiere obra civil.'],
     obra: ['¿Tengo que hacer obra o pedir permiso?', 'No hace falta obra civil: es un sistema modular y desarmable. Cualquier requisito municipal depende de tu localidad y de tu habilitación: no damos una respuesta general para no decir algo que no corresponda a tu caso.'],
     material: ['¿De qué material es el revestimiento?', 'Chapa trapezoidal, color a elección, sobre una estructura 100% desarmable. El espesor lo confirmamos en la consulta.'],
     agua: ['¿Aguanta un lavadero, con agua todos los días?', 'Es la pregunta correcta para este rubro y merece una respuesta precisa, no un “sí” genérico: te la contestamos por WhatsApp con el detalle de material y mantenimiento según cómo trabajes.'],
     marca: ['¿Le puedo poner la marca de mi negocio adentro?', 'Contanos qué querés poner y dónde, y lo vemos en la consulta.'],
-    envio: ['¿Hacen envíos? ¿A qué zonas?', 'Sí, a todo el país. Fabricamos en Puerto General San Martín, Santa Fe, y el costo del envío ya viene incluido en la cotización: por eso te pedimos la localidad.'],
-    precio: ['¿Cuánto sale?', 'Depende del pack, de las medidas y del envío, que ya viene incluido en la cotización. No publicamos una lista de precios: escribinos con tu caso y te pasamos el presupuesto.'],
+    envio: ['¿Realizan envíos?', 'Sí, realizamos envíos a todo el país desde nuestro taller en Puerto General San Martín, Santa Fe. El costo del envío ya está incluido en la cotización; por eso te pedimos la localidad al consultar.'],
+    precio: ['¿Cuál es el precio de una cabina?', 'Cada módulo se fabrica a medida, por lo que no manejamos precios fijos. La cotización se calcula según las medidas, el pack de equipamiento y la localidad de envío, cuyo costo ya está incluido. Completá tu consulta en esta página y te enviamos el presupuesto por WhatsApp.'],
+    packs: ['¿Qué incluye cada pack de equipamiento?', '<b>Pack Box:</b> estructura 100% desarmable con revestimiento en chapa trapezoidal, en el color que elijas. <b>Pack Studio:</b> agrega piso encastrable e iluminación básica. <b>Pack Studio Pro:</b> agrega piso encastrable e iluminación Full Pro, con plafones LED laterales y de techo. El detalle completo figura en «Materiales y componentes de cada pack».'],
+    medida: ['¿Fabrican cabinas a medida?', 'Sí. Todos los módulos se fabrican según las medidas que requiere el cliente. Como referencia, las más solicitadas van de 3 a 6 m de ancho y de 4 a 10 m de largo; si necesitás otra, podés cargarla con la opción «Otra».'],
+    mudar: ['¿Se puede trasladar a otro local?', 'Sí. La estructura es modular y 100% desarmable, por lo que puede desmontarse y volver a armarse en una nueva ubicación.'],
+    usos: ['¿Se adapta a otros rubros?', 'Sí. Además de detailing, lavaderos, lubricentros y concesionarios, las estructuras modulares se adaptan a motos, oficinas, barberías, heladerías, quioscos, centros de manicura y locales de pesca, entre otros. Si tu rubro no figura, seleccioná «Otro» y contanos qué utilidad le darías.'],
+    confirmar: ['¿Cuáles son los plazos, las formas de pago y la garantía?', 'Dependen de cada pedido. Te los informamos en la consulta, junto con la cotización.'],
     packModelo: ['¿Qué diferencia hay entre un pack y un modelo?', 'El pack dice qué trae la cabina: el Box es estructura y revestimiento; el Studio y el Studio Pro suman piso encastrable e iluminación. El modelo describe qué tiene que entrar adentro: una moto, un auto, dos autos o una medida especial. Qué pack corresponde a cada modelo lo vemos en la consulta: contanos las dos cosas.'],
     pago: ['¿Cómo se paga?', 'Las condiciones de pago las vemos en la consulta.'],
     garantia: ['¿Tiene garantía?', 'Preguntalo en la consulta: es un dato que todavía no publicamos.'],
     motos: ['¿Sirve para motos?', 'Sí: en la galería de trabajos hay una cabina de RM con una moto adentro.']
   },
-  /* Sólo preguntas con respuesta respaldada. Plazos, pago, armado y garantía
-     siguen a confirmar: van juntos en una línea de "Cómo se compra". */
-  faqHome: ['precio', 'packModelo', 'entra', 'envio', 'motos']
+  /* Sólo preguntas con respuesta confirmada por RM. Plazo, pago y garantía
+     siguen a confirmar: se responden con eso, sin inventar. */
+  faqHome: ['precio', 'packs', 'medida', 'entra', 'arma', 'envio', 'mudar', 'usos', 'confirmar']
 };
 
 /* Prefill compartido entre el medidor, las páginas de rubro y el cotizador */
