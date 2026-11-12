@@ -1700,9 +1700,31 @@ function viewHome() {
     </div>
   </section>
 
-  <section class="sec paper amarillo" id="trabajos" data-lam="02" data-name="Cabinas entregadas">
+  <section class="sec" id="rubros" data-lam="02" data-name="Rubro">
     <div class="wrap">
-      ${lamina('02', 'Cabinas entregadas', 'Cabinas publicadas en nuestro Instagram.')}
+      ${lamina('02', 'Tu rubro', 'Seleccioná tu rubro haciendo clic para sumarlo a tu consulta.')}
+      ${rubrosHome()}
+    </div>
+  </section>
+
+  <section class="sec paper amarillo" id="sistema" data-lam="03" data-name="Packs">
+    <div class="wrap">
+      ${lamina('03', 'Elegí tu pack de equipamiento', 'Seleccioná uno y después indicá las medidas correspondientes más abajo.')}
+      ${packsBlock()}
+      <p class="pack-nota rv">No hay precios fijos: cada módulo se cotiza según las medidas y el equipamiento necesario. El envío ya viene incluido en la cotización.</p>
+    </div>
+  </section>
+
+  <section class="sec grid-bg" id="modelos" data-lam="04" data-name="Medidas">
+    <div class="wrap">
+      ${lamina('04', 'Medidas', 'Los módulos son fabricados a medida, según lo requiera el cliente.')}
+      ${fitBlock()}
+    </div>
+  </section>
+
+  <section class="sec paper amarillo" id="trabajos" data-lam="05" data-name="Cabinas entregadas">
+    <div class="wrap">
+      ${lamina('05', 'Cabinas entregadas', 'Cabinas publicadas en nuestro Instagram.')}
       <div class="obras rv${n % 2 ? ' impar' : ''}" style="--n:${n === 6 ? 3 : n}">
         ${obras.map(t => figura(t.img, { cap: t.cap, alt: t.alt, sizes: `(min-width:900px) ${n === 6 ? 31 : Math.round(92 / n)}vw, 46vw` })).join('')}
         <figure class="ig-card">
@@ -1715,28 +1737,6 @@ function viewHome() {
       <div class="fila-cta rv">
         ${btnWA('Cotizar mi cabina', {}, 'btn-g')}
       </div>
-    </div>
-  </section>
-
-  <section class="sec" id="rubros" data-lam="03" data-name="Rubro">
-    <div class="wrap">
-      ${lamina('03', 'Tu rubro', 'Seleccioná tu rubro haciendo clic para sumarlo a tu consulta.')}
-      ${rubrosHome()}
-    </div>
-  </section>
-
-  <section class="sec paper amarillo" id="sistema" data-lam="04" data-name="Packs">
-    <div class="wrap">
-      ${lamina('04', 'Elegí tu pack de equipamiento', 'Seleccioná uno y después indicá las medidas correspondientes más abajo.')}
-      ${packsBlock()}
-      <p class="pack-nota rv">No hay precios fijos: cada módulo se cotiza según las medidas y el equipamiento necesario. El envío ya viene incluido en la cotización.</p>
-    </div>
-  </section>
-
-  <section class="sec grid-bg" id="modelos" data-lam="05" data-name="Medidas">
-    <div class="wrap">
-      ${lamina('05', 'Medidas', 'Los módulos son fabricados a medida, según lo requiera el cliente.')}
-      ${fitBlock()}
     </div>
   </section>
 
