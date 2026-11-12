@@ -297,8 +297,9 @@ function refreshWA() {
    Cada fila muestra lo elegido y lleva a donde se elige; la misma
    selección viaja en todos los botones de WhatsApp. El botón fijo del
    celular muestra el resumen. */
+/* Sin fila de modelo: los modelos ya no están en la home. */
 const ORDEN = [['rubro', 'Rubro', '/#rubros'], ['pack', 'Pack', '/#sistema'],
-  ['med', 'Medida', '/#medir'], ['modelo', 'Modelo', '/#modelos']];
+  ['med', 'Medida', '/#medir']];
 const ordenVals = () => ({ rubro: CTX.rubro, pack: CTX.pack, med: medTxt(CTX), modelo: CTX.modelo });
 
 function pintarOrden() {
@@ -1675,7 +1676,7 @@ function ordenBlock() {
             <div data-of="${k}"${V[k] ? ' class="lleno"' : ''}><dt>${lb}</dt>
               <dd><span class="of-v" data-v="${esc(V[k] || '')}">${esc(V[k] || 'Sin elegir')}</span><a href="${href}" aria-label="${V[k] ? 'Cambiar' : 'Elegir'} ${lb.toLowerCase()}">${V[k] ? 'Cambiar' : 'Elegir'}</a></dd></div>`).join('')}
           </dl>
-          <div class="f-fld orden-loc"><label for="o-loc">Localidad</label>
+          <div class="f-fld orden-loc"><label for="o-loc">Localidad de envío o instalación</label>
             <input id="o-loc" data-f="loc" type="text" autocomplete="off" placeholder="Ej.: Rosario, Santa Fe" value="${esc(CTX.loc)}"></div>
           ${btnWA('Abrir en WhatsApp', { aria: 'Abrir WhatsApp con esta consulta' })}
           <p class="orden-n">Se abre WhatsApp con el mensaje armado. Lo revisás y lo enviás vos.</p>
