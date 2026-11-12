@@ -213,8 +213,8 @@ const DATA = {
     material: ['¿De qué material es el revestimiento?', 'Chapa trapezoidal, color a elección, sobre una estructura 100% desarmable. El espesor lo confirmamos en la consulta.'],
     agua: ['¿Aguanta un lavadero, con agua todos los días?', 'Es la pregunta correcta para este rubro y merece una respuesta precisa, no un “sí” genérico: te la contestamos por WhatsApp con el detalle de material y mantenimiento según cómo trabajes.'],
     marca: ['¿Le puedo poner la marca de mi negocio adentro?', 'Contanos qué querés poner y dónde, y lo vemos en la consulta.'],
-    envio: ['¿Hacen envíos? ¿A qué zonas?', 'Sí, a todo el país. Fabricamos en Puerto General San Martín, Santa Fe, y el costo del envío generalmente se suma en la cotización: por eso te pedimos la localidad.'],
-    precio: ['¿Cuánto sale?', 'Depende del pack, del modelo y del envío, que generalmente se suma en la cotización. No publicamos una lista de precios: escribinos con tu caso y te pasamos el presupuesto.'],
+    envio: ['¿Hacen envíos? ¿A qué zonas?', 'Sí, a todo el país. Fabricamos en Puerto General San Martín, Santa Fe, y el costo del envío ya viene incluido en la cotización: por eso te pedimos la localidad.'],
+    precio: ['¿Cuánto sale?', 'Depende del pack, de las medidas y del envío, que ya viene incluido en la cotización. No publicamos una lista de precios: escribinos con tu caso y te pasamos el presupuesto.'],
     packModelo: ['¿Qué diferencia hay entre un pack y un modelo?', 'El pack dice qué trae la cabina: el Box es estructura y revestimiento; el Studio y el Studio Pro suman piso encastrable e iluminación. El modelo describe qué tiene que entrar adentro: una moto, un auto, dos autos o una medida especial. Qué pack corresponde a cada modelo lo vemos en la consulta: contanos las dos cosas.'],
     pago: ['¿Cómo se paga?', 'Las condiciones de pago las vemos en la consulta.'],
     garantia: ['¿Tiene garantía?', 'Preguntalo en la consulta: es un dato que todavía no publicamos.'],
@@ -1640,10 +1640,10 @@ function rubrosHome() {
 /* Sólo lo confirmado. Plazo, pago, armado y garantía van juntos en una
    línea "a confirmar" en vez de un recuadro por paso. */
 const PASOS = [
-  ['Consulta', 'Nos escribís por WhatsApp con tu rubro, el pack que te interesa y, si los tenés, la medida y tu localidad. Con eso te cotizamos.'],
-  ['Fabricación', 'Se fabrica en nuestro taller de Puerto General San Martín, Santa Fe.'],
-  ['Envío', 'Enviamos a todo el país. El costo del envío generalmente se suma en la cotización.'],
-  ['Armado', 'La estructura es modular y 100% desarmable.']
+  ['Consulta', 'Completando nuestro formulario con el rubro, el pack de equipamiento, las medidas y la localidad de envío. De esta manera pasás de la consulta a la cotización y la compra.'],
+  ['Fabricación', 'Los módulos se fabrican 100% desarmables, con las medidas requeridas por el cliente, en nuestro taller de Puerto General San Martín, Santa Fe.'],
+  ['Envío', 'Los envíos se realizan a todo el país. El costo del envío ya viene incluido en la cotización.'],
+  ['Instalación y armado', 'Te enviamos un manual de armado para que la puedas instalar sin problemas, o se pacta el armado y la instalación por nuestra empresa.']
 ];
 
 /* Cierre: la orden de consulta completa. Se pinta con lo que ya hay en
@@ -1729,7 +1729,7 @@ function viewHome() {
     <div class="wrap">
       ${lamina('04', 'Elegí tu pack de equipamiento', 'Seleccioná uno y después indicá las medidas correspondientes más abajo.')}
       ${packsBlock()}
-      <p class="pack-nota rv">No hay precios fijos: cada módulo se cotiza según las medidas y el equipamiento necesario. Los envíos se suman en la cotización.</p>
+      <p class="pack-nota rv">No hay precios fijos: cada módulo se cotiza según las medidas y el equipamiento necesario. El envío ya viene incluido en la cotización.</p>
     </div>
   </section>
 
@@ -1742,22 +1742,22 @@ function viewHome() {
 
   <section class="sec" id="comprar" data-lam="06" data-name="Compra y envíos">
     <div class="wrap">
-      ${lamina('06', 'Cómo se compra', 'Comprás a distancia. Así funciona, de la consulta a la cabina armada.')}
+      ${lamina('06', '¿Cómo comprar?', 'Comprás a distancia. Así funciona, de la consulta a la cabina armada.')}
       <ol class="pasos rv">${PASOS.map((p, i) => `
         <li><span class="k">0${i + 1}</span><h3>${p[0]}</h3><p>${p[1]}</p></li>`).join('')}</ol>
-      <p class="pend rv"><span class="tbd">a confirmar</span> Plazo de fabricación, formas de pago, quién arma y en cuánto tiempo, y garantía. Los vemos en la consulta.</p>
+      <p class="pend rv"><span class="tbd">Información a confirmar</span> Plazo de fabricación, formas de pago y garantía.</p>
 
       <div class="envio rv${envioG ? ' con-g' : ''}">
         ${envioG}
         <div class="envio-t">
           <h3 class="${envioG ? 'd3' : 'd2'}">Envíos a todo el país</h3>
-          <p>Fabricamos en nuestro taller de Puerto General San Martín, Santa Fe, y enviamos a todo el país. El costo del envío generalmente se suma en la cotización: contanos tu localidad.</p>
+          <p>Fabricamos en nuestro taller de Puerto General San Martín, Santa Fe, y enviamos a todo el país. El costo del envío ya viene incluido en la cotización: contanos tu localidad.</p>
           <div class="envio-a">${btnWA('Consultar el envío', {}, 'btn-g btn-sm')}</div>
         </div>
       </div>
 
       <div class="emp" id="empresa">
-        <h3 class="d3 rv">Dónde estamos</h3>
+        <h3 class="d3 rv">Dónde nos ubicamos</h3>
         ${trustBlock()}
       </div>
     </div>
@@ -1765,7 +1765,7 @@ function viewHome() {
 
   <section class="sec" id="preguntas" data-lam="07" data-name="Preguntas" style="background:var(--ink-2);border-top:1px solid var(--line)">
     <div class="wrap">
-      ${lamina('07', 'Lo que más nos preguntan')}
+      ${lamina('07', 'Preguntas frecuentes')}
       ${faqBlock(DATA.faqHome)}
       ${ordenBlock()}
     </div>
