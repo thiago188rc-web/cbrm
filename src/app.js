@@ -1742,7 +1742,7 @@ function viewHome() {
 
   <section class="sec" id="comprar" data-lam="06" data-name="Compra y envíos">
     <div class="wrap">
-      ${lamina('06', '¿Cómo comprar?', 'Comprás a distancia. Así funciona, de la consulta a la cabina armada.')}
+      ${lamina('06', '¿Cómo comprar?')}
       <ol class="pasos rv">${PASOS.map((p, i) => `
         <li><span class="k">0${i + 1}</span><h3>${p[0]}</h3><p>${p[1]}</p></li>`).join('')}</ol>
       <p class="pend rv"><span class="tbd">Información a confirmar</span> Plazo de fabricación, formas de pago y garantía.</p>
