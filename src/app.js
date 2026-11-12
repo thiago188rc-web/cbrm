@@ -1747,14 +1747,7 @@ function viewHome() {
         <li><span class="k">0${i + 1}</span><h3>${p[0]}</h3><p>${p[1]}</p></li>`).join('')}</ol>
       <p class="pend rv"><span class="tbd">Información a confirmar</span> Plazo de fabricación, formas de pago y garantía.</p>
 
-      <div class="envio rv${envioG ? ' con-g' : ''}">
-        ${envioG}
-        <div class="envio-t">
-          <h3 class="${envioG ? 'd3' : 'd2'}">Envíos a todo el país</h3>
-          <p>Fabricamos en nuestro taller de Puerto General San Martín, Santa Fe, y enviamos a todo el país. El costo del envío ya viene incluido en la cotización: contanos tu localidad.</p>
-          <div class="envio-a">${btnWA('Consultar el envío', {}, 'btn-g btn-sm')}</div>
-        </div>
-      </div>
+      ${envioG ? `<div class="envio solo rv">${envioG}</div>` : ''}
 
       <div class="emp" id="empresa">
         <h3 class="d3 rv">Dónde nos ubicamos</h3>
