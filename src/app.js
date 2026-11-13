@@ -234,7 +234,7 @@ const DATA = {
 const PRE = { rubro: '', vehiculo: '', ancho: '', largo: '', alto: '', modelo: '' };
 
 /* ── UI base ────────────────────────────────────────────────── */
-const HOLA = 'Hola RM, quiero hacerles una consulta sobre una cabina.';
+const HOLA = 'Hola, equipo de RM. Quisiera recibir información sobre las cabinas desarmables.';
 
 /* ── WHATSAPP CON CONTEXTO ──────────────────────────────────────
    Lo que el visitante va eligiendo en la home (pack, rubro, modelo,
@@ -250,17 +250,30 @@ const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;'
 
 const medTxt = d => d.mA && d.mL ? `${d.mA} × ${d.mL} m` : d.mA ? `${d.mA} m de ancho` : d.mL ? `${d.mL} m de largo` : '';
 
+/* "a, b y c" */
+const enLista = a => a.length > 1 ? a.slice(0, -1).join(', ') + ' y ' + a[a.length - 1] : a[0] || '';
+const DOMINIO = SITE.replace(/^https?:\/\//, '');
+
+/* Mensaje de WhatsApp con formato profesional: saludo, los datos en una
+   lista con título en negrita (WhatsApp entiende *negrita* y _cursiva_),
+   lo que falta definir planteado como pedido de asesoramiento (así RM sabe
+   qué preguntar) y un cierre cordial. Sin datos, el saludo solo. */
 function waMsg(o = {}) {
   const d = { ...CTX, ...o };
   const med = medTxt(d);
-  const filas = [['RUBRO', d.rubro], ['PACK', d.pack],
-    ['MEDIDA', med && `${med}${d.mA && d.mL ? ' (ancho × largo)' : ''}${d.mOtra ? ', a medida' : ''}`],
-    ['MODELO', d.modelo],
-    ['MI LOCAL', d.ancho && d.largo ? `${d.ancho} ancho × ${d.largo} largo${d.alto ? ` × ${d.alto} alto libre` : ''} (m)` : ''],
-    ['LOCALIDAD', d.loc]].filter(f => f[1]);
-  const L = ['Hola RM, quiero consultar por una cabina.'];
-  if (filas.length) L.push('', ...filas.map(f => `▸ ${f[0]}: ${f[1]}`));
-  L.push('', 'Consulta desde ' + SITE.replace(/^https?:\/\//, ''));
+  const local = d.ancho && d.largo;
+  const filas = [['Rubro', d.rubro], ['Pack de equipamiento', d.pack],
+    ['Medidas', med && `${med}${d.mA && d.mL ? ' (ancho × largo)' : ''}${d.mOtra ? ', a medida' : ''}`],
+    ['Modelo', d.modelo],
+    ['Medidas de mi local', local ? `${d.ancho} × ${d.largo}${d.alto ? ` × ${d.alto}` : ''} m (ancho × largo${d.alto ? ' × alto libre' : ''})` : ''],
+    ['Localidad de envío o instalación', d.loc]].filter(f => f[1]);
+  if (!filas.length) return `${HOLA}\n\n_Consulta enviada desde ${DOMINIO}_`;
+  const falta = [['el rubro', d.rubro], ['el pack de equipamiento', d.pack], ['las medidas', med || local]]
+    .filter(f => !f[1]).map(f => f[0]);
+  const L = ['Hola, equipo de RM. Quisiera solicitar una cotización para una cabina desarmable.', '',
+    '*Datos de mi consulta*', ...filas.map(f => `• ${f[0]}: ${f[1]}`)];
+  if (falta.length) L.push('', `Me gustaría que me asesoren con ${enLista(falta)}.`);
+  L.push('', 'Quedo a la espera de su respuesta. ¡Muchas gracias!', '', `_Consulta enviada desde ${DOMINIO}_`);
   return L.join('\n');
 }
 
@@ -1036,26 +1049,21 @@ const Q = {
 
 
 function quoteMsg() {
-  const d = Q.d, L = [];
-  L.push('Hola RM, quiero cotizar una cabina.', '');
-  L.push('▸ RUBRO: ' + (d.rubro || 'sin especificar'));
-  L.push('▸ NECESITO QUE ENTRE: ' + (d.vehiculo || 'sin especificar'));
-  const mod = d.modelo;
-  if (mod) L.push('▸ MODELO DE INTERÉS: ' + mod);
-  if (d.pack) L.push('▸ PACK: ' + d.pack);          // sólo si se eligió en la home
-  if (d.medida) L.push('▸ MEDIDA: ' + d.medida);    // ídem
-  L.push('▸ MI ESPACIO: ' + (d.ancho && d.largo
-    ? `${d.ancho} ancho × ${d.largo} largo${d.alto ? ` × ${d.alto} alto libre` : ''} (m)`
-    : 'todavía no lo medí'));
-  L.push('▸ LOCALIDAD: ' + d.loc);
-  L.push('▸ NOMBRE: ' + d.nombre);
+  const d = Q.d;
   /* El teléfono va escrito aunque WhatsApp ya identifique a quien manda:
      si la persona copia el mensaje y lo envía desde otro número, RM
      igual se queda con el de contacto. */
-  if (d.tel) L.push('▸ TELÉFONO: ' + d.tel);
-  if (d.msg.trim()) L.push('', 'Comentario: ' + d.msg.trim());
-  L.push('', '—', 'Consulta desde ' + SITE.replace(/^https?:\/\//, ''));
-  L.push('Ref: ' + refCode());
+  const contacto = [['Nombre', d.nombre], ['Teléfono', d.tel], ['Localidad de envío o instalación', d.loc]].filter(f => f[1]);
+  const pedido = [['Rubro', d.rubro || 'a definir'], ['Necesito que entre', d.vehiculo || 'a definir'],
+    ['Modelo de interés', d.modelo], ['Pack de equipamiento', d.pack], ['Medidas', d.medida],   // pack y medida: si se eligieron en la home
+    ['Medidas de mi local', d.ancho && d.largo
+      ? `${d.ancho} × ${d.largo}${d.alto ? ` × ${d.alto}` : ''} m (ancho × largo${d.alto ? ' × alto libre' : ''})`
+      : 'todavía no las relevé']].filter(f => f[1]);
+  const L = [`Hola, equipo de RM. ${d.nombre ? `Soy ${d.nombre} y quisiera` : 'Quisiera'} solicitar una cotización para una cabina desarmable.`, '',
+    '*Mi pedido*', ...pedido.map(f => `• ${f[0]}: ${f[1]}`), '',
+    '*Mis datos de contacto*', ...contacto.map(f => `• ${f[0]}: ${f[1]}`)];
+  if (d.msg.trim()) L.push('', '*Comentarios*', d.msg.trim());
+  L.push('', 'Quedo a la espera de su respuesta. ¡Muchas gracias!', '', `_Consulta enviada desde ${DOMINIO} · Ref. ${refCode()}_`);
   return L.join('\n');
 }
 function refCode() {
@@ -1450,7 +1458,7 @@ function viewCotizar() {
       <div id="quoteMount"></div>
       <div class="rv" style="margin-top:30px;display:flex;gap:20px;flex-wrap:wrap">
         <a class="btn-t" href="/#medir">No sé mis medidas, quiero medir primero</a>
-        <a class="btn-t" href="${wa('Hola RM, quiero hacerles una consulta sobre una cabina.')}" target="_blank" rel="noopener">Prefiero escribir directo</a>
+        <a class="btn-t" href="${wa(HOLA)}" target="_blank" rel="noopener">Prefiero escribir directo</a>
       </div>
     </div>
   </section>`;
@@ -2033,7 +2041,7 @@ function bindTabs(root) {
 function bindCTAs(scope) {
   ['#trustWa', '#empresaWa'].forEach(s => {
     const el = $(s, scope);
-    if (el) el.href = wa('Hola RM, quiero hacerles una consulta sobre una cabina.');
+    if (el) el.href = wa(HOLA);
   });
   $$('[data-goquote]', scope).forEach(b => b.onclick = () => {
     const v = b.dataset.goquote;
