@@ -75,7 +75,7 @@ const DATA = {
     {
       slug: 'detailing', n: 'Detailing', qRubro: 'Detailing',
       h1: 'Cabinas para detailing',
-      claim: 'Ves la pintura. Y después la mostrás.',
+      claim: 'Iluminación y entorno controlado para un acabado de nivel profesional.',
       prob: 'Trabajás en un galpón con luz de tubo. Los swirls aparecen recién cuando el auto sale al sol. Y las fotos que subís no le hacen justicia a lo que hiciste.',
       sol: 'Un box propio adentro de tu local. Con el Pack Studio trae spots y reflectores; con el Studio Pro suma plafones LED laterales y de techo. El mismo espacio te sirve para corregir y para fotografiar.',
       /* Sólo lo confirmado de los packs. Techo y accesorios no figuran en
@@ -90,7 +90,7 @@ const DATA = {
       h1: 'Cabinas para lavaderos',
       /* Antes prometía protección contra la lluvia, que depende de un techo
          que no figura en los packs. Ahora el argumento es el sector propio. */
-      claim: 'Un box propio para tu servicio premium.',
+      claim: 'Infraestructura propia para elevar el estándar de tu servicio.',
       prob: 'El lavado común y el servicio que querés cobrar distinto comparten el mismo espacio. Y el local no acompaña al precio que querés cobrar.',
       sol: 'Un box desarmable adentro de tu local, que te habilita a ofrecer un servicio premium separado del lavado común.',
       pts: ['Un sector diferenciado dentro del mismo local', 'Revestimiento en chapa trapezoidal, color a elección', 'Piso encastrable en los packs Studio y Studio Pro', 'Estructura 100% desarmable'],
@@ -101,7 +101,7 @@ const DATA = {
     {
       slug: 'lubricentros', n: 'Lubricentros', qRubro: 'Lubricentro',
       h1: 'Cabinas para lubricentros',
-      claim: 'Separá el sector limpio sin cerrar por obra.',
+      claim: 'Delimitá el área de trabajo sin interrumpir tu operación.',
       prob: 'Tenés el sector sucio y el sector limpio mezclados en el mismo espacio, y la imagen del local no acompaña al servicio que das.',
       sol: 'Un box limpio y presentable adentro del taller que ya tenés, sin albañiles ni escombros.',
       pts: ['Delimita un sector propio dentro del galpón', 'Sin obra civil ni escombros', 'Estructura 100% desarmable: se desarma si mudás el negocio', 'Revestimiento en chapa trapezoidal, color a elección'],
@@ -112,7 +112,7 @@ const DATA = {
     {
       slug: 'concesionarias', n: 'Concesionarios', qRubro: 'Concesionario',
       h1: 'Cabinas para concesionarios',
-      claim: 'Todas las unidades, con la misma foto.',
+      claim: 'Presentación uniforme y profesional para todas tus unidades.',
       prob: 'Cada unidad que ingresa hay que fotografiarla, y cada foto sale distinta según dónde estaba parada y a qué hora se tomó. El resultado es una publicación despareja.',
       sol: 'Un set fijo dentro de tu propio local: mismo fondo y mismo encuadre para toda la flota, con la iluminación de los packs Studio y Studio Pro. Y un espacio de entrega que se siente distinto.',
       pts: ['Fondo constante en todas las publicaciones', 'Sirve para autos y para motos', 'Espacio de entrega de unidad', 'Revestimiento en chapa trapezoidal, color a elección'],
@@ -203,30 +203,30 @@ const DATA = {
   ],
 
   faq: {
-    entra: ['¿Qué medidas necesito tomar de mi local?', 'Ancho, largo y <b>alto libre</b>, es decir, la altura hasta el punto más bajo del techo (vigas, caños o luminarias). Al cargarlas en la sección Medidas, la planta se dibuja a escala y los datos se suman a tu consulta.'],
+    entra: ['¿Qué medidas debo relevar en mi local?', 'Se recomienda relevar el largo, el ancho y el alto disponible. Con esa información podemos confirmar la viabilidad del proyecto y proponer la configuración más adecuada.'],
     /* Iluminación y techo: sólo lo que dicen las especificaciones de los
        packs. Lo que no figura ahí no se afirma ni se descarta. */
     luz: ['¿Qué iluminación trae?', 'Depende del pack. El Studio trae iluminación básica: tablero eléctrico con disyuntor y térmicas, spots dicroicos de 7&nbsp;W en la parte baja y los laterales, reflectores y cajas tomacorrientes dobles. El Studio Pro trae iluminación Full Pro: tablero eléctrico con disyuntor y térmicas, spots dicroicos de 7&nbsp;W en la parte media y los laterales bajos, plafones LED laterales y de techo, reflectores y cajas tomacorrientes dobles. El Pack Box es la estructura con su revestimiento.'],
     techo: ['¿La cabina incluye techo?', 'Las especificaciones de los packs que publicamos no detallan el techo: si lo incluye y cómo se resuelve en tu caso, lo confirmamos en la consulta.'],
-    arma: ['¿Cómo se realiza el armado y la instalación?', 'Ofrecemos dos alternativas: te enviamos un manual de armado para que puedas instalarla sin inconvenientes, o coordinamos el armado y la instalación con nuestro equipo. Al ser un sistema modular y 100% desarmable, no requiere obra civil.'],
+    arma: ['¿Cómo se realiza el armado y la instalación?', 'El armado se realiza en tu local por nuestro equipo técnico, siguiendo un proceso ordenado y sin interferir en tu operación habitual. La estructura modular permite una instalación eficiente y controlada. Además, incluye un manual de armado para quienes prefieran realizar la instalación por su cuenta.'],
     obra: ['¿Tengo que hacer obra o pedir permiso?', 'No hace falta obra civil: es un sistema modular y desarmable. Cualquier requisito municipal depende de tu localidad y de tu habilitación: no damos una respuesta general para no decir algo que no corresponda a tu caso.'],
     material: ['¿De qué material es el revestimiento?', 'Chapa trapezoidal, color a elección, sobre una estructura 100% desarmable. El espesor lo confirmamos en la consulta.'],
     agua: ['¿Aguanta un lavadero, con agua todos los días?', 'Es la pregunta correcta para este rubro y merece una respuesta precisa, no un “sí” genérico: te la contestamos por WhatsApp con el detalle de material y mantenimiento según cómo trabajes.'],
     marca: ['¿Le puedo poner la marca de mi negocio adentro?', 'Contanos qué querés poner y dónde, y lo vemos en la consulta.'],
-    envio: ['¿Realizan envíos?', 'Sí, realizamos envíos a todo el país desde nuestro taller en Puerto General San Martín, Santa Fe. El costo del envío ya está incluido en la cotización; por eso te pedimos la localidad al consultar.'],
-    precio: ['¿Cuál es el precio de una cabina?', 'Cada módulo se fabrica a medida, por lo que no manejamos precios fijos. La cotización se calcula según las medidas, el pack de equipamiento y la localidad de envío, cuyo costo ya está incluido. Completá tu consulta en esta página y te enviamos el presupuesto por WhatsApp.'],
-    packs: ['¿Qué incluye cada pack de equipamiento?', '<b>Pack Box:</b> estructura 100% desarmable con revestimiento en chapa trapezoidal, en el color que elijas. <b>Pack Studio:</b> agrega piso encastrable e iluminación básica. <b>Pack Studio Pro:</b> agrega piso encastrable e iluminación Full Pro, con plafones LED laterales y de techo. El detalle completo figura en «Materiales y componentes de cada pack».'],
-    medida: ['¿Fabrican cabinas a medida?', 'Sí. Todos los módulos se fabrican según las medidas que requiere el cliente. Como referencia, las más solicitadas van de 3 a 6 m de ancho y de 4 a 10 m de largo; si necesitás otra, podés cargarla con la opción «Otra».'],
-    mudar: ['¿Se puede trasladar a otro local?', 'Sí. La estructura es modular y 100% desarmable, por lo que puede desmontarse y volver a armarse en una nueva ubicación.'],
-    usos: ['¿Se adapta a otros rubros?', 'Sí. Además de detailing, lavaderos, lubricentros y concesionarios, las estructuras modulares se adaptan a motos, oficinas, barberías, heladerías, quioscos, centros de manicura y locales de pesca, entre otros. Si tu rubro no figura, seleccioná «Otro» y contanos qué utilidad le darías.'],
-    confirmar: ['¿Cuáles son los plazos, las formas de pago y la garantía?', 'Dependen de cada pedido. Te los informamos en la consulta, junto con la cotización.'],
+    envio: ['¿Realizan envíos a todo el país?', 'Sí. Realizamos envíos a todo el país. El costo y el plazo de entrega se confirman según la ubicación y las características del pedido.'],
+    precio: ['¿Cuál es la inversión de un módulo?', 'La inversión depende del modelo, las dimensiones y el pack de equipamiento seleccionado. Cada proyecto se cotiza de forma personalizada para garantizar la mejor relación entre funcionalidad, calidad y presupuesto.'],
+    packs: ['¿Qué incluye cada pack de equipamiento?', 'Cada pack incluye la estructura modular y los componentes definidos según el uso: el Studio y el Studio Pro suman piso encastrable e iluminación. Podés consultar el detalle en «Materiales y componentes de cada pack» o pedirnos asesoramiento para elegir la opción adecuada para tu rubro.'],
+    medida: ['¿Fabrican módulos a medida?', 'Sí. Fabricamos módulos a medida según las dimensiones y las necesidades operativas de tu espacio. Nuestro equipo técnico te acompaña desde el relevamiento hasta la definición final del proyecto.'],
+    mudar: ['¿Es posible trasladarla a otro local?', 'Sí. Al tratarse de una estructura modular 100% desarmable, puede desarmarse y reinstalarse en otro local, conservando su funcionalidad y su presentación.'],
+    usos: ['¿Se adapta a otros rubros?', 'Sí. Nuestros módulos se adaptan a múltiples rubros y proyectos. Si tu rubro no está listado, podés consultarnos para recibir una propuesta personalizada.'],
+    confirmar: ['¿Cuáles son los plazos de entrega, las formas de pago y la garantía?', 'Los plazos de entrega se confirman al momento de la cotización, según el modelo y la disponibilidad. Trabajamos con diversas formas de pago para facilitar tu inversión. Todas nuestras cabinas cuentan con garantía de fabricación.'],
     packModelo: ['¿Qué diferencia hay entre un pack y un modelo?', 'El pack dice qué trae la cabina: el Box es estructura y revestimiento; el Studio y el Studio Pro suman piso encastrable e iluminación. El modelo describe qué tiene que entrar adentro: una moto, un auto, dos autos o una medida especial. Qué pack corresponde a cada modelo lo vemos en la consulta: contanos las dos cosas.'],
     pago: ['¿Cómo se paga?', 'Las condiciones de pago las vemos en la consulta.'],
     garantia: ['¿Tiene garantía?', 'Preguntalo en la consulta: es un dato que todavía no publicamos.'],
     motos: ['¿Sirve para motos?', 'Sí: en la galería de trabajos hay una cabina de RM con una moto adentro.']
   },
-  /* Sólo preguntas con respuesta confirmada por RM. Plazo, pago y garantía
-     siguen a confirmar: se responden con eso, sin inventar. */
+  /* Preguntas y respuestas redactadas por RM (garantía de fabricación y
+     formas de pago confirmadas por el dueño). */
   faqHome: ['precio', 'packs', 'medida', 'entra', 'arma', 'envio', 'mudar', 'usos', 'confirmar']
 };
 
@@ -1758,7 +1758,7 @@ function viewHome() {
       ${lamina('06', '¿Cómo comprar?')}
       <ol class="pasos rv">${PASOS.map((p, i) => `
         <li><span class="k">0${i + 1}</span><h3>${p[0]}</h3><p>${p[1]}</p></li>`).join('')}</ol>
-      <p class="pend rv"><span class="tbd">Información a confirmar</span> Plazo de fabricación, formas de pago y garantía.</p>
+      <p class="pend rv"><span class="tbd">Información a confirmar</span> Plazo de fabricación y formas de pago, al momento de la cotización.</p>
 
       ${envioG ? `<div class="envio solo rv">${envioG}</div>` : ''}
 
