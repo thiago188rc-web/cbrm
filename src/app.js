@@ -288,6 +288,11 @@ function refreshWA() {
   $$('[data-rubro-row]').forEach(c => c.classList.toggle('elegido', c.dataset.rubroRow === CTX.rubro));
   $$('a[data-wa-lb]').forEach(a => { $('span', a).textContent = (home && LB[a.dataset.waLb]()) || a.dataset.waBase; });
   $$('input[name="pack"]').forEach(i => { i.checked = i.value === CTX.pack; });
+  $$('[data-pick-pack]').forEach(b => {
+    const on = b.dataset.pickPack === CTX.pack;
+    b.setAttribute('aria-pressed', on);
+    b.textContent = on ? 'Pack elegido ✓' : 'Quiero este pack de equipamiento';
+  });
   $$('input[name="rubro"]').forEach(i => { i.checked = i.value === CTX.rubro; });
   pintarOrden();
 }
@@ -351,6 +356,10 @@ document.addEventListener('click', e => {
     if (w.dataset.waRubro) CTX.rubro = w.dataset.waRubro;
     refreshWA();
   }
+  /* "Quiero este pack": sólo lo marca, no abre WhatsApp. La consulta se
+     manda desde Medidas, con todo completo (pedido del dueño). */
+  const pq = t.closest('[data-pick-pack]');
+  if (pq) { CTX.pack = pq.dataset.pickPack; refreshWA(); }
   const tg = t.closest('.pack-tg');
   if (tg) {
     const on = tg.getAttribute('aria-pressed') !== 'true';
@@ -1594,7 +1603,7 @@ function packsBlock() {
         <div><dt>Piso encastrable</dt><dd>${p.piso ? SI : NO}</dd></div>
         <div><dt>Iluminación</dt><dd>${p.luz ? `<span class="luz${p.luz === 'Full Pro' ? ' pro' : ''}">${p.luz}</span>` : NO}</dd></div>
       </dl>
-      ${btnWA('Consultar este pack', { pack: p.n, aria: `Consultar por el ${p.n} por WhatsApp` }, 'btn-g')}
+      <button type="button" class="btn btn-g pack-q" data-pick-pack="${p.n}" aria-pressed="${CTX.pack === p.n}">${CTX.pack === p.n ? 'Pack elegido ✓' : 'Quiero este pack de equipamiento'}</button>
     </article>`).join('');
   const filas = DATA.packSpec.map(([g, rows]) => `
     <tr class="pg"${rows.every(([, ...v]) => igual(v)) ? ' data-igual' : ''}><th scope="colgroup" colspan="4">${g}</th></tr>${rows.map(([lb, ...v]) => `
@@ -1697,6 +1706,8 @@ function viewHome() {
       cls: 'fill', eager: true, sizes: '(min-width:1000px) 53vw, 100vw', alt: P.alt
     })}</div>
     <div class="portada-copy">
+      <picture class="portada-logo"><source srcset="/img/logo-cabinas-240.webp 240w, /img/logo-cabinas-480.webp 480w" sizes="(min-width:1000px) 120px, 88px" type="image/webp">
+        <img src="/img/logo-cabinas-240.png" srcset="/img/logo-cabinas-240.png 240w, /img/logo-cabinas-480.png 480w" sizes="(min-width:1000px) 120px, 88px" width="240" height="240" alt="Logo de Cabinas Desarmables RM" decoding="async"></picture>
       <h1 class="d1"><span class="ln"><i>Cabinas</i></span><span class="ln"><i>desarmables</i></span></h1>
       <p class="portada-lede">Modulares 100% desarmables para concesionarios, detailing, lavaderos y otros rubros.</p>
       <div class="portada-cta">
