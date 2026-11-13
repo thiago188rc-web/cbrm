@@ -1634,7 +1634,6 @@ function rubrosHome() {
         <p>${r.claim}</p>
         <div class="rbl-a">
           <a class="btn-t" href="${urlRubro(r)}">Ver cabinas para ${r.n.toLowerCase()}</a>
-          ${btnWA('Consultar', { rubro: r.qRubro, aria: `Consultar por WhatsApp para ${r.n.toLowerCase()}` }, 'btn-g btn-sm')}
         </div>
       </li>`).join('')}</ul>
     <div class="chapa-sep" aria-hidden="true"></div>
@@ -1646,7 +1645,6 @@ function rubrosHome() {
       <fieldset class="usos-l"><legend class="sr">Otros rubros</legend>${usos}
         <label class="uso"><input type="radio" name="rubro" value="Otro rubro" autocomplete="off"${chk('Otro rubro')}><span>Otro</span></label>
       </fieldset>
-      <div class="usos-a">${btnWA('Consultar por WhatsApp', { lb: 'rubro' }, 'btn-g')}</div>
     </div>`;
 }
 
