@@ -234,7 +234,7 @@ const DATA = {
 const PRE = { rubro: '', vehiculo: '', ancho: '', largo: '', alto: '', modelo: '' };
 
 /* ── UI base ────────────────────────────────────────────────── */
-const HOLA = 'Hola, equipo de RM. Quisiera recibir información sobre las cabinas desarmables.';
+const HOLA = 'Hola, equipo de RM. Quisiera recibir información sobre los módulos desarmables.';
 
 /* ── WHATSAPP CON CONTEXTO ──────────────────────────────────────
    Lo que el visitante va eligiendo en la home (pack, rubro, modelo,
@@ -270,7 +270,7 @@ function waMsg(o = {}) {
   if (!filas.length) return `${HOLA}\n\n_Consulta enviada desde ${DOMINIO}_`;
   const falta = [['el rubro', d.rubro], ['el pack de equipamiento', d.pack], ['las medidas', med || local]]
     .filter(f => !f[1]).map(f => f[0]);
-  const L = ['Hola, equipo de RM. Quisiera solicitar una cotización para una cabina desarmable.', '',
+  const L = ['Hola, equipo de RM. Quisiera solicitar una cotización para un módulo desarmable.', '',
     '*Datos de mi consulta*', ...filas.map(f => `• ${f[0]}: ${f[1]}`)];
   if (falta.length) L.push('', `Me gustaría que me asesoren con ${enLista(falta)}.`);
   L.push('', 'Quedo a la espera de su respuesta. ¡Muchas gracias!', '', `_Consulta enviada desde ${DOMINIO}_`);
@@ -1059,7 +1059,7 @@ function quoteMsg() {
     ['Medidas de mi local', d.ancho && d.largo
       ? `${d.ancho} × ${d.largo}${d.alto ? ` × ${d.alto}` : ''} m (ancho × largo${d.alto ? ' × alto libre' : ''})`
       : 'todavía no las relevé']].filter(f => f[1]);
-  const L = [`Hola, equipo de RM. ${d.nombre ? `Soy ${d.nombre} y quisiera` : 'Quisiera'} solicitar una cotización para una cabina desarmable.`, '',
+  const L = [`Hola, equipo de RM. ${d.nombre ? `Soy ${d.nombre} y quisiera` : 'Quisiera'} solicitar una cotización para un módulo desarmable.`, '',
     '*Mi pedido*', ...pedido.map(f => `• ${f[0]}: ${f[1]}`), '',
     '*Mis datos de contacto*', ...contacto.map(f => `• ${f[0]}: ${f[1]}`)];
   if (d.msg.trim()) L.push('', '*Comentarios*', d.msg.trim());
