@@ -344,6 +344,19 @@ function ctxAlCotizador() {
   if (!PRE.vehiculo && !PRE.ancho && Q.d.rubro && Q.i === 0) Q.i = 1;
 }
 
+/* Elegido el pack, la página baja sola a Medidas: el siguiente paso de la
+   consulta. Una pausa corta para que se vea el pack marcado antes de irse. */
+let irMedT = 0;
+function irAMedidas() {
+  const m = $('#medir');
+  if (!m || location.pathname !== '/') return;
+  clearTimeout(irMedT);
+  irMedT = setTimeout(() => {
+    const quieto = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    m.scrollIntoView({ behavior: quieto ? 'auto' : 'smooth', block: 'start' });
+  }, 450);
+}
+
 /* Delegados en el documento: corren antes que el router (que escucha en
    window) y sobreviven a cada re-render de #main. */
 document.addEventListener('click', e => {
@@ -359,7 +372,7 @@ document.addEventListener('click', e => {
   /* "Quiero este pack": sólo lo marca, no abre WhatsApp. La consulta se
      manda desde Medidas, con todo completo (pedido del dueño). */
   const pq = t.closest('[data-pick-pack]');
-  if (pq) { CTX.pack = pq.dataset.pickPack; refreshWA(); }
+  if (pq) { CTX.pack = pq.dataset.pickPack; refreshWA(); irAMedidas(); }
   const tg = t.closest('.pack-tg');
   if (tg) {
     const on = tg.getAttribute('aria-pressed') !== 'true';
@@ -371,6 +384,7 @@ document.addEventListener('click', e => {
 document.addEventListener('change', e => {
   const t = e.target, k = t.name;
   if (k === 'modelo' || k === 'pack' || k === 'rubro') { CTX[k] = t.value; refreshWA(); }
+  if (k === 'pack') irAMedidas();
   if (k === 'modelo') dibujarPlan();
   /* Medida de cabina: una frecuente, u «Otra» con su campo. */
   if (k === 'mA' || k === 'mL') {
