@@ -183,8 +183,13 @@ const DATA = {
      página. Son usos, no trabajos entregados: el bloque es tipográfico.
      Cuando RM entregue y apruebe una foto o un render propio de alguno,
      se carga en assets.js y se nombra en `img`: la home lo muestra. */
+  /* Rubros de la lista principal que todavía no tienen página propia (sin
+     "Ver cabinas para…"). La frase la define RM más adelante. */
+  rubrosSinPagina: [
+    { slug: 'oficinas', n: 'Oficinas', qRubro: 'Oficina', claim: '', sinPagina: true }
+  ],
+
   usos: [
-    { n: 'Oficinas', q: 'Oficina', img: '' },
     { n: 'Barberías', q: 'Barbería', img: '' },
     { n: 'Heladerías', q: 'Heladería', img: '' },
     { n: 'Quioscos', q: 'Quiosco', img: '' },
@@ -398,6 +403,12 @@ document.addEventListener('change', e => {
   const t = e.target, k = t.name;
   if (k === 'modelo' || k === 'pack' || k === 'rubro') { CTX[k] = t.value; refreshWA(); }
   if (k === 'pack') irAMedidas();
+  /* Elegido un rubro de las listas, se borra el escrito a mano; con «Otro»,
+     el cursor va al recuadro para que lo escriba. */
+  if (k === 'rubro') {
+    const libre = $('#rubro-otro');
+    if (libre) { libre.value = ''; if (t.value === 'Otro rubro') libre.focus(); }
+  }
   if (k === 'modelo') dibujarPlan();
   /* Medida de cabina: una frecuente, u «Otra» con su campo. */
   if (k === 'mA' || k === 'mL') {
@@ -413,6 +424,7 @@ document.addEventListener('change', e => {
 });
 document.addEventListener('input', e => {
   const t = e.target;
+  if (t.hasAttribute('data-rubro-otro')) { CTX.rubro = t.value.trim(); refreshWA(); }
   if (t.dataset.f === 'loc') {
     CTX.loc = t.value.trim();
     /* Hay dos campos de localidad (medidas y orden de consulta): van juntos. */
@@ -1650,6 +1662,12 @@ function packsBlock() {
 /* Rubros: los cuatro con página y, debajo, los otros usos posibles que
    mencionó RM, en tipografía. Todos son la misma elección: el rubro que
    viaja en la consulta. */
+/* El rubro escrito a mano en "Otros usos": cualquiera que no sea de las listas. */
+const rubroLibre = () => {
+  const r = CTX.rubro;
+  const fijos = [...DATA.rubros.map(x => x.qRubro), ...DATA.rubrosSinPagina.map(x => x.qRubro), ...DATA.usos.map(x => x.q), 'Otro rubro'];
+  return r && !fijos.includes(r) ? r : '';
+};
 function rubrosHome() {
   const chk = v => CTX.rubro === v ? ' checked' : '';
   const usos = DATA.usos.map(u => {
@@ -1658,14 +1676,14 @@ function rubrosHome() {
         <label class="uso${foto ? ' con-img' : ''}"><input type="radio" name="rubro" value="${u.q}" autocomplete="off"${chk(u.q)}>${foto}<span>${u.n}</span></label>`;
   }).join('');
   return `
-    <ul class="rbl">${DATA.rubros.map(r => `
+    <ul class="rbl">${[...DATA.rubros, ...DATA.rubrosSinPagina].map(r => `
       <li class="rv" data-rubro-row="${r.qRubro}">
         <input class="pk-in" type="radio" name="rubro" id="r-${r.slug}" value="${r.qRubro}" autocomplete="off"${chk(r.qRubro)}>
         <div class="rbl-n"><h3 class="d3"><label for="r-${r.slug}"><span class="pk" aria-hidden="true"></span>${r.n}</label></h3><span class="rbl-b">En tu consulta</span></div>
-        <p>${r.claim}</p>
-        <div class="rbl-a">
+        ${r.claim ? `<p>${r.claim}</p>` : ''}
+        ${r.sinPagina ? '' : `<div class="rbl-a">
           <a class="btn-t" href="${urlRubro(r)}">Ver cabinas para ${r.n.toLowerCase()}</a>
-        </div>
+        </div>`}
       </li>`).join('')}</ul>
     <div class="chapa-sep" aria-hidden="true"></div>
     <div class="usos rv">
@@ -1676,6 +1694,8 @@ function rubrosHome() {
       <fieldset class="usos-l"><legend class="sr">Otros rubros</legend>${usos}
         <label class="uso"><input type="radio" name="rubro" value="Otro rubro" autocomplete="off"${chk('Otro rubro')}><span>Otro</span></label>
       </fieldset>
+      <div class="usos-in"><label for="rubro-otro" class="sr">Tu rubro, si no está en la lista</label>
+        <input id="rubro-otro" data-rubro-otro type="text" autocomplete="off" placeholder="Completar con el rubro a adaptarse" value="${esc(rubroLibre())}"></div>
     </div>`;
 }
 

@@ -1706,6 +1706,13 @@ header.hd{isolation:isolate}
 @media(min-width:1000px){
   .portada-logo{position:static;width:120px;height:120px;margin-bottom:26px;box-shadow:0 10px 28px rgba(0,0,0,.45)}
 }
+/* Otros usos: recuadro para escribir el rubro que no está en la lista. */
+.usos-in{margin-top:4px;max-width:560px}
+.usos-in input{width:100%;min-height:54px;padding:14px 16px;background:transparent;color:var(--txt);
+  border:1px solid #4A4E53;border-radius:0;font-family:var(--f);font-size:16px}
+.usos-in input::placeholder{color:#8A8F95}
+.usos-in input:focus{outline:none;border-color:var(--amber)}
+.usos-in input:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
 /* Packs: el botón elige el pack, no abre WhatsApp. */
 .pack-q{position:relative;z-index:1;width:100%;margin-top:auto}
 .amarillo .pack .pack-q[aria-pressed="true"]{background:var(--amber);border-color:var(--amber);color:#000}
