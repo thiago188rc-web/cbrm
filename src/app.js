@@ -121,6 +121,20 @@ const DATA = {
       foto: 'hero-wide', fotoCap: 'Auto adentro de una cabina RM · terminación blanca',
       faq: ['techo', 'marca', 'entra', 'envio'],
       seoD: 'Cabinas para concesionarios: un set fijo adentro de tu local para fotografiar toda la flota con el mismo fondo, y para entregar la unidad. Sirve para autos y motos.'
+    },
+    /* Frase de RM. El resto sólo dice lo confirmado de los packs y del
+       sistema (a medida, desarmable, chapa, envíos): ninguna foto muestra
+       una oficina, así que la foto es una cabina entregada, sin más. */
+    {
+      slug: 'oficinas', n: 'Oficinas', qRubro: 'Oficina',
+      h1: 'Módulos para oficinas',
+      claim: 'Orden visual y ambiente prolijo para tu oficina.',
+      prob: 'Cuando el espacio de trabajo es abierto o compartido, cuesta separar cada sector y darle una imagen ordenada.',
+      sol: 'Un módulo desarmable dentro de tu local, fabricado a la medida de tu espacio, con revestimiento en chapa trapezoidal color a elección y, según el pack, piso encastrable e iluminación.',
+      pts: ['Fabricado a la medida de tu espacio', 'Revestimiento en chapa trapezoidal, color a elección', 'Piso encastrable e iluminación en los packs Studio y Studio Pro', 'Estructura 100% desarmable: se traslada si cambiás de local'],
+      foto: 'blanca-wide', fotoCap: 'Cabina entregada · terminación blanca',
+      faq: ['medida', 'entra', 'arma', 'mudar'],
+      seoD: 'Módulos desarmables para oficinas: fabricados a medida, con revestimiento en chapa trapezoidal color a elección y, según el pack, piso encastrable e iluminación. Envíos a todo el país.'
     }
   ],
 
@@ -185,9 +199,7 @@ const DATA = {
      se carga en assets.js y se nombra en `img`: la home lo muestra. */
   /* Rubros de la lista principal que todavía no tienen página propia (sin
      "Ver cabinas para…"). La frase la define RM más adelante. */
-  rubrosSinPagina: [
-    { slug: 'oficinas', n: 'Oficinas', qRubro: 'Oficina', claim: '', sinPagina: true }
-  ],
+  rubrosSinPagina: [],
 
   usos: [
     { n: 'Barberías', q: 'Barbería', img: '' },
@@ -362,18 +374,20 @@ function ctxAlCotizador() {
   if (!PRE.vehiculo && !PRE.ancho && Q.d.rubro && Q.i === 0) Q.i = 1;
 }
 
-/* Elegido el pack, la página baja sola a Medidas: el siguiente paso de la
-   consulta. Una pausa corta para que se vea el pack marcado antes de irse. */
-let irMedT = 0;
-function irAMedidas() {
-  const m = $('#medir');
+/* Paso a paso: completado un paso, la página baja sola al siguiente
+   (rubro → packs → medidas → localidad). Una pausa corta para que se vea
+   lo elegido antes de irse. */
+let irT = 0;
+function irA(sel, block = 'start', ms = 450) {
+  const m = $(sel);
   if (!m || location.pathname !== '/') return;
-  clearTimeout(irMedT);
-  irMedT = setTimeout(() => {
+  clearTimeout(irT);
+  irT = setTimeout(() => {
     const quieto = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    m.scrollIntoView({ behavior: quieto ? 'auto' : 'smooth', block: 'start' });
-  }, 450);
+    m.scrollIntoView({ behavior: quieto ? 'auto' : 'smooth', block });
+  }, ms);
 }
+const irAMedidas = () => irA('#medir');
 
 /* Delegados en el documento: corren antes que el router (que escucha en
    window) y sobreviven a cada re-render de #main. */
@@ -390,7 +404,15 @@ document.addEventListener('click', e => {
   /* "Quiero este pack": sólo lo marca, no abre WhatsApp. La consulta se
      manda desde Medidas, con todo completo (pedido del dueño). */
   const pq = t.closest('[data-pick-pack]');
-  if (pq) { CTX.pack = pq.dataset.pickPack; refreshWA(); irAMedidas(); }
+  if (pq) {
+    CTX.pack = pq.dataset.pickPack; refreshWA();
+    const dlg = pq.closest('dialog'); if (dlg) dlg.close();
+    irAMedidas();
+  }
+  /* Información de equipamiento de un pack, en un diálogo. */
+  const pi = t.closest('[data-pack-info]');
+  if (pi) abrirPackInfo(+pi.dataset.packInfo);
+  if (t.closest('[data-dlg-close]') || t.matches('dialog.pack-dlg')) { const d = t.closest('dialog'); if (d) d.close(); }
   const tg = t.closest('.pack-tg');
   if (tg) {
     const on = tg.getAttribute('aria-pressed') !== 'true';
@@ -408,6 +430,7 @@ document.addEventListener('change', e => {
   if (k === 'rubro') {
     const libre = $('#rubro-otro');
     if (libre) { libre.value = ''; if (t.value === 'Otro rubro') libre.focus(); }
+    irA('#sistema');
   }
   if (k === 'modelo') dibujarPlan();
   /* Medida de cabina: una frecuente, u «Otra» con su campo. */
@@ -420,6 +443,17 @@ document.addEventListener('change', e => {
     CTX[k] = otra ? (campo ? numM(campo.value) : '') : t.value;
     CTX.mOtra = !!$('input[name="mA"][value="otra"]:checked, input[name="mL"][value="otra"]:checked');
     dibujarPlan(); refreshWA();
+    /* Con ancho y largo elegidos, sigue la localidad. Más pausa: que se
+       alcance a ver la planta dibujada. */
+    if (!otra && CTX.mA && CTX.mL) irA('#med-loc', 'center', 700);
+  }
+  /* Medida «Otra» escrita a mano: al terminar de cargarla, también. */
+  if (t.dataset.m && CTX.mA && CTX.mL) irA('#med-loc', 'center', 700);
+});
+/* Rubro escrito a mano: con Enter pasa a los packs. */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target.hasAttribute && e.target.hasAttribute('data-rubro-otro') && e.target.value.trim()) {
+    e.preventDefault(); e.target.blur(); irA('#sistema', 'start', 150);
   }
 });
 document.addEventListener('input', e => {
@@ -941,7 +975,7 @@ function viewRubro(slug) {
 
   <section class="sec" style="background:var(--ink-2);border-block:1px solid var(--line)">
     <div class="wrap">
-      ${secHead('Preguntas', `Lo que pregunta un ${r.n.toLowerCase().replace(/s$/, '')}`)}
+      ${secHead('Preguntas', 'Preguntas frecuentes')}
       ${faqBlock(r.faq)}
     </div>
   </section>
@@ -1436,7 +1470,7 @@ function render() {
 
   
   $$('[data-goquote]', main).forEach(b => b.onclick = () => {
-    if (b.dataset.goquote) { Q.d.rubro = b.dataset.goquote === 'Lavaderos' ? 'Lavadero' : b.dataset.goquote === 'Lubricentros' ? 'Lubricentro' : b.dataset.goquote === 'Concesionarios' ? 'Concesionario' : b.dataset.goquote; Q.i = 1; }
+    if (b.dataset.goquote) { Q.d.rubro = b.dataset.goquote === 'Lavaderos' ? 'Lavadero' : b.dataset.goquote === 'Lubricentros' ? 'Lubricentro' : b.dataset.goquote === 'Concesionarios' ? 'Concesionario' : b.dataset.goquote === 'Oficinas' ? 'Oficina' : b.dataset.goquote; Q.i = 1; }
     go('/presupuesto');
   });
   $$('[data-goquotemodel]', main).forEach(b => b.onclick = () => {
@@ -1622,6 +1656,26 @@ const NO = '<span class="no-inc" aria-hidden="true">—</span><span class="sr">N
    la orden de consulta; el botón lo consulta directo. Materiales y
    componentes quedan plegados, agrupados por parte de la cabina, con un
    filtro para ver sólo lo que cambia. */
+/* Información de equipamiento de un pack: todo lo que figura en packSpec
+   para ese pack, agrupado, en un diálogo. Desde ahí también se elige. */
+function abrirPackInfo(i) {
+  const p = DATA.packs[i], dlg = $('#packDlg');
+  if (!p || !dlg) return;
+  const grupos = DATA.packSpec.map(([g, rows]) => {
+    const items = rows.filter(r => r[i + 1]).map(r => `
+        <li>${IC_OK}<span>${r[0]}${typeof r[i + 1] === 'string' ? `<small>${r[i + 1]}</small>` : ''}</span></li>`).join('');
+    return items ? `<h4>${g}</h4><ul>${items}</ul>` : '';
+  }).join('');
+  const elegido = CTX.pack === p.n;
+  $('.pack-dlg-c', dlg).innerHTML = `
+      <p class="mono am">Información de equipamiento</p>
+      <h3 class="d3" id="packDlgT">${p.n}</h3>
+      <p class="pack-dlg-r">${p.resumen}</p>
+      ${grupos}
+      <button type="button" class="btn btn-p pack-dlg-q" data-pick-pack="${p.n}" aria-pressed="${elegido}">${elegido ? 'Pack elegido ✓' : 'Quiero este pack de equipamiento'}</button>`;
+  dlg.showModal();
+}
+
 function packsBlock() {
   const P = DATA.packs;
   const val = v => v === true ? SI : v === false ? NO : `<small>${v}</small>`;
@@ -1637,6 +1691,7 @@ function packsBlock() {
         <div><dt>Piso encastrable</dt><dd>${p.piso ? SI : NO}</dd></div>
         <div><dt>Iluminación</dt><dd>${p.luz ? `<span class="luz${p.luz === 'Full Pro' ? ' pro' : ''}">${p.luz}</span>` : NO}</dd></div>
       </dl>
+      <button type="button" class="pack-info" data-pack-info="${i}" aria-haspopup="dialog">Información de equipamiento <span aria-hidden="true">+</span></button>
       <button type="button" class="btn btn-g pack-q" data-pick-pack="${p.n}" aria-pressed="${CTX.pack === p.n}">${CTX.pack === p.n ? 'Pack elegido ✓' : 'Quiero este pack de equipamiento'}</button>
     </article>`).join('');
   const filas = DATA.packSpec.map(([g, rows]) => `
@@ -1656,7 +1711,11 @@ function packsBlock() {
         </table>
         <p class="pack-ley">— No figura en las especificaciones de ese pack. Publicamos sólo lo que confirmó el taller: si necesitás el detalle de un material, preguntalo en la consulta.</p>
       </div>
-    </details>`;
+    </details>
+    <dialog class="pack-dlg" id="packDlg" aria-labelledby="packDlgT">
+      <button type="button" class="pack-dlg-x" data-dlg-close aria-label="Cerrar">×</button>
+      <div class="pack-dlg-c"></div>
+    </dialog>`;
 }
 
 /* Rubros: los cuatro con página y, debajo, los otros usos posibles que
@@ -1670,11 +1729,6 @@ const rubroLibre = () => {
 };
 function rubrosHome() {
   const chk = v => CTX.rubro === v ? ' checked' : '';
-  const usos = DATA.usos.map(u => {
-    const foto = u.img && IMG[u.img] ? pic(u.img, { sizes: '(min-width:900px) 16vw, 44vw', ratio: '4/3' }) : '';
-    return `
-        <label class="uso${foto ? ' con-img' : ''}"><input type="radio" name="rubro" value="${u.q}" autocomplete="off"${chk(u.q)}>${foto}<span>${u.n}</span></label>`;
-  }).join('');
   return `
     <ul class="rbl">${[...DATA.rubros, ...DATA.rubrosSinPagina].map(r => `
       <li class="rv" data-rubro-row="${r.qRubro}">
@@ -1682,19 +1736,16 @@ function rubrosHome() {
         <div class="rbl-n"><h3 class="d3"><label for="r-${r.slug}"><span class="pk" aria-hidden="true"></span>${r.n}</label></h3><span class="rbl-b">En tu consulta</span></div>
         ${r.claim ? `<p>${r.claim}</p>` : ''}
         ${r.sinPagina ? '' : `<div class="rbl-a">
-          <a class="btn-t" href="${urlRubro(r)}">Ver cabinas para ${r.n.toLowerCase()}</a>
+          <a class="btn-t" href="${urlRubro(r)}">Ver módulos para ${r.n.toLowerCase()}</a>
         </div>`}
       </li>`).join('')}</ul>
     <div class="chapa-sep" aria-hidden="true"></div>
     <div class="usos rv">
       <div class="usos-t">
         <h3 class="d3">Otros usos posibles</h3>
-        <p>Las estructuras son modulares y pueden adaptarse a otros rubros. Elegí el tuyo, o seleccioná «Otro» en caso de no hallarse y contanos qué utilidad le darías.</p>
+        <p>Las estructuras son modulares y pueden adaptarse a otros rubros. En caso de no hallarse en la lista, completá el recuadro con tu rubro y contanos qué utilidad le darías.</p>
       </div>
-      <fieldset class="usos-l"><legend class="sr">Otros rubros</legend>${usos}
-        <label class="uso"><input type="radio" name="rubro" value="Otro rubro" autocomplete="off"${chk('Otro rubro')}><span>Otro</span></label>
-      </fieldset>
-      <div class="usos-in"><label for="rubro-otro" class="sr">Tu rubro, si no está en la lista</label>
+      <div class="usos-in"><label for="rubro-otro">Tu rubro</label>
         <input id="rubro-otro" data-rubro-otro type="text" autocomplete="off" placeholder="Completar con el rubro a adaptarse" value="${esc(rubroLibre())}"></div>
     </div>`;
 }
@@ -2065,7 +2116,7 @@ function bindCTAs(scope) {
   });
   $$('[data-goquote]', scope).forEach(b => b.onclick = () => {
     const v = b.dataset.goquote;
-    if (v) { Q.d.rubro = v === 'Lavaderos' ? 'Lavadero' : v === 'Lubricentros' ? 'Lubricentro' : v === 'Concesionarios' ? 'Concesionario' : v; Q.i = 1; }
+    if (v) { Q.d.rubro = v === 'Lavaderos' ? 'Lavadero' : v === 'Lubricentros' ? 'Lubricentro' : v === 'Concesionarios' ? 'Concesionario' : v === 'Oficinas' ? 'Oficina' : v; Q.i = 1; }
     go('/presupuesto');
   });
   $$('[data-goquotemodel]', scope).forEach(b => b.onclick = () => {

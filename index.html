@@ -1707,12 +1707,41 @@ header.hd{isolation:isolate}
   .portada-logo{position:static;width:120px;height:120px;margin-bottom:26px;box-shadow:0 10px 28px rgba(0,0,0,.45)}
 }
 /* Otros usos: recuadro para escribir el rubro que no está en la lista. */
-.usos-in{margin-top:4px;max-width:560px}
-.usos-in input{width:100%;min-height:54px;padding:14px 16px;background:transparent;color:var(--txt);
-  border:1px solid #4A4E53;border-radius:0;font-family:var(--f);font-size:16px}
-.usos-in input::placeholder{color:#8A8F95}
-.usos-in input:focus{outline:none;border-color:var(--amber)}
-.usos-in input:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+/* En amarillo con letras negras, como la localidad, para que resalte. */
+.usos-in{max-width:560px;padding:16px 18px 14px;background:var(--amber)}
+.usos-in label{display:block;font-family:var(--m);font-size:10.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:#0C0D0B;font-weight:500;margin-bottom:6px}
+.usos-in input{width:100%;min-height:46px;padding:8px 0;background:transparent;color:#0C0D0B;border:0;
+  border-bottom:1.5px solid rgba(12,13,11,.55);border-radius:0;font-family:var(--f);font-size:17px}
+.usos-in input::placeholder{color:rgba(12,13,11,.55)}
+.usos-in input:focus{outline:none;border-bottom-color:#0C0D0B}
+.usos-in input:focus-visible{outline:2px solid #0C0D0B;outline-offset:3px}
+/* Packs: "Información de equipamiento" y su diálogo. */
+.pack-info{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  width:100%;min-height:46px;padding:10px 0;background:transparent;border:0;border-bottom:1px solid rgba(255,200,0,.45);
+  color:var(--amber);font-family:var(--m);font-size:11px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;text-align:left}
+.pack-info span{font-size:20px;line-height:1;transition:transform .25s var(--micro)}
+.pack-info:hover span{transform:rotate(90deg)}
+.pack-info:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+.pack-dlg{width:min(560px,calc(100% - 32px));max-height:calc(100dvh - 48px);padding:0;margin:auto;
+  background:var(--ink-2);color:var(--txt);border:1px solid var(--line);border-top:3px solid var(--amber);overflow:auto}
+.pack-dlg::backdrop{background:rgba(0,0,0,.72)}
+.pack-dlg[open]{animation:fadeUp .35s var(--ease)}
+.pack-dlg-c{padding:clamp(24px,4vw,36px)}
+.pack-dlg .pack-dlg-c .d3{color:#fff;margin-top:8px}
+.pack-dlg .pack-dlg-c .mono{color:var(--amber);padding-right:44px}
+.pack-dlg .pack-dlg-r{margin-top:10px;color:#C9CBC3;font-size:15.5px}
+.pack-dlg-c h4{margin-top:22px;padding-bottom:8px;border-bottom:1px solid var(--line);font-family:var(--m);
+  font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--amber);font-weight:500}
+.pack-dlg-c ul{list-style:none;margin:0;padding:0}
+.pack-dlg-c li{display:grid;grid-template-columns:16px 1fr;gap:12px;padding:11px 0;border-bottom:1px solid var(--line-2);font-size:15px;color:#E4E5E0}
+.pack-dlg-c li .ok{margin-top:3px;color:var(--amber)}
+.pack-dlg-c li small{display:block;margin-top:2px;font-size:13.5px;color:#A9ACA4}
+.pack-dlg-q{width:100%;margin-top:26px;min-height:54px}
+.pack-dlg-x{position:absolute;top:10px;right:10px;width:44px;height:44px;background:transparent;border:0;
+  color:#fff;font-size:28px;line-height:1;cursor:pointer}
+.pack-dlg-x:hover{color:var(--amber)}
+.pack-dlg-x:focus-visible{outline:2px solid var(--amber);outline-offset:-4px}
 /* Packs: el botón elige el pack, no abre WhatsApp. */
 .pack-q{position:relative;z-index:1;width:100%;margin-top:auto}
 .amarillo .pack .pack-q[aria-pressed="true"]{background:var(--amber);border-color:var(--amber);color:#000}
@@ -1830,6 +1859,7 @@ input::placeholder{color:#8A8E93;opacity:1}
         <li><a class="btn-t" href="/cabinas-para-lavaderos">Cabinas para lavaderos</a></li>
         <li><a class="btn-t" href="/cabinas-para-lubricentros">Cabinas para lubricentros</a></li>
         <li><a class="btn-t" href="/cabinas-para-concesionarias">Cabinas para concesionarios</a></li>
+        <li><a class="btn-t" href="/cabinas-para-oficinas">Módulos para oficinas</a></li>
       </ul>
     </div>
   </section>
@@ -1866,6 +1896,7 @@ input::placeholder{color:#8A8E93;opacity:1}
         <a href="/cabinas-para-lavaderos">Cabinas para lavaderos</a>
         <a href="/cabinas-para-lubricentros">Cabinas para lubricentros</a>
         <a href="/cabinas-para-concesionarias">Cabinas para concesionarios</a>
+        <a href="/cabinas-para-oficinas">Módulos para oficinas</a>
         <h4 style="margin-top:18px">El producto</h4>
         <a href="/modelos">Modelos</a>
         <a href="/trabajos">Cabinas entregadas</a>
