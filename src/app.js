@@ -131,7 +131,7 @@ const DATA = {
       claim: 'Orden visual y ambiente prolijo para tu oficina.',
       prob: 'Cuando el espacio de trabajo es abierto o compartido, cuesta separar cada sector y darle una imagen ordenada.',
       sol: 'Un módulo desarmable dentro de tu local, fabricado a la medida de tu espacio, con revestimiento en chapa trapezoidal color a elección y, según el pack, piso encastrable e iluminación.',
-      pts: ['Fabricado a la medida de tu espacio', 'Revestimiento en chapa trapezoidal, color a elección', 'Piso encastrable e iluminación en los packs Studio y Studio Pro', 'Estructura 100% desarmable: se traslada si cambiás de local'],
+      pts: ['Fabricado a la medida de tu espacio', 'Revestimiento en chapa trapezoidal, color a elección', 'Instalación eléctrica en todos los packs; piso encastrable en Studio y Studio Pro', 'Estructura 100% desarmable: se traslada si cambiás de local'],
       foto: 'blanca-wide', fotoCap: 'Cabina entregada · terminación blanca',
       faq: ['medida', 'entra', 'arma', 'mudar'],
       seoD: 'Módulos desarmables para oficinas: fabricados a medida, con revestimiento en chapa trapezoidal color a elección y, según el pack, piso encastrable e iluminación. Envíos a todo el país.'
@@ -159,33 +159,45 @@ const DATA = {
      los modelos (QUÉ ENTRA adentro) y no se mezclan: ningún dato dice qué
      pack va con qué modelo, así que la home no los cruza. */
   packs: [
-    { n: 'Pack Box', corto: 'Box', resumen: 'La estructura desarmable con su revestimiento.', piso: false, luz: '' },
+    { n: 'Pack Box', corto: 'Box', resumen: 'La estructura desarmable con su revestimiento e instalación eléctrica básica.', piso: false, luz: 'Básica' },
     { n: 'Pack Studio', corto: 'Studio', resumen: 'Suma piso encastrable e iluminación básica.', piso: true, luz: 'Básica' },
     { n: 'Pack Studio Pro', corto: 'Studio Pro', resumen: 'Suma piso encastrable e iluminación Full Pro, con plafones LED.', piso: true, luz: 'Full Pro' }
   ],
-  /* Materiales y componentes, tal como los pasó RM, agrupados por parte de
-     la cabina. Un valor por pack, en el orden de `packs`: true figura,
-     false no figura, o el texto exacto. Lo que RM todavía no confirmó
-     (material de la estructura, espesor de la chapa, aislación,
-     tornillería, cableado) NO se publica, ni siquiera como «a confirmar»:
-     cuando llegue el dato se suma acá una fila en su grupo y aparece sola. */
-  packSpec: [
-    ['Estructura y revestimiento', [
-      ['Estructura 100% desarmable', true, true, true],
-      ['Revestimiento en chapa trapezoidal, color a elección', true, true, true]
-    ]],
-    ['Piso', [
-      ['Piso encastrable', false, true, true]
-    ]],
-    /* Así lo agrupa RM: el tablero y los tomacorrientes son parte de la
-       iluminación básica (Studio) y de la Full Pro (Studio Pro). */
-    ['Iluminación', [
-      ['Tablero eléctrico con disyuntor y térmicas', false, true, true],
-      ['Spots dicroicos de 7 W', false, 'Parte baja y laterales', 'Parte media y laterales bajos'],
-      ['Plafones LED laterales y de techo', false, false, true],
-      ['Reflectores', false, true, true],
-      ['Cajas tomacorrientes dobles', false, true, true]
-    ]]
+  /* Información técnica de cada pack, tal como la redactó RM (en el orden
+     de `packs`). Cada sección: [título, texto] o [título, [viñetas]]. Se
+     muestra en el diálogo "Información técnica" de cada tarjeta. */
+  packInfo: [
+    [
+      ['Estructura', 'Sistema modular 100% desarmable, de montaje y desmontaje rápido sin soldaduras en sitio.'],
+      ['Revestimiento', 'Chapa trapezoidal de acero galvanizado prepintado, color a elección del cliente.'],
+      ['Instalación eléctrica · Iluminación básica', [
+        'Tablero eléctrico seccional con interruptor diferencial y llave termomagnética de protección.',
+        'Reflectores LED de alta intensidad ubicados en sector superior.'
+      ]]
+    ],
+    [
+      ['Estructura', 'Sistema modular 100% desarmable, de montaje y desmontaje rápido sin soldaduras en sitio.'],
+      ['Revestimiento', 'Chapa trapezoidal de acero galvanizado prepintado, color a elección del cliente.'],
+      ['Piso', 'Sistema de piso encastrable modular de alta resistencia, de rápida instalación y nivelación.'],
+      ['Instalación eléctrica · Iluminación básica', [
+        'Tablero eléctrico seccional con interruptor diferencial y llaves termomagnéticas de protección por circuito.',
+        'Spots dicroicos LED de 7 W empotrados en sector bajo lateral.',
+        'Reflectores LED en sector superior.',
+        'Cajas de tomacorrientes dobles embutidas / sobrepuestas según configuración.'
+      ]]
+    ],
+    [
+      ['Estructura', 'Sistema modular 100% desarmable, de montaje y desmontaje rápido sin soldaduras en sitio.'],
+      ['Revestimiento', 'Chapa trapezoidal de acero galvanizado prepintado, color a elección del cliente.'],
+      ['Piso', 'Sistema de piso encastrable modular de alta resistencia, de rápida instalación y nivelación.'],
+      ['Instalación eléctrica · Iluminación Full Pro', [
+        'Tablero eléctrico seccional con interruptor diferencial y llaves termomagnéticas de protección por circuito.',
+        'Spots dicroicos LED de 7 W distribuidos en sector medio y bajo lateral, para iluminación perimetral uniforme.',
+        'Plafones LED en laterales y cielorraso, para iluminación general difusa sin sombras.',
+        'Reflectores LED de alta intensidad en sector superior, para iluminación focalizada.',
+        'Cajas de tomacorrientes dobles embutidas / sobrepuestas según configuración.'
+      ]]
+    ]
   ],
 
   /* Medidas frecuentes que mencionó RM, en metros, para arrancar la
@@ -199,7 +211,10 @@ const DATA = {
      se carga en assets.js y se nombra en `img`: la home lo muestra. */
   /* Rubros de la lista principal que todavía no tienen página propia (sin
      "Ver cabinas para…"). La frase la define RM más adelante. */
-  rubrosSinPagina: [],
+  rubrosSinPagina: [
+    /* Frase de RM. Sin página hasta que haya fotos e información propia. */
+    { slug: 'casas-modulares', n: 'Casas modulares', qRubro: 'Casa modular', claim: 'El hogar que imaginaste, sin esperar para disfrutarlo.', sinPagina: true }
+  ],
 
   usos: [
     { n: 'Barberías', q: 'Barbería', img: '' },
@@ -223,7 +238,7 @@ const DATA = {
     entra: ['¿Qué medidas debo relevar en mi local?', 'Se recomienda relevar el largo, el ancho y el alto disponible. Con esa información podemos confirmar la viabilidad del proyecto y proponer la configuración más adecuada.'],
     /* Iluminación y techo: sólo lo que dicen las especificaciones de los
        packs. Lo que no figura ahí no se afirma ni se descarta. */
-    luz: ['¿Qué iluminación trae?', 'Depende del pack. El Studio trae iluminación básica: tablero eléctrico con disyuntor y térmicas, spots dicroicos de 7&nbsp;W en la parte baja y los laterales, reflectores y cajas tomacorrientes dobles. El Studio Pro trae iluminación Full Pro: tablero eléctrico con disyuntor y térmicas, spots dicroicos de 7&nbsp;W en la parte media y los laterales bajos, plafones LED laterales y de techo, reflectores y cajas tomacorrientes dobles. El Pack Box es la estructura con su revestimiento.'],
+    luz: ['¿Qué iluminación trae?', 'Depende del pack. El Pack Box trae instalación eléctrica e iluminación básica: tablero eléctrico seccional y reflectores LED de alta intensidad en el sector superior. El Pack Studio suma spots dicroicos LED de 7 W en el sector bajo lateral y cajas de tomacorrientes dobles. El Pack Studio Pro trae iluminación Full Pro: spots en el sector medio y bajo lateral, plafones LED en laterales y cielorraso, reflectores LED y tomacorrientes dobles. El detalle completo está en la información técnica de cada pack.'],
     techo: ['¿La cabina incluye techo?', 'Las especificaciones de los packs que publicamos no detallan el techo: si lo incluye y cómo se resuelve en tu caso, lo confirmamos en la consulta.'],
     arma: ['¿Cómo se realiza el armado y la instalación?', 'El armado se realiza en tu local por nuestro equipo técnico, siguiendo un proceso ordenado y sin interferir en tu operación habitual. La estructura modular permite una instalación eficiente y controlada. Además, incluye un manual de armado para quienes prefieran realizar la instalación por su cuenta.'],
     obra: ['¿Tengo que hacer obra o pedir permiso?', 'No hace falta obra civil: es un sistema modular y desarmable. Cualquier requisito municipal depende de tu localidad y de tu habilitación: no damos una respuesta general para no decir algo que no corresponda a tu caso.'],
@@ -232,7 +247,7 @@ const DATA = {
     marca: ['¿Le puedo poner la marca de mi negocio adentro?', 'Contanos qué querés poner y dónde, y lo vemos en la consulta.'],
     envio: ['¿Realizan envíos a todo el país?', 'Sí. Realizamos envíos a todo el país. El costo y el plazo de entrega se confirman según la ubicación y las características del pedido.'],
     precio: ['¿Cuál es la inversión de un módulo?', 'La inversión depende del modelo, las dimensiones y el pack de equipamiento seleccionado. Cada proyecto se cotiza de forma personalizada para garantizar la mejor relación entre funcionalidad, calidad y presupuesto.'],
-    packs: ['¿Qué incluye cada pack de equipamiento?', 'Cada pack incluye la estructura modular y los componentes definidos según el uso: el Studio y el Studio Pro suman piso encastrable e iluminación. Podés consultar el detalle en «Materiales y componentes de cada pack» o pedirnos asesoramiento para elegir la opción adecuada para tu rubro.'],
+    packs: ['¿Qué incluye cada pack de equipamiento?', 'Cada pack incluye la estructura modular, la iluminación y los componentes definidos según el uso. Podés consultar el detalle en la información técnica de cada pack o pedirnos asesoramiento para elegir la opción adecuada para tu rubro.'],
     medida: ['¿Fabrican módulos a medida?', 'Sí. Fabricamos módulos a medida según las dimensiones y las necesidades operativas de tu espacio. Nuestro equipo técnico te acompaña desde el relevamiento hasta la definición final del proyecto.'],
     mudar: ['¿Es posible trasladarla a otro local?', 'Sí. Al tratarse de una estructura modular 100% desarmable, puede desarmarse y reinstalarse en otro local, conservando su funcionalidad y su presentación.'],
     usos: ['¿Se adapta a otros rubros?', 'Sí. Nuestros módulos se adaptan a múltiples rubros y proyectos. Si tu rubro no está listado, podés consultarnos para recibir una propuesta personalizada.'],
@@ -1651,38 +1666,32 @@ const IC_OK = '<svg class="ok" width="15" height="15" viewBox="0 0 24 24" fill="
 const SI = `${IC_OK}<span class="sr">Incluido</span>`;
 const NO = '<span class="no-inc" aria-hidden="true">—</span><span class="sr">No figura en este pack</span>';
 
-/* Packs: primero las diferencias (tres filas iguales en las tres
-   columnas, para comparar de un vistazo). Tocar la tarjeta suma el pack a
-   la orden de consulta; el botón lo consulta directo. Materiales y
-   componentes quedan plegados, agrupados por parte de la cabina, con un
-   filtro para ver sólo lo que cambia. */
-/* Información de equipamiento de un pack: todo lo que figura en packSpec
-   para ese pack, agrupado, en un diálogo. Desde ahí también se elige. */
+/* Packs: tres tarjetas con las mismas tres filas, para comparar de un
+   vistazo. Tocar la tarjeta (o "Quiero este pack") la suma a la consulta.
+   El detalle técnico, redactado por RM, abre en un diálogo desde el botón
+   "Información técnica" de cada tarjeta. */
 function abrirPackInfo(i) {
-  const p = DATA.packs[i], dlg = $('#packDlg');
-  if (!p || !dlg) return;
-  const grupos = DATA.packSpec.map(([g, rows]) => {
-    const items = rows.filter(r => r[i + 1]).map(r => `
-        <li>${IC_OK}<span>${r[0]}${typeof r[i + 1] === 'string' ? `<small>${r[i + 1]}</small>` : ''}</span></li>`).join('');
-    return items ? `<h4>${g}</h4><ul>${items}</ul>` : '';
-  }).join('');
+  const p = DATA.packs[i], info = DATA.packInfo[i], dlg = $('#packDlg');
+  if (!p || !info || !dlg) return;
+  const secciones = info.map(([tit, cont]) => `
+      <h4>${tit}</h4>${Array.isArray(cont)
+        ? `<ul>${cont.map(x => `<li>${IC_OK}<span>${x}</span></li>`).join('')}</ul>`
+        : `<p class="pack-dlg-t">${cont}</p>`}`).join('');
   const elegido = CTX.pack === p.n;
   $('.pack-dlg-c', dlg).innerHTML = `
-      <p class="mono am">Información de equipamiento</p>
+      <p class="mono am">Información técnica</p>
       <h3 class="d3" id="packDlgT">${p.n}</h3>
-      <p class="pack-dlg-r">${p.resumen}</p>
-      ${grupos}
+      ${secciones}
       <button type="button" class="btn btn-p pack-dlg-q" data-pick-pack="${p.n}" aria-pressed="${elegido}">${elegido ? 'Pack elegido ✓' : 'Quiero este pack de equipamiento'}</button>`;
   dlg.showModal();
 }
 
 function packsBlock() {
   const P = DATA.packs;
-  const val = v => v === true ? SI : v === false ? NO : `<small>${v}</small>`;
-  const igual = v => v.every(x => x === v[0]);
   const cards = P.map((p, i) => `
     <article class="pack rv" data-d="${i + 1}" data-pack-card="${p.n}">
       <input class="pk-in" type="radio" name="pack" id="p-${i}" value="${p.n}" autocomplete="off"${CTX.pack === p.n ? ' checked' : ''}>
+      <button type="button" class="pack-info" data-pack-info="${i}" aria-haspopup="dialog" aria-label="Información técnica del ${p.n}">Información<br>técnica <span aria-hidden="true">+</span></button>
       <h3 class="d3"><label for="p-${i}"><span class="pk" aria-hidden="true"></span>${p.n}</label></h3>
       <span class="pack-badge">En tu consulta</span>
       <p class="pack-r">${p.resumen}</p>
@@ -1691,27 +1700,10 @@ function packsBlock() {
         <div><dt>Piso encastrable</dt><dd>${p.piso ? SI : NO}</dd></div>
         <div><dt>Iluminación</dt><dd>${p.luz ? `<span class="luz${p.luz === 'Full Pro' ? ' pro' : ''}">${p.luz}</span>` : NO}</dd></div>
       </dl>
-      <button type="button" class="pack-info" data-pack-info="${i}" aria-haspopup="dialog">Información de equipamiento <span aria-hidden="true">+</span></button>
       <button type="button" class="btn btn-g pack-q" data-pick-pack="${p.n}" aria-pressed="${CTX.pack === p.n}">${CTX.pack === p.n ? 'Pack elegido ✓' : 'Quiero este pack de equipamiento'}</button>
     </article>`).join('');
-  const filas = DATA.packSpec.map(([g, rows]) => `
-    <tr class="pg"${rows.every(([, ...v]) => igual(v)) ? ' data-igual' : ''}><th scope="colgroup" colspan="4">${g}</th></tr>${rows.map(([lb, ...v]) => `
-    <tr${igual(v) ? ' data-igual' : ''}><th scope="row">${lb}</th>${v.map(x => `<td>${val(x)}</td>`).join('')}</tr>`).join('')}`).join('');
   return `
     <div class="packs">${cards}</div>
-    <details class="pack-det rv">
-      <summary>Materiales y componentes de cada pack</summary>
-      <div class="pack-tw">
-        <button type="button" class="pack-tg" aria-pressed="false">Solo lo que cambia</button>
-        <table class="pack-tab">
-          <caption class="sr">Materiales y componentes de cada pack</caption>
-          <colgroup><col class="c-l"><col><col><col></colgroup>
-          <thead><tr><td></td>${P.map(p => `<th scope="col">${p.corto}</th>`).join('')}</tr></thead>
-          <tbody>${filas}</tbody>
-        </table>
-        <p class="pack-ley">— No figura en las especificaciones de ese pack. Publicamos sólo lo que confirmó el taller: si necesitás el detalle de un material, preguntalo en la consulta.</p>
-      </div>
-    </details>
     <dialog class="pack-dlg" id="packDlg" aria-labelledby="packDlgT">
       <button type="button" class="pack-dlg-x" data-dlg-close aria-label="Cerrar">×</button>
       <div class="pack-dlg-c"></div>

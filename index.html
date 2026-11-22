@@ -1716,13 +1716,21 @@ header.hd{isolation:isolate}
 .usos-in input::placeholder{color:rgba(12,13,11,.55)}
 .usos-in input:focus{outline:none;border-bottom-color:#0C0D0B}
 .usos-in input:focus-visible{outline:2px solid #0C0D0B;outline-offset:3px}
-/* Packs: "Información de equipamiento" y su diálogo. */
-.pack-info{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:10px;
-  width:100%;min-height:46px;padding:10px 0;background:transparent;border:0;border-bottom:1px solid rgba(255,200,0,.45);
-  color:var(--amber);font-family:var(--m);font-size:11px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;text-align:left}
-.pack-info span{font-size:20px;line-height:1;transition:transform .25s var(--micro)}
+/* Packs: "Información técnica" arriba a la derecha de cada tarjeta (donde
+   lo marcó el dueño) y su diálogo. El título deja lugar para el botón. */
+.pack-info{position:absolute;z-index:2;top:20px;right:clamp(18px,2vw,28px);display:grid;
+  grid-template-columns:auto auto;align-items:center;gap:2px 8px;min-height:44px;padding:7px 10px;
+  background:var(--amber);border:0;color:#0C0D0B;font-family:var(--m);font-size:9.5px;font-weight:500;
+  letter-spacing:.1em;line-height:1.25;text-transform:uppercase;text-align:left;cursor:pointer;
+  transition:background .2s var(--micro)}
+.pack-info span{grid-row:1/3;grid-column:2;font-size:20px;line-height:1;transition:transform .25s var(--micro)}
+.pack-info:hover{background:#FFD84D}
 .pack-info:hover span{transform:rotate(90deg)}
-.pack-info:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+.pack-info:active{transform:scale(.97)}
+.pack-info:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.amarillo .pack h3{padding-right:136px}
+.pack-dlg-t{margin:10px 0 0;color:#E4E5E0;font-size:15px;line-height:1.55;max-width:none}
+.pack-dlg .pack-dlg-c .pack-dlg-t{color:#E4E5E0}
 .pack-dlg{width:min(560px,calc(100% - 32px));max-height:calc(100dvh - 48px);padding:0;margin:auto;
   background:var(--ink-2);color:var(--txt);border:1px solid var(--line);border-top:3px solid var(--amber);overflow:auto}
 .pack-dlg::backdrop{background:rgba(0,0,0,.72)}
