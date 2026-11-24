@@ -61,6 +61,12 @@ const EMPRESA = {
      la confirmen, cargarla acá y vuelve el "Cómo llegar"; también en
      index.html (footer y JSON-LD). */
   calle: '',
+  /* Para las páginas legales. Vacíos hasta que RM los confirme: con
+     titular (razón social o nombre del dueño), CUIT y mail cargados,
+     aparecen solos en /privacidad y /terminos. */
+  titular: '',
+  cuit: '',
+  email: '',
   ciudad: 'Puerto General San Martín',
   prov: 'Santa Fe, Argentina',
   horarios: [['Lunes a viernes', '09:00 – 17:00', 1], ['Sábado', '09:00 – 12:00', 1], ['Domingo', 'Cerrado', 0]]
@@ -181,7 +187,7 @@ const DATA = {
       ['Piso', 'Sistema de piso encastrable modular de alta resistencia, de rápida instalación y nivelación.'],
       ['Instalación eléctrica · Iluminación básica', [
         'Tablero eléctrico seccional con interruptor diferencial y llaves termomagnéticas de protección por circuito.',
-        'Spots dicroicos LED de 7 W empotrados en sector bajo lateral.',
+        'Spots dicroicas LED de 7 W empotrados en sector bajo lateral.',
         'Reflectores LED en sector superior.',
         'Cajas de tomacorrientes dobles embutidas / sobrepuestas según configuración.'
       ]]
@@ -192,7 +198,7 @@ const DATA = {
       ['Piso', 'Sistema de piso encastrable modular de alta resistencia, de rápida instalación y nivelación.'],
       ['Instalación eléctrica · Iluminación Full Pro', [
         'Tablero eléctrico seccional con interruptor diferencial y llaves termomagnéticas de protección por circuito.',
-        'Spots dicroicos LED de 7 W distribuidos en sector medio y bajo lateral, para iluminación perimetral uniforme.',
+        'Spots dicroicas LED de 7 W distribuidos en sector medio y bajo lateral, para iluminación perimetral uniforme.',
         'Plafones LED en laterales y cielorraso, para iluminación general difusa sin sombras.',
         'Reflectores LED de alta intensidad en sector superior, para iluminación focalizada.',
         'Cajas de tomacorrientes dobles embutidas / sobrepuestas según configuración.'
@@ -238,7 +244,7 @@ const DATA = {
     entra: ['¿Qué medidas debo relevar en mi local?', 'Se recomienda relevar el largo, el ancho y el alto disponible. Con esa información podemos confirmar la viabilidad del proyecto y proponer la configuración más adecuada.'],
     /* Iluminación y techo: sólo lo que dicen las especificaciones de los
        packs. Lo que no figura ahí no se afirma ni se descarta. */
-    luz: ['¿Qué iluminación trae?', 'Depende del pack. El Pack Box trae instalación eléctrica e iluminación básica: tablero eléctrico seccional y reflectores LED de alta intensidad en el sector superior. El Pack Studio suma spots dicroicos LED de 7 W en el sector bajo lateral y cajas de tomacorrientes dobles. El Pack Studio Pro trae iluminación Full Pro: spots en el sector medio y bajo lateral, plafones LED en laterales y cielorraso, reflectores LED y tomacorrientes dobles. El detalle completo está en la información técnica de cada pack.'],
+    luz: ['¿Qué iluminación trae?', 'Depende del pack. El Pack Box trae instalación eléctrica e iluminación básica: tablero eléctrico seccional y reflectores LED de alta intensidad en el sector superior. El Pack Studio suma spots dicroicas LED de 7 W en el sector bajo lateral y cajas de tomacorrientes dobles. El Pack Studio Pro trae iluminación Full Pro: spots en el sector medio y bajo lateral, plafones LED en laterales y cielorraso, reflectores LED y tomacorrientes dobles. El detalle completo está en la información técnica de cada pack.'],
     techo: ['¿La cabina incluye techo?', 'Las especificaciones de los packs que publicamos no detallan el techo: si lo incluye y cómo se resuelve en tu caso, lo confirmamos en la consulta.'],
     arma: ['¿Cómo se realiza el armado y la instalación?', 'El armado se realiza en tu local por nuestro equipo técnico, siguiendo un proceso ordenado y sin interferir en tu operación habitual. La estructura modular permite una instalación eficiente y controlada. Además, incluye un manual de armado para quienes prefieran realizar la instalación por su cuenta.'],
     obra: ['¿Tengo que hacer obra o pedir permiso?', 'No hace falta obra civil: es un sistema modular y desarmable. Cualquier requisito municipal depende de tu localidad y de tu habilitación: no damos una respuesta general para no decir algo que no corresponda a tu caso.'],
@@ -1093,6 +1099,96 @@ const view404 = () => `<section class="sec" style="padding-top:calc(var(--head) 
   <div class="hero-cta"><a class="btn btn-p" href="/"><span>Volver al inicio</span></a></div></div></section>`;
 
 /* ══════════════════════════════════════════════════════════════
+   LEGALES — política de privacidad y términos de uso.
+   Describen lo que el sitio hace de verdad: si cambia cómo se manejan
+   los datos (analítica, un formulario con base, Supabase en el panel),
+   hay que actualizar este texto y su fecha. Marco: Ley 25.326 de
+   Protección de Datos Personales; el aviso de la AAIP es el texto que
+   exige la Disposición 10/2008. Titular, CUIT y mail aparecen solos
+   cuando se cargan en EMPRESA.
+   ══════════════════════════════════════════════════════════════ */
+const LEGAL_FECHA = '24 de noviembre de 2026';
+const legalTitular = () => {
+  const quien = EMPRESA.titular
+    ? `<b>${EMPRESA.titular}</b>${EMPRESA.cuit ? ` (CUIT ${EMPRESA.cuit})` : ''}, que opera como Cabinas Desarmables RM`
+    : '<b>Cabinas Desarmables RM</b>';
+  const donde = [EMPRESA.calle, EMPRESA.ciudad, EMPRESA.prov].filter(Boolean).join(', ');
+  return `${quien}, con domicilio en ${donde}.`;
+};
+const legalContacto = () => `por WhatsApp al <a href="${wa('Hola, equipo de RM. Les escribo por mis datos personales.')}" target="_blank" rel="noopener">${TEL_HUMAN}</a>${EMPRESA.email ? ` o por mail a <a href="mailto:${EMPRESA.email}">${EMPRESA.email}</a>` : ''}`;
+
+const LEGALES = {
+  privacidad: {
+    t: 'Política de privacidad',
+    d: 'Qué datos personales usa el sitio de Cabinas Desarmables RM, para qué, con quién se comparten y cómo ejercer tus derechos según la Ley 25.326.',
+    intro: 'Pedimos lo mínimo para poder cotizarte y nada más. Acá te contamos qué datos usamos, para qué y cómo podés pedir que los corrijamos o los borremos.',
+    sec: () => [
+      ['Quién es responsable de tus datos', `<p>El responsable es ${legalTitular()}</p>
+        <p>Para cualquier consulta sobre tus datos personales escribinos ${legalContacto()}.</p>`],
+      ['Qué datos usamos', `<p><b>Los que vos nos das al pedir presupuesto:</b> tu nombre, tu número de WhatsApp, tu localidad y provincia y, si querés, tu rubro, las medidas de tu espacio, el pack que te interesa y lo que quieras contarnos.</p>
+        <p>El sitio no tiene un formulario que guarde esos datos en una base propia. El cotizador arma el mensaje y abre WhatsApp con el texto escrito: <b>vos decidís si lo mandás</b>. Recién cuando lo enviás, la consulta nos llega. No pedimos mail, DNI ni datos de pago.</p>
+        <p><b>Datos técnicos de la conexión:</b> como pasa con cualquier sitio, el servicio que lo aloja registra datos técnicos de cada visita (dirección IP, tipo de navegador, fecha y hora). Los usa para que el sitio funcione y para protegerlo de abusos.</p>`],
+      ['Para qué los usamos', `<ul>
+        <li>Responder tu consulta y prepararte el presupuesto.</li>
+        <li>Coordinar el envío, la instalación y la entrega de tu cabina.</li>
+        <li>Hacer el seguimiento de esa consulta.</li></ul>
+        <p>No vendemos ni cedemos tus datos. No te sumamos a listas de difusión ni te mandamos publicidad que no hayas pedido.</p>`],
+      ['Cookies y seguimiento', `<p>Este sitio <b>no usa cookies</b>, ni de publicidad ni de otro tipo, y no tiene herramientas de analítica ni píxeles de seguimiento (como Google Analytics o el Píxel de Meta).</p>`],
+      ['Servicios de terceros', `<p>Para funcionar, el sitio usa estos servicios. Cada uno tiene su propia política de privacidad:</p>
+        <ul>
+        <li><b>WhatsApp</b> (Meta): por donde nos llega tu consulta y seguimos la conversación.</li>
+        <li><b>Vercel</b>: aloja el sitio y registra los datos técnicos de conexión.</li>
+        <li><b>Google Fonts</b>: sirve las tipografías. Para descargarlas, tu navegador se conecta a servidores de Google.</li>
+        <li><b>Instagram y Facebook</b>: si seguís un enlace a nuestras redes, pasás a sus sitios y rigen sus políticas.</li></ul>
+        <p>Algunos de estos servicios pueden procesar datos fuera de la Argentina.</p>`],
+      ['Cuánto tiempo los guardamos', `<p>Guardamos tu consulta mientras haga falta para cotizarte, venderte, entregarte la cabina y atender la garantía o un reclamo, además del tiempo que exija la ley (por ejemplo, para la facturación). Si querés que la borremos antes, pedilo y lo hacemos, salvo que la ley nos obligue a conservarla.</p>`],
+      ['Tus derechos', `<p>Como titular de tus datos podés pedir <b>acceder</b> a ellos, <b>rectificarlos</b>, <b>actualizarlos</b> o <b>suprimirlos</b> (artículos 14, 15 y 16 de la Ley 25.326). Escribinos ${legalContacto()}. Respondemos los pedidos de acceso dentro de los 10 días corridos, y los de rectificación o supresión dentro de los 5 días hábiles.</p>
+        <p class="legal-aaip">El titular de los datos personales tiene la facultad de ejercer el derecho de acceso a los mismos en forma gratuita a intervalos no inferiores a seis meses, salvo que se acredite un interés legítimo al efecto conforme lo establecido en el artículo 14, inciso 3 de la Ley Nº 25.326. La Agencia de Acceso a la Información Pública, en su carácter de Órgano de Control de la Ley Nº 25.326, tiene la atribución de atender las denuncias y reclamos que interpongan quienes resulten afectados en sus derechos por incumplimiento de las normas vigentes en materia de protección de datos personales. <a href="https://www.argentina.gob.ar/aaip" target="_blank" rel="noopener">argentina.gob.ar/aaip</a></p>`],
+      ['Seguridad', `<p>El sitio funciona solo con conexión cifrada (HTTPS) y no guarda tus datos en servidores propios. Cuidamos tus datos con medidas razonables, aunque ningún sistema en internet es infalible.</p>`],
+      ['Menores de edad', `<p>El sitio está pensado para comercios y personas mayores de edad. No buscamos datos de menores.</p>`],
+      ['Cambios en esta política', `<p>Si cambia la forma en que manejamos los datos, actualizamos esta página y la fecha de abajo.</p>`]
+    ]
+  },
+  terminos: {
+    t: 'Términos de uso',
+    d: 'Condiciones de uso del sitio de Cabinas Desarmables RM: alcance de la información publicada, presupuestos, imágenes y propiedad del contenido.',
+    intro: 'Las reglas para usar este sitio, en simple.',
+    sec: () => [
+      ['Quiénes somos', `<p>Este sitio es de ${legalTitular()} Usarlo implica aceptar estos términos.</p>`],
+      ['La información del sitio', `<p>Lo que publicamos sobre cabinas, packs, modelos y medidas es <b>orientativo</b>. Sirve para que conozcas el producto y armes tu consulta, pero no es una oferta cerrada: las características pueden cambiar sin aviso.</p>`],
+      ['Presupuestos y precios', `<p>No publicamos precios fijos. Cada cabina se cotiza según su medida, el pack y el lugar de entrega. Lo único que vale es el <b>presupuesto que te enviamos por escrito</b>, con su alcance, su precio y su vigencia. Armar una consulta en el cotizador no genera ningún compromiso, ni para vos ni para nosotros.</p>`],
+      ['Imágenes', `<p>Las fotos muestran cabinas fabricadas por RM y algunas escenas de referencia de cada rubro. Los colores pueden verse distintos según la pantalla, y cada cabina se arma a la medida de su espacio.</p>`],
+      ['Propiedad del contenido', `<p>Los textos, fotos, logos y la marca Cabinas Desarmables RM son nuestros o los usamos con permiso. No se pueden copiar ni usar con fines comerciales sin nuestra autorización por escrito.</p>`],
+      ['Enlaces a otros sitios', `<p>El sitio tiene enlaces a WhatsApp, Instagram, Facebook y Google Maps. No controlamos esos sitios ni respondemos por su contenido o sus políticas.</p>`],
+      ['Tus datos', `<p>Cómo usamos tus datos personales se explica en la <a href="/privacidad">política de privacidad</a>.</p>`],
+      ['Ley aplicable', `<p>Estos términos se rigen por las leyes de la República Argentina. Nada de lo que dicen limita los derechos que te da la Ley de Defensa del Consumidor (Ley 24.240).</p>`],
+      ['Cambios', `<p>Podemos actualizar estos términos. La versión vigente es siempre la publicada en esta página.</p>`]
+    ]
+  }
+};
+
+function viewLegal(k) {
+  const L = LEGALES[k];
+  meta({ u: '/' + k, t: `${L.t} | Cabinas Desarmables RM`, d: L.d });
+  const otro = k === 'privacidad' ? ['/terminos', 'Términos de uso'] : ['/privacidad', 'Política de privacidad'];
+  return `<section class="sec legal" style="padding-top:calc(var(--head) + clamp(34px,6vh,76px))">
+    <div class="wrap">
+      <div class="sec-head">
+        <nav class="crumb" aria-label="Migas"><a href="/">Inicio</a><span>/</span><b>${L.t}</b></nav>
+        <span class="mono am">Legales</span>
+        <h1 class="d2">${L.t}</h1>
+        <p class="lede">${L.intro}</p>
+      </div>
+      <div class="legal-body">
+        ${L.sec().map(([h, b]) => `<h2 class="d4">${h}</h2>${b}`).join('')}
+        <p class="mono legal-fecha">Última actualización: ${LEGAL_FECHA}</p>
+        <p class="legal-otro"><a class="btn-t" href="${otro[0]}">${otro[1]}</a></p>
+      </div>
+    </div>
+  </section>`;
+}
+
+/* ══════════════════════════════════════════════════════════════
    COTIZADOR — 5 pasos. Sin teclado hasta el paso 3.
    ══════════════════════════════════════════════════════════════ */
 const Q = {
@@ -1273,8 +1369,17 @@ function leerLeads() {
   return LEADS_DEMO.map(l => ({ ...l, ts: Date.now() - l.ts * DIA }));
 }
 let LEADS = leerLeads();
+/* Limpieza de lo que guardaban las versiones anteriores: toda consulta con
+   teléfono vino del cotizador (los ejemplos no tienen). Se borra ya, y no
+   recién la próxima vez que se toque el panel. */
+if (LEADS.some(l => l.tel)) { LEADS = LEADS.filter(l => !l.tel); guardarLeads(); }
+/* Las consultas del cotizador (`web`) NO se guardan: quedarían el nombre, el
+   teléfono y el mensaje del visitante en SU navegador, donde RM nunca los
+   ve, y cualquiera que use después esa compu los encontraría en /panel.
+   Viven en memoria hasta recargar. Se persisten los ejemplos y lo que RM
+   cargue o mueva desde el panel. Ver la política de privacidad. */
 function guardarLeads() {
-  try { localStorage.setItem(LS, JSON.stringify(LEADS)); } catch (e) { }
+  try { localStorage.setItem(LS, JSON.stringify(LEADS.filter(l => !l.web))); } catch (e) { }
 }
 const diasDe = l => Math.max(0, Math.floor((Date.now() - l.ts) / DIA));
 
@@ -1286,9 +1391,8 @@ function pushLead(d, txt) {
     loc: d.loc || '—', veh: d.vehiculo || '—',
     med: d.ancho && d.largo ? `${d.ancho} × ${d.largo}${d.alto ? ` × ${d.alto}` : ''}` : 'Sin medir',
     st: 'nueva', ts: Date.now(), ref: refCode(), tel: d.tel, msg: txt,
-    modelo: d.modelo
+    modelo: d.modelo, web: 1
   });
-  guardarLeads();
 }
 
 
@@ -1465,6 +1569,7 @@ function render() {
       d: 'Contanos tu rubro, qué vehículo tiene que entrar y cuánto medís. Con eso RM tiene los datos para cotizarte.'
     });
   }
+  else if (parts[0] === 'privacidad' || parts[0] === 'terminos') html = viewLegal(parts[0]);
   else if (parts[0] === 'panel') html = viewPanel();
   else {
     html = view404();
@@ -1738,7 +1843,7 @@ function rubrosHome() {
         <p>Las estructuras son modulares y pueden adaptarse a otros rubros. En caso de no hallarse en la lista, completá el recuadro con tu rubro y contanos qué utilidad le darías.</p>
       </div>
       <div class="usos-in"><label for="rubro-otro">Tu rubro</label>
-        <input id="rubro-otro" data-rubro-otro type="text" autocomplete="off" placeholder="Completar con el rubro a adaptarse" value="${esc(rubroLibre())}"></div>
+        <input id="rubro-otro" data-rubro-otro type="text" autocomplete="off" placeholder="Completá con tu rubro" value="${esc(rubroLibre())}"></div>
     </div>`;
 }
 
@@ -1934,7 +2039,8 @@ function quoteHTML() {
         <div class="fl" data-fl="loc"><label for="q-loc">Localidad y provincia</label><input id="q-loc" data-q="loc" value="${Q.d.loc}" placeholder="Rosario, Santa Fe"><span class="msg">Falta la localidad</span></div>
         <div class="fl"><label for="q-msg">Algo más que quieras contarnos (opcional)</label><textarea id="q-msg" data-q="msg" rows="2">${Q.d.msg}</textarea></div>
       </div>
-      <p class="mono" style="margin-top:18px;line-height:1.8">No pedimos mail ni datos de más.<br>La consulta se abre directo en WhatsApp.</p>`;
+      <p class="mono" style="margin-top:18px;line-height:1.8">No pedimos mail ni datos de más.<br>La consulta se abre directo en WhatsApp.</p>
+      <p class="q-priv">Usamos estos datos solo para responderte y cotizarte. Más detalles en la <a href="/privacidad" target="_blank" rel="noopener">política de privacidad</a>.</p>`;
 
   const canNext = ['medidas', 'pref', 'contacto'].includes(s.f) || !!Q.d[s.f];
   const nav = Q.i >= 5 ? '' : `

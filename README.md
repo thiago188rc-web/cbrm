@@ -39,6 +39,7 @@ El router usa la History API, no fragmentos. Cada vista tiene su URL, su
 | `/modelos` · `/modelos/<slug>` | Catálogo y ficha |
 | `/trabajos` | Cabinas entregadas |
 | `/presupuesto` | Cotizador |
+| `/privacidad` · `/terminos` | Legales |
 | `/panel` | Panel interno (noindex) |
 
 Los enlaces viejos con `#/` (por ejemplo `#/rubro/detailing`) siguen
@@ -153,6 +154,11 @@ Lo que no está confirmado no se publica como hecho. Hoy faltan:
   (está en el pie y en el JSON-LD).
 - **Horario**: el «Abierto ahora» no contempla feriados.
 - **Dominio**: la elección final entre `.com` y `.com.ar`.
+- **Titular, CUIT y mail** para las páginas legales: razón social (o nombre
+  del dueño), CUIT y un mail de contacto. Se cargan en `EMPRESA.titular`,
+  `EMPRESA.cuit` y `EMPRESA.email` de `src/app.js` y aparecen solos en
+  `/privacidad` y `/terminos`. Hasta entonces figura «Cabinas Desarmables RM»
+  y el contacto es el WhatsApp.
 - **Dirección del taller**: el cliente va a cambiarla. Hasta que la pase, el
   sitio muestra sólo «Puerto General San Martín, Santa Fe». La calle se carga
   en `EMPRESA.calle` de `src/app.js` (vuelve el «Cómo llegar» a Maps) y en
@@ -186,10 +192,35 @@ fichas ya están armadas para recibir esos datos.
 ## Panel de consultas
 
 `/panel` guarda las consultas en el `localStorage` del navegador que lo usa: lo
-que se mueva de columna sigue ahí al día siguiente, y lo que entra por el
-cotizador queda registrado. Para que el equipo vea el mismo tablero desde
+que se mueva de columna sigue ahí al día siguiente. Las consultas que arma un
+visitante en el cotizador **no** se guardan: quedarían su nombre y teléfono en
+su propio navegador, donde RM nunca las ve. Aparecen en el panel solo hasta
+recargar. Para que el equipo vea el mismo tablero desde
 varios teléfonos hace falta conectarlo a una base (Supabase, por ejemplo); esa
 pantalla no cambia, cambia de dónde sale `LEADS`.
+
+## Privacidad y seguridad
+
+`/privacidad` y `/terminos` (objeto `LEGALES` en `src/app.js`, enlazados en el
+pie y en el último paso del cotizador). Describen lo que el sitio hace hoy: sin
+cookies, sin analítica, sin base de datos propia; los datos viajan por WhatsApp
+y el sitio usa Vercel y Google Fonts. **Si eso cambia** (analítica, un
+formulario con base, Supabase en el panel), hay que actualizar el texto y
+`LEGAL_FECHA`. El marco es la Ley 25.326; el recuadro de la AAIP es el texto de
+la Disposición 10/2008. Conviene que lo revise un abogado antes de darlo por
+cerrado.
+
+`vercel.json` manda cabeceras de seguridad, entre ellas una
+`Content-Security-Policy` que solo deja correr scripts de `/src` y cargar
+tipografías de Google Fonts. Consecuencias:
+
+> **Nada de JavaScript en línea**: ni `<script>` con código ni atributos
+> `onclick=`/`onfocus=` en el HTML. El navegador los bloquea en producción
+> (en el servidor local no, porque no manda estas cabeceras). El JSON-LD sí
+> está permitido: no se ejecuta.
+
+> **Un servicio externo nuevo** (un mapa embebido, analítica, un video) tiene
+> que sumarse a la CSP, o no carga.
 
 ## Publicar
 

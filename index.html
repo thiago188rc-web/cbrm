@@ -1797,12 +1797,35 @@ input::placeholder{color:#8A8E93;opacity:1}
   .burger{display:none}
 }
 .hd-cta{gap:8px}
+/* Legales: texto largo de lectura, en una columna angosta. */
+.legal-body{max-width:68ch;color:#CFD1C9;font-size:16px;line-height:1.65}
+.legal-body h2{color:var(--txt);margin:38px 0 10px}
+.legal-body h2:first-child{margin-top:0}
+.legal-body p+p,.legal-body ul+p,.legal-body p+ul{margin-top:12px}
+.legal-body ul{padding-left:1.15em;list-style:square}
+.legal-body li{margin-top:6px}
+.legal-body li::marker{color:var(--amber)}
+.legal-body b{color:var(--txt);font-weight:600}
+.legal-body a:not(.btn-t){color:var(--amber);text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
+.legal-aaip{padding:16px 18px;border-left:2px solid var(--amber);background:var(--ink-3);font-size:14.5px;line-height:1.6}
+.legal-fecha{margin-top:44px;padding-top:18px;border-top:1px solid var(--line)}
+.legal-otro{margin-top:18px}
+/* Aviso de privacidad en el último paso del cotizador. */
+.q-priv{margin-top:10px;font-size:13.5px;line-height:1.5;color:var(--mut)}
+.q-priv a{color:var(--amber);text-decoration:underline;text-underline-offset:3px}
+/* Pie: enlaces legales en la línea del copyright. */
+.ft-bot .ft-leg{display:flex;flex-wrap:wrap;gap:4px 18px}
+.ft-bot .ft-leg a{display:inline-block;padding:6px 0;margin-block:-6px;font-family:var(--m);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--mut-2)}
+.ft-bot .ft-leg a:hover{color:var(--amber)}
+/* "Ir al contenido": fuera de pantalla hasta que recibe el foco del teclado.
+   Antes lo movían onfocus/onblur en línea, que la CSP bloquea. */
+.skip{position:absolute;left:-9999px;top:0;z-index:99}
+.skip:focus{left:12px;top:12px}
 </style>
 </head>
 <body>
 
-<a href="#main" class="btn-t" style="position:absolute;left:-9999px;top:0;z-index:99"
-   onfocus="this.style.left='12px';this.style.top='12px'" onblur="this.style.left='-9999px'">Ir al contenido</a>
+<a href="#main" class="btn-t skip">Ir al contenido</a>
 
 <span class="sheet tl"></span><span class="sheet tr"></span>
 <span class="sheet bl"></span><span class="sheet br"></span>
@@ -1923,6 +1946,10 @@ input::placeholder{color:#8A8E93;opacity:1}
     </div>
     <div class="ft-bot">
       <span class="mono">© 2026 Cabinas Desarmables RM</span>
+      <nav class="ft-leg" aria-label="Legales">
+        <a href="/privacidad">Política de privacidad</a>
+        <a href="/terminos">Términos de uso</a>
+      </nav>
       <span class="mono">Puerto General San Martín, Santa Fe, Argentina</span>
     </div>
   </div>
