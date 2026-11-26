@@ -1246,7 +1246,9 @@ header.hd{isolation:isolate}
      ~8,7 cuerpos. 4,1vw entra de 1000 a 1920 px. */
   .portada h1{font-size:clamp(40px,4.1vw,76px)}
   .portada-lede{margin-top:22px}
-  .portada-cta{flex-direction:row;flex-wrap:wrap;align-items:center;gap:16px 26px;margin-top:32px}
+  /* El enlace a rubro, pack y medidas va arriba del botón (pedido del
+     dueño), también en escritorio: columna, no fila. */
+  .portada-cta{flex-direction:column;align-items:flex-start;gap:16px;margin-top:32px}
   .portada-cta .btn{flex:none;width:auto;min-height:56px;padding-inline:28px;white-space:nowrap}
   .portada-meta{grid-template-columns:repeat(3,auto);justify-content:start;gap:34px;margin-top:clamp(40px,7vh,72px)}
   .portada-meta div:last-child{grid-column:auto}
@@ -1626,6 +1628,11 @@ header.hd{isolation:isolate}
 
 /* Otros usos: un muro de palabras que se eligen. Sin fotos hasta que RM
    apruebe las suyas: la tipografía grande hace de imagen. */
+/* Título "Espacios de uso general" dentro de la lista de rubros: corta la
+   lista con aire arriba, como "Otros usos posibles" más abajo. */
+.rbl>li.rbl-h{display:block;padding:clamp(44px,7vh,68px) 0 16px}
+.rbl>li.rbl-h:hover{background:none}
+@media(min-width:900px){.rbl>li.rbl-h{padding-inline:16px}}
 .usos{display:grid;gap:22px;margin-top:clamp(40px,7vh,72px)}
 .usos-t p{margin-top:10px;color:#C6C8C0;max-width:44ch;font-size:15.5px}
 .usos-l{border:0;margin:0;padding:0;min-width:0;display:flex;flex-wrap:wrap;gap:8px}

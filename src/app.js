@@ -1093,10 +1093,14 @@ function viewTrabajos() {
   </section>`;
 }
 
-const view404 = () => `<section class="sec" style="padding-top:calc(var(--head) + 100px);min-height:70vh">
+/* La 404 pone sus propios metadatos: la llaman también rubro y modelo con
+   un slug inexistente, y si no quedaba el título de la página anterior.
+   noindex porque Vercel la sirve con 200 (el rewrite manda todo a
+   index.html): sin esto Google indexaría direcciones inventadas. */
+const view404 = () => (meta({ t: 'Página no encontrada | Cabinas Desarmables RM', d: 'La página que buscabas no existe.', noindex: true }), `<section class="sec" style="padding-top:calc(var(--head) + 100px);min-height:70vh">
   <div class="wrap"><h1 class="d2">Esa página no existe</h1>
   <p style="margin-top:14px">Probá desde el inicio o escribinos y te decimos qué necesitás.</p>
-  <div class="hero-cta"><a class="btn btn-p" href="/"><span>Volver al inicio</span></a></div></div></section>`;
+  <div class="hero-cta"><a class="btn btn-p" href="/"><span>Volver al inicio</span></a></div></div></section>`);
 
 /* ══════════════════════════════════════════════════════════════
    LEGALES — política de privacidad y términos de uso.
@@ -1573,7 +1577,6 @@ function render() {
   else if (parts[0] === 'panel') html = viewPanel();
   else {
     html = view404();
-    meta({ t: 'Página no encontrada | Cabinas Desarmables RM', d: 'La página que buscabas no existe.' });
   }
 
   main.innerHTML = html;
@@ -1824,10 +1827,15 @@ const rubroLibre = () => {
   const fijos = [...DATA.rubros.map(x => x.qRubro), ...DATA.rubrosSinPagina.map(x => x.qRubro), ...DATA.usos.map(x => x.q), 'Otro rubro'];
   return r && !fijos.includes(r) ? r : '';
 };
+/* Oficinas y casas modulares no son rubros del auto: van aparte, bajo
+   "Espacios de uso general" (pedido del dueño). Misma lista, con un título
+   intermedio, para que en escritorio las columnas sigan alineadas. */
+const ESPACIOS_GENERALES = ['oficinas', 'casas-modulares'];
 function rubrosHome() {
   const chk = v => CTX.rubro === v ? ' checked' : '';
-  return `
-    <ul class="rbl">${[...DATA.rubros, ...DATA.rubrosSinPagina].map(r => `
+  const todos = [...DATA.rubros, ...DATA.rubrosSinPagina];
+  const grupo = ok => todos.filter(r => ESPACIOS_GENERALES.includes(r.slug) === ok);
+  const fila = r => `
       <li class="rv" data-rubro-row="${r.qRubro}">
         <input class="pk-in" type="radio" name="rubro" id="r-${r.slug}" value="${r.qRubro}" autocomplete="off"${chk(r.qRubro)}>
         <div class="rbl-n"><h3 class="d3"><label for="r-${r.slug}"><span class="pk" aria-hidden="true"></span>${r.n}</label></h3><span class="rbl-b">En tu consulta</span></div>
@@ -1835,7 +1843,11 @@ function rubrosHome() {
         ${r.sinPagina ? '' : `<div class="rbl-a">
           <a class="btn-t" href="${urlRubro(r)}">Ver módulos para ${r.n.toLowerCase()}</a>
         </div>`}
-      </li>`).join('')}</ul>
+      </li>`;
+  const generales = grupo(true);
+  return `
+    <ul class="rbl">${grupo(false).map(fila).join('')}${generales.length ? `
+      <li class="rbl-h rv" role="none"><h3 class="d3">Espacios de uso general</h3></li>${generales.map(fila).join('')}` : ''}</ul>
     <div class="chapa-sep" aria-hidden="true"></div>
     <div class="usos rv">
       <div class="usos-t">
@@ -1901,8 +1913,8 @@ function viewHome() {
       <h1 class="d1"><span class="ln"><i>Cabinas</i></span><span class="ln"><i>desarmables</i></span></h1>
       <p class="portada-lede">Modulares 100% desarmables para concesionarios, detailing, lavaderos y otros rubros.</p>
       <div class="portada-cta">
+        <a class="txt-l" href="/#rubros">Elegir rubro, pack de equipamiento y medidas</a>
         ${btnWA('Escribir por WhatsApp')}
-        <a class="txt-l" href="/#rubros">Elegir rubro, pack y medida</a>
       </div>
       <dl class="portada-meta">
         <div><dt class="mono">Estructura</dt><dd>100% desarmable</dd></div>
