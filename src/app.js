@@ -14,7 +14,7 @@ const $$ = (s, c) => [...(c || document).querySelectorAll(s)];
    y los enlaces que se comparten. Antes apuntaba a cabinasrm.com.ar, que no
    resuelve — eso le decía a Google que la versión buena de este sitio estaba
    en un dominio muerto, y rompía la vista previa al compartir por WhatsApp. */
-const SITE = 'https://cbrm.vercel.app';
+const SITE = 'https://www.cabinasdesarmablesrm.com';
 
 /* Teléfono: verificado contra el enlace oficial de RM en Instagram
    (wa.me/message/7DHRXLFXX5XEI1 resuelve a phone=5493476569154). */
@@ -1111,7 +1111,7 @@ const view404 = () => (meta({ t: 'Página no encontrada | Cabinas Desarmables RM
    exige la Disposición 10/2008. Titular, CUIT y mail aparecen solos
    cuando se cargan en EMPRESA.
    ══════════════════════════════════════════════════════════════ */
-const LEGAL_FECHA = '24 de noviembre de 2026';
+const LEGAL_FECHA = '26 de noviembre de 2026';
 const legalTitular = () => {
   const quien = EMPRESA.titular
     ? `<b>${EMPRESA.titular}</b>${EMPRESA.cuit ? ` (CUIT ${EMPRESA.cuit})` : ''}, que opera como Cabinas Desarmables RM`
@@ -1142,7 +1142,6 @@ const LEGALES = {
         <ul>
         <li><b>WhatsApp</b> (Meta): por donde nos llega tu consulta y seguimos la conversación.</li>
         <li><b>Vercel</b>: aloja el sitio y registra los datos técnicos de conexión.</li>
-        <li><b>Google Fonts</b>: sirve las tipografías. Para descargarlas, tu navegador se conecta a servidores de Google.</li>
         <li><b>Instagram y Facebook</b>: si seguís un enlace a nuestras redes, pasás a sus sitios y rigen sus políticas.</li></ul>
         <p>Algunos de estos servicios pueden procesar datos fuera de la Argentina.</p>`],
       ['Cuánto tiempo los guardamos', `<p>Guardamos tu consulta mientras haga falta para cotizarte, venderte, entregarte la cabina y atender la garantía o un reclamo, además del tiempo que exija la ley (por ejemplo, para la facturación). Si querés que la borremos antes, pedilo y lo hacemos, salvo que la ley nos obligue a conservarla.</p>`],
@@ -1529,6 +1528,14 @@ addEventListener('click', e => {
   go(a.getAttribute('href'));
 });
 
+/* El panel es una herramienta en desarrollo: guarda en el navegador de quien
+   lo abre y arranca con consultas de ejemplo inventadas. En el dominio
+   público responde 404 para que nadie vea clientes ficticios; sigue
+   andando en local y en las vistas previas de Vercel. Cuando tenga base
+   (Supabase) y login, se habilita acá. */
+const PANEL_OK = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ||
+  (location.hostname.endsWith('.vercel.app') && location.hostname !== 'cbrm.vercel.app');
+
 let CURPATH = null;
 function render() {
   if (location.hash.startsWith('#/')) return go(desdeHash(location.hash), true);
@@ -1574,7 +1581,7 @@ function render() {
     });
   }
   else if (parts[0] === 'privacidad' || parts[0] === 'terminos') html = viewLegal(parts[0]);
-  else if (parts[0] === 'panel') html = viewPanel();
+  else if (parts[0] === 'panel' && PANEL_OK) html = viewPanel();
   else {
     html = view404();
   }
@@ -1847,7 +1854,7 @@ function rubrosHome() {
   const generales = grupo(true);
   return `
     <ul class="rbl">${grupo(false).map(fila).join('')}${generales.length ? `
-      <li class="rbl-h rv" role="none"><h3 class="d3">Espacios de uso general</h3></li>${generales.map(fila).join('')}` : ''}</ul>
+      <li class="rbl-h rv" role="none"><h3 class="d2">Espacios de uso general</h3></li>${generales.map(fila).join('')}` : ''}</ul>
     <div class="chapa-sep" aria-hidden="true"></div>
     <div class="usos rv">
       <div class="usos-t">
@@ -1905,7 +1912,11 @@ function viewHome() {
   return `
   <section class="portada" data-lam="01" data-name="Portada">
     <div class="portada-foto" style="--pos-m:${P.posM};--pos-d:${P.posD}">${pic(P.img, {
-      cls: 'fill', eager: true, sizes: '(min-width:1000px) 53vw, 100vw', alt: P.alt
+      /* 67vw en el celular no es un error: tope de ~2x de densidad. Con 100vw
+         un iPhone (3x) bajaba la de 1364 px (145 KB) para una foto que se ve
+         igual con la de 860 (82 KB). Es el LCP: cada KB cuenta en 4G. Tiene
+         que coincidir con imagesizes de la precarga en index.html. */
+      cls: 'fill', eager: true, sizes: '(min-width:1000px) 53vw, 67vw', alt: P.alt
     })}</div>
     <div class="portada-copy">
       <picture class="portada-logo"><source srcset="/img/logo-cabinas-240.webp 240w, /img/logo-cabinas-480.webp 480w" sizes="(min-width:1000px) 120px, 88px" type="image/webp">

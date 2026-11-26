@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /panel
 
-Sitemap: https://cbrm.vercel.app/sitemap.xml
+Sitemap: https://www.cabinasdesarmablesrm.com/sitemap.xml

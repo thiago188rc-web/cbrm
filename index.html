@@ -16,7 +16,7 @@
      índice), y hacía que al compartir el link por WhatsApp no apareciera ninguna
      vista previa. Cuando entre el dominio propio se cambia acá y en SITE, en
      src/app.js. -->
-<link rel="canonical" href="https://cbrm.vercel.app/">
+<link rel="canonical" href="https://www.cabinasdesarmablesrm.com/">
 <meta name="robots" content="index,follow">
 <meta name="geo.region" content="AR-S">
 <meta name="geo.placename" content="Puerto General San Martín, Santa Fe">
@@ -25,24 +25,35 @@
 <meta property="og:site_name" content="Cabinas Desarmables RM">
 <meta property="og:title" content="Cabinas Desarmables RM | El auto entra a un galpón, sale de un estudio">
 <meta property="og:description" content="Cabinas desarmables para detailing, lavaderos, lubricentros y concesionarios. Estructura 100% desarmable con revestimiento en chapa trapezoidal y, según el pack, piso encastrable e iluminación. Envíos a todo el país.">
-<meta property="og:url" content="https://cbrm.vercel.app/">
-<meta property="og:image" content="https://cbrm.vercel.app/img/og.jpg">
+<meta property="og:url" content="https://www.cabinasdesarmablesrm.com/">
+<meta property="og:image" content="https://www.cabinasdesarmablesrm.com/img/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Auto rojo dentro de una cabina RM de terminación blanca, con franja de piso amarilla">
-<meta name="twitter:image" content="https://cbrm.vercel.app/img/og.jpg">
+<meta name="twitter:image" content="https://www.cabinasdesarmablesrm.com/img/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
 
 <!-- La foto del hero es el LCP: se pide antes de que el navegador llegue al CSS. -->
 <link rel="preload" as="image" href="/img/hero-detailing-1080.avif" type="image/avif"
       imagesrcset="/img/hero-detailing-420.avif 420w, /img/hero-detailing-640.avif 640w, /img/hero-detailing-860.avif 860w, /img/hero-detailing-1080.avif 1080w, /img/hero-detailing-1364.avif 1364w"
-      imagesizes="(min-width:1000px) 53vw, 100vw" fetchpriority="high">
+      imagesizes="(min-width:1000px) 53vw, 67vw" fetchpriority="high">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!-- Sólo el tramo de ejes que usa el sitio (wdth 100-125, wght 380-850), no
-     el rango completo: el archivo variable baja bastante de peso. -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,380..850&family=Azeret+Mono:wght@400;500&family=Sora:wght@600..800&display=swap">
+<!-- Tipografías servidas desde el propio sitio (antes, Google Fonts): sin la
+     hoja de estilos externa que bloqueaba la primera pintura, sin dos
+     conexiones extra y sin mandar la IP de cada visitante a Google. Son los
+     mismos archivos variables, subconjunto latin (alcanza para el español).
+     Licencia OFL. El nombre lleva la versión porque /fonts se cachea un año:
+     para cambiar una fuente, archivo nuevo con nombre nuevo. Sora va
+     precargada porque es la del título de la portada. -->
+<link rel="preload" href="/fonts/sora-v17-latin.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:"Archivo";font-style:normal;font-weight:380 850;font-stretch:100% 125%;font-display:swap;
+  src:url(/fonts/archivo-v25-latin.woff2) format("woff2")}
+@font-face{font-family:"Azeret Mono";font-style:normal;font-weight:400 500;font-display:swap;
+  src:url(/fonts/azeretmono-v21-latin.woff2) format("woff2")}
+@font-face{font-family:"Sora";font-style:normal;font-weight:600 800;font-display:swap;
+  src:url(/fonts/sora-v17-latin.woff2) format("woff2")}
+</style>
 <style>
 /* ══════════════════════════════════════════════════════
    CABINAS DESARMABLES RM — sistema de diseño
@@ -448,7 +459,7 @@ footer.ft{border-top:1px solid var(--line);padding-block:clamp(38px,6vh,64px) 30
 @media(min-width:820px){.ft-grid{grid-template-columns:1.3fr 1fr 1fr}}
 .ft a{color:var(--mut);font-size:14.5px;display:block;padding:4px 0;transition:color .2s}
 .ft a:hover{color:var(--amber)}
-.ft h4{font-family:var(--m);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+.ft h2{font-family:var(--m);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
   color:var(--mut-2);margin-bottom:8px}
 .ft-bot{border-top:1px solid var(--line-2);margin-top:30px;padding-top:18px;
   display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
@@ -1078,7 +1089,7 @@ html{scroll-padding-top:calc(var(--head) + 14px)}
 
 /* ── FOOTER ──────────────────────────────────────────────────── */
 .ft-int{color:var(--mut-2)!important;font-size:13px!important}
-.ft h4{margin-top:0}
+.ft h2{margin-top:0}
 
 /* ── HEADER ───────────────────────────────────────────────────
    Arriba de todo el header es transparente y, en el hero de
@@ -1632,7 +1643,9 @@ header.hd{isolation:isolate}
    lista con aire arriba, como "Otros usos posibles" más abajo. */
 .rbl>li.rbl-h{display:block;padding:clamp(44px,7vh,68px) 0 16px}
 .rbl>li.rbl-h:hover{background:none}
-@media(min-width:900px){.rbl>li.rbl-h{padding-inline:16px}}
+/* Mismo cuerpo que el título de la sección ("Tu rubro"), a pedido del dueño:
+   le gana a .rbl h3, que achica los nombres de rubro. */
+.rbl>li.rbl-h h3{font-size:clamp(28px,5vw,60px);line-height:.95;max-width:20ch}
 .usos{display:grid;gap:22px;margin-top:clamp(40px,7vh,72px)}
 .usos-t p{margin-top:10px;color:#C6C8C0;max-width:44ch;font-size:15.5px}
 .usos-l{border:0;margin:0;padding:0;min-width:0;display:flex;flex-wrap:wrap;gap:8px}
@@ -1839,7 +1852,7 @@ input::placeholder{color:#8A8E93;opacity:1}
 
 <header class="hd" id="hd">
   <div class="wrap">
-    <a class="brand" href="/" aria-label="Cabinas Desarmables RM, inicio">
+    <a class="brand" href="/" aria-label="RM Cabinas Desarmables, inicio">
       <img id="logoImg" alt="" width="38" height="38">
       <span style="display:block"><b>RM</b><span>Cabinas desarmables</span></span>
     </a>
@@ -1929,23 +1942,23 @@ input::placeholder{color:#8A8E93;opacity:1}
         <p style="font-size:14.5px;max-width:38ch">Cabinas modulares 100% desarmables para concesionarios, detailing, lavaderos y otros rubros. Sin obra civil.</p>
       </div>
       <div>
-        <h4>Cabinas por rubro</h4>
+        <h2>Cabinas por rubro</h2>
         <a href="/cabinas-para-detailing">Cabinas para detailing</a>
         <a href="/cabinas-para-lavaderos">Cabinas para lavaderos</a>
         <a href="/cabinas-para-lubricentros">Cabinas para lubricentros</a>
         <a href="/cabinas-para-concesionarias">Cabinas para concesionarios</a>
         <a href="/cabinas-para-oficinas">Módulos para oficinas</a>
-        <h4 style="margin-top:18px">El producto</h4>
+        <h2 style="margin-top:18px">El producto</h2>
         <a href="/modelos">Modelos</a>
         <a href="/trabajos">Cabinas entregadas</a>
         <a href="/presupuesto">Pedir presupuesto</a>
       </div>
       <div>
-        <h4>Dónde nos ubicamos</h4>
+        <h2>Dónde nos ubicamos</h2>
         <address style="color:var(--mut);font-size:14.5px;display:block;line-height:1.65;margin-bottom:12px;font-style:normal">
           Puerto General San Martín, Santa Fe<br>
           <span class="mono" style="display:block;margin-top:8px">Lun a vie 9 a 17 · Sáb 9 a 12</span></address>
-        <h4 style="margin-top:16px">Contacto</h4>
+        <h2 style="margin-top:16px">Contacto</h2>
         <a id="ftWa" data-wa target="_blank" rel="noopener"></a>
         <a href="https://www.instagram.com/cabinasdesarmablesrm/" target="_blank" rel="noopener">@cabinasdesarmablesrm</a>
         <a href="https://www.facebook.com/cabinasdesarmablesrm" target="_blank" rel="noopener">Facebook</a>
@@ -1964,11 +1977,11 @@ input::placeholder{color:#8A8E93;opacity:1}
 
 <script type="application/ld+json">
 {"@context":"https://schema.org","@graph":[
-{"@type":["LocalBusiness","HomeAndConstructionBusiness"],"@id":"https://cbrm.vercel.app/#negocio",
+{"@type":["LocalBusiness","HomeAndConstructionBusiness"],"@id":"https://www.cabinasdesarmablesrm.com/#negocio",
 "name":"Cabinas Desarmables RM",
 "description":"Fabricación de cabinas desarmables para detailing, lavaderos, lubricentros y concesionarios. Estructura 100% desarmable con revestimiento en chapa trapezoidal y, según el pack, piso encastrable e iluminación. Envíos a todo el país.",
-"telephone":"+5493476569154","url":"https://cbrm.vercel.app/",
-"image":"https://cbrm.vercel.app/img/og.jpg","logo":"https://cbrm.vercel.app/img/logo-240.png",
+"telephone":"+5493476569154","url":"https://www.cabinasdesarmablesrm.com/",
+"image":"https://www.cabinasdesarmablesrm.com/img/og.jpg","logo":"https://www.cabinasdesarmablesrm.com/img/logo-240.png",
 "address":{"@type":"PostalAddress",
  "addressLocality":"Puerto General San Martín","addressRegion":"Santa Fe",
  "postalCode":"S2202","addressCountry":"AR"},
@@ -1978,12 +1991,12 @@ input::placeholder{color:#8A8E93;opacity:1}
  {"@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"09:00","closes":"12:00"}],
 "sameAs":["https://www.instagram.com/cabinasdesarmablesrm/","https://www.facebook.com/cabinasdesarmablesrm"],
 "makesOffer":[
- {"@type":"Offer","itemOffered":{"@type":"Product","name":"Cabina desarmable para detailing"},"url":"https://cbrm.vercel.app/cabinas-para-detailing"},
- {"@type":"Offer","itemOffered":{"@type":"Product","name":"Cabina desarmable para lavaderos"},"url":"https://cbrm.vercel.app/cabinas-para-lavaderos"},
- {"@type":"Offer","itemOffered":{"@type":"Product","name":"Cabina desarmable para lubricentros"},"url":"https://cbrm.vercel.app/cabinas-para-lubricentros"},
- {"@type":"Offer","itemOffered":{"@type":"Product","name":"Cabina desarmable para concesionarios"},"url":"https://cbrm.vercel.app/cabinas-para-concesionarias"}]},
-{"@type":"WebSite","@id":"https://cbrm.vercel.app/#sitio","url":"https://cbrm.vercel.app/",
-"name":"Cabinas Desarmables RM","inLanguage":"es-AR","publisher":{"@id":"https://cbrm.vercel.app/#negocio"}}
+ {"@type":"Offer","itemOffered":{"@type":"Product","name":"Cabina desarmable para detailing"},"url":"https://www.cabinasdesarmablesrm.com/cabinas-para-detailing"},
+ {"@type":"Offer","itemOffered":{"@type":"Product","name":"Cabina desarmable para lavaderos"},"url":"https://www.cabinasdesarmablesrm.com/cabinas-para-lavaderos"},
+ {"@type":"Offer","itemOffered":{"@type":"Product","name":"Cabina desarmable para lubricentros"},"url":"https://www.cabinasdesarmablesrm.com/cabinas-para-lubricentros"},
+ {"@type":"Offer","itemOffered":{"@type":"Product","name":"Cabina desarmable para concesionarios"},"url":"https://www.cabinasdesarmablesrm.com/cabinas-para-concesionarias"}]},
+{"@type":"WebSite","@id":"https://www.cabinasdesarmablesrm.com/#sitio","url":"https://www.cabinasdesarmablesrm.com/",
+"name":"Cabinas Desarmables RM","inLanguage":"es-AR","publisher":{"@id":"https://www.cabinasdesarmablesrm.com/#negocio"}}
 ]}
 </script>
 <!-- priceRange sigue afuera a propósito: RM no publica lista de precios y un

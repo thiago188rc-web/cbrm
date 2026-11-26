@@ -10,11 +10,12 @@ index.html              la página entera (HTML + CSS inline)
 src/app.js              router, contenido, cotizador, medidor y panel
 src/assets.js           inventario de fotos: qué se ve en cada una
 img/                    derivados publicados (AVIF + JPG, varios anchos)
+fonts/                  tipografías (woff2, subconjunto latin), servidas desde el sitio
 img/src/                las fotos originales de RM — de acá sale todo lo demás
 tools/build-images.py   genera img/ a partir de img/src/
 tools/dev-server.py     servidor local que imita los rewrites de Vercel
 vercel.json             rewrites, cache y cabeceras
-robots.txt / sitemap.xml
+robots.txt / sitemap.xml / llms.txt
 ```
 
 ## Trabajar en local
@@ -40,7 +41,7 @@ El router usa la History API, no fragmentos. Cada vista tiene su URL, su
 | `/trabajos` | Cabinas entregadas |
 | `/presupuesto` | Cotizador |
 | `/privacidad` · `/terminos` | Legales |
-| `/panel` | Panel interno (noindex) |
+| `/panel` | Panel interno: solo en local y en vistas previas; en el dominio, 404 |
 
 Los enlaces viejos con `#/` (por ejemplo `#/rubro/detailing`) siguen
 funcionando: se traducen a la dirección nueva y se reemplazan en el historial.
@@ -108,10 +109,13 @@ El origen canónico está en **un solo lugar por archivo**:
 - las etiquetas `canonical` / `og:` en `index.html`
 - `sitemap.xml` y `robots.txt`
 
-Hoy apuntan a `https://cbrm.vercel.app`. Cuando entre el dominio propio se
-cambian esos cuatro y listo. El dominio tiene que incluir «RM»: las opciones
-conversadas son `cabinasdesarmablesrm.com` y `cabinasdesarmablesrm.com.ar`, y la
-elección sigue pendiente.
+Apuntan a **`https://www.cabinasdesarmablesrm.com`** (también el
+`llms.txt`). El dominio está comprado en Hostinger y el DNS apunta a Vercel con
+dos registros A en `@` y un CNAME en `www` (los valores los da
+`vercel domains verify cabinasdesarmablesrm.com`). Vercel redirige el dominio
+sin www a `www.`, y `vercel.json` redirige `cbrm.vercel.app` al dominio con un
+308, así los enlaces viejos no se pierden. Las vistas previas de Vercel
+(`cbrm-…vercel.app`) no se redirigen.
 
 ## La consulta por WhatsApp
 
@@ -153,7 +157,6 @@ Lo que no está confirmado no se publica como hecho. Hoy faltan:
 - **Canales**: que `facebook.com/cabinasdesarmablesrm` sea la página de RM
   (está en el pie y en el JSON-LD).
 - **Horario**: el «Abierto ahora» no contempla feriados.
-- **Dominio**: la elección final entre `.com` y `.com.ar`.
 - **Titular, CUIT y mail** para las páginas legales: razón social (o nombre
   del dueño), CUIT y un mail de contacto. Se cargan en `EMPRESA.titular`,
   `EMPRESA.cuit` y `EMPRESA.email` de `src/app.js` y aparecen solos en
@@ -191,6 +194,10 @@ fichas ya están armadas para recibir esos datos.
 
 ## Panel de consultas
 
+En el dominio público `/panel` responde 404 (`PANEL_OK` en `src/app.js`): arranca
+con consultas de ejemplo inventadas y no tiene login. Se prueba en local o en
+una vista previa de Vercel.
+
 `/panel` guarda las consultas en el `localStorage` del navegador que lo usa: lo
 que se mueva de columna sigue ahí al día siguiente. Las consultas que arma un
 visitante en el cotizador **no** se guardan: quedarían su nombre y teléfono en
@@ -204,15 +211,15 @@ pantalla no cambia, cambia de dónde sale `LEADS`.
 `/privacidad` y `/terminos` (objeto `LEGALES` en `src/app.js`, enlazados en el
 pie y en el último paso del cotizador). Describen lo que el sitio hace hoy: sin
 cookies, sin analítica, sin base de datos propia; los datos viajan por WhatsApp
-y el sitio usa Vercel y Google Fonts. **Si eso cambia** (analítica, un
+y el sitio usa Vercel (las tipografías se sirven desde `/fonts`, no desde
+Google Fonts). **Si eso cambia** (analítica, un
 formulario con base, Supabase en el panel), hay que actualizar el texto y
 `LEGAL_FECHA`. El marco es la Ley 25.326; el recuadro de la AAIP es el texto de
 la Disposición 10/2008. Conviene que lo revise un abogado antes de darlo por
 cerrado.
 
 `vercel.json` manda cabeceras de seguridad, entre ellas una
-`Content-Security-Policy` que solo deja correr scripts de `/src` y cargar
-tipografías de Google Fonts. Consecuencias:
+`Content-Security-Policy` que solo deja cargar recursos del propio sitio. Consecuencias:
 
 > **Nada de JavaScript en línea**: ni `<script>` con código ni atributos
 > `onclick=`/`onfocus=` en el HTML. El navegador los bloquea en producción
