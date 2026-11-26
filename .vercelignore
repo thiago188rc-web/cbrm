@@ -1,0 +1,9 @@
+# Proyecto público (cabinasdesarmablesrm.com): se publica la raíz tal cual.
+# Sin esto, el código del panel y las migraciones quedarían servidos como
+# archivos estáticos en www.cabinasdesarmablesrm.com/panel/... El panel es
+# otro proyecto de Vercel con Root Directory = panel/, que no lee este archivo.
+panel/
+supabase/
+tools/
+README.md
+screenshot.png

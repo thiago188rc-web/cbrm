@@ -18,6 +18,14 @@ vercel.json             rewrites, cache y cabeceras
 robots.txt / sitemap.xml / llms.txt
 ```
 
+## RM GROWTH OS (panel privado)
+
+`panel/` es otra aplicación (Next.js + Supabase) con su propio proyecto de
+Vercel en `panel.cabinasdesarmablesrm.com`; `supabase/` tiene sus migraciones
+y pruebas de permisos. Ver [panel/README.md](panel/README.md).
+`.vercelignore` saca ambas carpetas del proyecto público: sin él, el código del
+panel quedaría servido como archivos estáticos en el dominio de la web.
+
 ## Trabajar en local
 
 ```bash

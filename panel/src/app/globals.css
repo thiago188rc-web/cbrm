@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+/* ══════════════════════════════════════════════════════════════
+   RM GROWTH OS — tokens (valores de DESIGN.md).
+   La identidad vive acá; los componentes solo usan estos nombres.
+   ══════════════════════════════════════════════════════════════ */
+@theme {
+  --color-bg: #0b0c0d;
+  --color-surface: #121416;
+  --color-surface-2: #181b1e;
+  --color-line: #25292d;
+  --color-line-strong: #343a40;
+  --color-text: #f3f3ee;
+  --color-muted: #9a9c94;
+  --color-amber: #ffc800;
+  --color-amber-hi: #ffd84a;
+  --color-on-amber: #0c0d0b;
+  --color-ok: #7bd88f;
+  --color-err: #ff6b4a;
+
+  /* Estaciones del embudo: tonos apagados, el amarillo sigue siendo la única
+     señal fuerte. */
+  --color-st-nuevo: #c9c7b8;
+  --color-st-contactado: #8ea6c4;
+  --color-st-calificado: #a69bc4;
+  --color-st-cotizacion: #c9a46a;
+  --color-st-negociacion: #d4975a;
+  --color-st-vendido: #7bd88f;
+  --color-st-perdido: #6b6f75;
+
+  --font-sans: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font-sora), var(--font-archivo), Arial, sans-serif;
+  --font-mono: var(--font-azeret), ui-monospace, Menlo, monospace;
+
+  --radius-sm: 3px;
+  --radius: 4px;
+
+  --ease-taller: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html {
+  background: var(--color-bg);
+  color: var(--color-text);
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  min-height: 100dvh;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Etiqueta "estampada": columnas, metadatos, la ficha de procedencia. */
+@utility stamp {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* Títulos de pantalla y la cifra principal: Sora, una por vista. */
+@utility display {
+  font-family: var(--font-display);
+  font-weight: 760;
+  letter-spacing: -0.01em;
+  line-height: 1;
+}
+
+/* Chapa trapezoidal vista de frente: valle, flanco iluminado, cresta,
+   flanco en sombra. Solo en la pantalla de entrada (DESIGN.md). */
+.chapa {
+  background:
+    linear-gradient(to bottom, rgb(11 12 13 / 0) 0%, rgb(11 12 13 / 0.55) 100%),
+    linear-gradient(100deg, rgb(255 200 0 / 0.05), rgb(255 200 0 / 0) 45%),
+    repeating-linear-gradient(
+      90deg,
+      #0e1012 0 26px,
+      #16191c 26px 31px,
+      #1c2024 31px 66px,
+      #121417 66px 71px,
+      #0e1012 71px 96px
+    );
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-amber);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--color-amber);
+  color: var(--color-on-amber);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
