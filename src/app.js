@@ -1854,7 +1854,7 @@ function rubrosHome() {
   const generales = grupo(true);
   return `
     <ul class="rbl">${grupo(false).map(fila).join('')}${generales.length ? `
-      <li class="rbl-h rv" role="none"><h3 class="d2">Espacios de uso general</h3></li>${generales.map(fila).join('')}` : ''}</ul>
+      <li class="rbl-h rv"><h3 class="d2">Espacios de uso general</h3></li>${generales.map(fila).join('')}` : ''}</ul>
     <div class="chapa-sep" aria-hidden="true"></div>
     <div class="usos rv">
       <div class="usos-t">
